@@ -1,0 +1,92 @@
+sin etiqueta
+persona
+bicicleta
+automovil
+motocicleta
+avion
+autobus
+tren
+camion
+barco
+semaforo
+boca de incendio
+street sign
+señal de alto
+parquimetro
+banco
+pájaro
+gato
+perro
+caballo
+oveja
+vaca
+elefante
+oso
+zebra
+girafa
+sombrero
+mochila
+paraguas
+zapato
+lentes
+bolso de mano
+tie
+maleta
+disco volador
+esquís
+patineta de nieve
+pelota de deportes
+cometa
+bat de béisbol
+guante de béisbol
+patineta
+tabla de surf
+raqueta de tennis
+botella
+lámina
+copa de vino
+taza
+tenedor
+cuchillo
+cuchara
+bol
+platano
+manzana
+sandwich
+naranja
+brocoli
+zanahoria
+hot dog
+pizza
+dona
+pastel
+silla
+sofá
+planta en maceta
+cama
+espejo
+comedor
+ventana
+escritorio
+baño
+puerta
+televisión
+laptop
+mouse
+remoto
+teclado
+celular
+microondas
+horno
+tostador
+sink
+refrigerador
+licuadora
+libro
+reloj
+florero
+tijeras
+oso de peluche
+secador de pelo
+cepillo de dientes
+cepillo de pelo

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Texto</title>
+</head>
+<body>
+
+    <h2>Conversor de Texto</h2>
+
+    <input type="text" id="texto" placeholder="Escribe tu texto aquí">
+    <br><br>
+
+    <button onclick="convertirMayusculas()">Convertir a MAYÚSCULAS</button>
+    <button onclick="convertirMinusculas()">Convertir a minúsculas</button>
+
+    <h3>Resultado:</h3>
+    <p id="resultado"></p>
+
+    <script>
+        async function convertirMayusculas() {
+            const texto = document.getElementById("texto").value;
+
+            const response = await fetch("http://127.0.0.1:5501/mayusculas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ texto: texto })
+            });
+
+            const data = await response.json();
+            document.getElementById("resultado").innerText = data.resultado;
+        }
+
+        async function convertirMinusculas() {
+            const texto = document.getElementById("texto").value;
+
+            const response = await fetch("http://127.0.0.1:5501/minusculas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ texto: texto })
+            });
+
+            const data = await response.json();
+            document.getElementById("resultado").innerText = data.resultado;
+        }
+    </script>
+
+</body>
+</html>

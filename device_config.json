@@ -1,0 +1,5 @@
+{
+    "device": "cuda",
+    "device_id": 0,
+    "half_precision": false
+}

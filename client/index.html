@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Detección de Personas</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        window.API_BASE = window.location.origin;
+    </script>
+</head>
+
+<body>
+    <div class="tabs" role="tablist" aria-label="Selector de fuente">
+        <button id="tabbtn-image" class="tabbtn active" data-tab="tab-image" role="tab" aria-controls="tab-image"
+            aria-selected="true">Imagen</button>
+        <button id="tabbtn-video" class="tabbtn" data-tab="tab-video" role="tab" aria-controls="tab-video"
+            aria-selected="false">Video</button>
+        <button id="tabbtn-camera" class="tabbtn" data-tab="tab-camera" role="tab" aria-controls="tab-camera"
+            aria-selected="false">Cámara</button>
+    </div>
+    <main>
+        <div class="left">
+            <section id="tab-image" class="tab-panel active" role="tabpanel" aria-labelledby="tabbtn-image">
+                <div id="imageControls">
+                    <div class="margin-top-8">
+                        <label for="fileInput">Selecciona una imagen:</label>
+                        <input type="file" id="fileInput" accept="image/*" title="Selecciona una imagen para detectar"
+                            placeholder="Selecciona una imagen" />
+                    </div>
+                    <div class="margin-top-8">
+                        <label for="modelSelect_image">Modelo:</label>
+                        <select id="modelSelect_image">
+                            <option value="yolo">YOLOv11</option>
+                            <option value="ssd">SSD MobileNet</option>
+                            <option value="hog">HOG+SVM</option>
+                        </select>
+                        <label for="conf_image"
+                            title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
+                        <br>
+                        <input type="number" id="conf_image" value="0.25" min="0" max="1" step="0.05" />
+                        <button id="btnDetectImage">Detectar Imagen</button>
+                    </div>
+                    <div class="margin-top-8">
+                        <h4>Detecciones:</h4>
+                        <div id="log_image" class="detection-log">(sin datos)</div>
+                    </div>
+                    <div id="status_image" class="status margin-top-8" aria-live="polite"></div>
+            </section>
+
+            <section id="tab-video" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-video">
+                <div id="videoControls">
+                    <label for="videoFile">Subir video (mp4):</label>
+                    <input type="file" id="videoFile" accept="video/*" />
+                </div>
+                <div class="margin-top-8">
+                    <label for="modelSelect_video">Modelo:</label>
+                    <select id="modelSelect_video">
+                        <option value="yolo">YOLOv11</option>
+                        <option value="ssd">SSD MobileNet</option>
+                        <option value="hog">HOG+SVM</option>
+                    </select>
+                    <label for="conf_video"
+                        title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
+                    <input type="number" id="conf_video" value="0.25" min="0" max="1" step="0.05" />
+                    <label for="frameStep">Paso frames:</label>
+                    <input type="number" id="frameStep" value="1" min="1" />
+                    <label for="maxFrames">Maximo frames:</label>
+                    <input type="number" id="maxFrames" value="0" min="0" />
+                    <label title="Si está activado, se mostrarán los rectángulos de detección sobre el video.">
+                        <input type="checkbox" id="visualizeVideo" aria-label="Mostrar rectángulos de detección" />
+                        Mostrar rectángulos
+                    </label>
+                    <button id="btnDetectVideo">Detectar Video</button>
+                </div>
+                <div class="margin-top-8">
+                    <h4>Detecciones (muestras de frames):</h4>
+                    <div id="log_video" class="detection-log">(sin datos)</div>
+                </div>
+                <div id="status_video" class="status margin-top-8" aria-live="polite"></div>
+            </section>
+            <section id="tab-camera" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-camera">
+                <div>
+                    <label for="cameraUrl">Camera URL (IP camera):</label>
+                    <input type="url" id="cameraUrl" placeholder="http://ip:port/video" />
+                </div>
+                <div class="margin-top-8">
+                    <label for="modelSelect_camera">Modelo:</label>
+                    <select id="modelSelect_camera">
+                        <option value="yolo">YOLOv11</option>
+                        <option value="ssd">SSD MobileNet</option>
+                        <option value="hog">HOG+SVM</option>
+                    </select>
+                    <label for="conf_camera"
+                        title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
+                    <input type="number" id="conf_camera" value="0.25" min="0" max="1" step="0.05" />
+                </div>
+                <div class="margin-top-8">
+                    <button id="btnStartLive">Iniciar vista en vivo</button>
+                    <button id="btnStopLive" disabled>Detener vista en vivo</button>
+                </div>
+                <div id="status_camera" class="status margin-top-8" aria-live="polite"></div>
+                <div id="camera_excerpt" class="margin-top-8" aria-live="polite"></div>
+                <div class="margin-top-8">
+                    <h4>Detecciones recientes (cámara):</h4>
+                    <div id="log_camera" class="detection-log">(sin datos)</div>
+                </div>
+            </section>
+        </div>
+
+        <div class="right">
+            <div id="result-panel-image" class="result-panel active">
+                <h3>Resultado (Imagen):</h3>
+                <img id="resultImage" alt="Resultado de detección de personas" class="result-media" />
+                <div class="margin-top-12 hidden">
+                    <h4>Respuesta:</h4>
+                    <pre id="jsonOut_image"></pre>
+                </div>
+            </div>
+
+            <div id="result-panel-video" class="result-panel">
+                <h3>Resultado (Video):</h3>
+                <video id="resultVideo" controls class="result-media result-video"></video>
+                <div id="timeline_container" class="timeline-container hidden">
+                    <h4>Línea de tiempo (detecciones):</h4>
+                    <div id="timeline_bar" class="timeline-bar">
+                        <div id="timeline_cursor" class="timeline-cursor"></div>
+                    </div>
+                    <div id="timeline_info" class="timeline-info"></div>
+                </div>
+                <div class="margin-top-12 hidden">
+                    <h4>Respuesta:</h4>
+                    <pre id="jsonOut_video"></pre>
+                </div>
+                <div id="video_download" class="margin-top-8"></div>
+            </div>
+
+            <div id="result-panel-camera" class="result-panel">
+                <h3>Vista en vivo (procesado):</h3>
+                <img id="liveView" alt="Live processed view" class="live-view" />
+                <div class="margin-top-12 hidden">
+                    <h4>Respuesta:</h4>
+                    <pre id="jsonOut_camera" class="hidden"></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
