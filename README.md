@@ -20,11 +20,11 @@ Sistema de detección y seguimiento de personas en tiempo real utilizando YOLOv1
 #### Verificar instalación:
 ```bash
 ffmpeg -version
+```
 
 ### 3. Crear Entorno Virtual
 
 ```bash
-# Crear entorno virtual
 python3 -m venv .venv
 .venv\Scripts\activate
 ```
