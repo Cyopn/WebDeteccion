@@ -54,25 +54,6 @@ temp/
 tmp/
 *.cache
 
-*.mp4
-*.avi
-*.mov
-*.mkv
-*.flv
-*.wmv
-*.webm
-videos/
-uploads/
-
-output/
-results/
-detections/
-*.jpg
-*.jpeg
-*.png
-!static/**/*.png
-!static/**/*.jpg
-
 *.db
 *.sqlite
 *.sqlite3

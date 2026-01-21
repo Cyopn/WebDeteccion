@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Detección de Personas</title>
+    <title>Detección de Objetos</title>
     <link rel="stylesheet" href="style.css" />
     <script>
         window.API_BASE = window.location.origin;
@@ -30,16 +30,104 @@
                             placeholder="Selecciona una imagen" />
                     </div>
                     <div class="margin-top-8">
-                        <label for="modelSelect_image">Modelo:</label>
-                        <select id="modelSelect_image">
-                            <option value="yolo">YOLOv11</option>
-                            <option value="ssd">SSD MobileNet</option>
-                            <option value="hog">HOG+SVM</option>
+                        <label for="classSelect_image" class="classLabel" id="classLabel_image">Clase:</label>
+                        <select id="classSelect_image" class="classSelect">
+                            <option value="all">Todas</option>
+                            <option value="persona">persona</option>
+                            <option value="bicicleta">bicicleta</option>
+                            <option value="automovil">automovil</option>
+                            <option value="motocicleta">motocicleta</option>
+                            <option value="avion">avion</option>
+                            <option value="autobus">autobus</option>
+                            <option value="tren">tren</option>
+                            <option value="camion">camion</option>
+                            <option value="barco">barco</option>
+                            <option value="semaforo">semaforo</option>
+                            <option value="boca de incendio">boca de incendio</option>
+                            <option value="street sign">street sign</option>
+                            <option value="señal de alto">señal de alto</option>
+                            <option value="parquimetro">parquimetro</option>
+                            <option value="banco">banco</option>
+                            <option value="pájaro">pájaro</option>
+                            <option value="gato">gato</option>
+                            <option value="perro">perro</option>
+                            <option value="caballo">caballo</option>
+                            <option value="oveja">oveja</option>
+                            <option value="vaca">vaca</option>
+                            <option value="elefante">elefante</option>
+                            <option value="oso">oso</option>
+                            <option value="zebra">zebra</option>
+                            <option value="girafa">girafa</option>
+                            <option value="sombrero">sombrero</option>
+                            <option value="mochila">mochila</option>
+                            <option value="paraguas">paraguas</option>
+                            <option value="zapato">zapato</option>
+                            <option value="lentes">lentes</option>
+                            <option value="bolso de mano">bolso de mano</option>
+                            <option value="tie">tie</option>
+                            <option value="maleta">maleta</option>
+                            <option value="disco volador">disco volador</option>
+                            <option value="esquís">esquís</option>
+                            <option value="patineta de nieve">patineta de nieve</option>
+                            <option value="pelota de deportes">pelota de deportes</option>
+                            <option value="cometa">cometa</option>
+                            <option value="bat de béisbol">bat de béisbol</option>
+                            <option value="guante de béisbol">guante de béisbol</option>
+                            <option value="patineta">patineta</option>
+                            <option value="tabla de surf">tabla de surf</option>
+                            <option value="raqueta de tennis">raqueta de tennis</option>
+                            <option value="botella">botella</option>
+                            <option value="lámina">lámina</option>
+                            <option value="copa de vino">copa de vino</option>
+                            <option value="taza">taza</option>
+                            <option value="tenedor">tenedor</option>
+                            <option value="cuchillo">cuchillo</option>
+                            <option value="cuchara">cuchara</option>
+                            <option value="bol">bol</option>
+                            <option value="platano">platano</option>
+                            <option value="manzana">manzana</option>
+                            <option value="sandwich">sandwich</option>
+                            <option value="naranja">naranja</option>
+                            <option value="brocoli">brocoli</option>
+                            <option value="zanahoria">zanahoria</option>
+                            <option value="hot dog">hot dog</option>
+                            <option value="pizza">pizza</option>
+                            <option value="dona">dona</option>
+                            <option value="pastel">pastel</option>
+                            <option value="silla">silla</option>
+                            <option value="sofá">sofá</option>
+                            <option value="planta en maceta">planta en maceta</option>
+                            <option value="cama">cama</option>
+                            <option value="espejo">espejo</option>
+                            <option value="comedor">comedor</option>
+                            <option value="ventana">ventana</option>
+                            <option value="escritorio">escritorio</option>
+                            <option value="baño">baño</option>
+                            <option value="puerta">puerta</option>
+                            <option value="televisión">televisión</option>
+                            <option value="laptop">laptop</option>
+                            <option value="mouse">mouse</option>
+                            <option value="remoto">remoto</option>
+                            <option value="teclado">teclado</option>
+                            <option value="celular">celular</option>
+                            <option value="microondas">microondas</option>
+                            <option value="horno">horno</option>
+                            <option value="tostador">tostador</option>
+                            <option value="sink">sink</option>
+                            <option value="refrigerador">refrigerador</option>
+                            <option value="licuadora">licuadora</option>
+                            <option value="libro">libro</option>
+                            <option value="reloj">reloj</option>
+                            <option value="florero">florero</option>
+                            <option value="tijeras">tijeras</option>
+                            <option value="oso de peluche">oso de peluche</option>
+                            <option value="secador de pelo">secador de pelo</option>
+                            <option value="cepillo de dientes">cepillo de dientes</option>
+                            <option value="cepillo de pelo">cepillo de pelo</option>
                         </select>
-                        <label for="conf_image"
-                            title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
+                        <label for="conf_image" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>
                         <br>
-                        <input type="number" id="conf_image" value="0.25" min="0" max="1" step="0.05" />
+                        <input type="number" id="conf_image" value="0.4" min="0" max="1" step="0.05" />
                         <button id="btnDetectImage">Detectar Imagen</button>
                     </div>
                     <div class="margin-top-8">
@@ -55,15 +143,103 @@
                     <input type="file" id="videoFile" accept="video/*" />
                 </div>
                 <div class="margin-top-8">
-                    <label for="modelSelect_video">Modelo:</label>
-                    <select id="modelSelect_video">
-                        <option value="yolo">YOLOv11</option>
-                        <option value="ssd">SSD MobileNet</option>
-                        <option value="hog">HOG+SVM</option>
+                    <label for="classSelect_video" class="classLabel" id="classLabel_video">Clase:</label>
+                    <select id="classSelect_video" class="classSelect">
+                        <option value="all">Todas</option>
+                        <option value="persona">persona</option>
+                        <option value="bicicleta">bicicleta</option>
+                        <option value="automovil">automovil</option>
+                        <option value="motocicleta">motocicleta</option>
+                        <option value="avion">avion</option>
+                        <option value="autobus">autobus</option>
+                        <option value="tren">tren</option>
+                        <option value="camion">camion</option>
+                        <option value="barco">barco</option>
+                        <option value="semaforo">semaforo</option>
+                        <option value="boca de incendio">boca de incendio</option>
+                        <option value="street sign">street sign</option>
+                        <option value="señal de alto">señal de alto</option>
+                        <option value="parquimetro">parquimetro</option>
+                        <option value="banco">banco</option>
+                        <option value="pájaro">pájaro</option>
+                        <option value="gato">gato</option>
+                        <option value="perro">perro</option>
+                        <option value="caballo">caballo</option>
+                        <option value="oveja">oveja</option>
+                        <option value="vaca">vaca</option>
+                        <option value="elefante">elefante</option>
+                        <option value="oso">oso</option>
+                        <option value="zebra">zebra</option>
+                        <option value="girafa">girafa</option>
+                        <option value="sombrero">sombrero</option>
+                        <option value="mochila">mochila</option>
+                        <option value="paraguas">paraguas</option>
+                        <option value="zapato">zapato</option>
+                        <option value="lentes">lentes</option>
+                        <option value="bolso de mano">bolso de mano</option>
+                        <option value="tie">tie</option>
+                        <option value="maleta">maleta</option>
+                        <option value="disco volador">disco volador</option>
+                        <option value="esquís">esquís</option>
+                        <option value="patineta de nieve">patineta de nieve</option>
+                        <option value="pelota de deportes">pelota de deportes</option>
+                        <option value="cometa">cometa</option>
+                        <option value="bat de béisbol">bat de béisbol</option>
+                        <option value="guante de béisbol">guante de béisbol</option>
+                        <option value="patineta">patineta</option>
+                        <option value="tabla de surf">tabla de surf</option>
+                        <option value="raqueta de tennis">raqueta de tennis</option>
+                        <option value="botella">botella</option>
+                        <option value="lámina">lámina</option>
+                        <option value="copa de vino">copa de vino</option>
+                        <option value="taza">taza</option>
+                        <option value="tenedor">tenedor</option>
+                        <option value="cuchillo">cuchillo</option>
+                        <option value="cuchara">cuchara</option>
+                        <option value="bol">bol</option>
+                        <option value="platano">platano</option>
+                        <option value="manzana">manzana</option>
+                        <option value="sandwich">sandwich</option>
+                        <option value="naranja">naranja</option>
+                        <option value="brocoli">brocoli</option>
+                        <option value="zanahoria">zanahoria</option>
+                        <option value="hot dog">hot dog</option>
+                        <option value="pizza">pizza</option>
+                        <option value="dona">dona</option>
+                        <option value="pastel">pastel</option>
+                        <option value="silla">silla</option>
+                        <option value="sofá">sofá</option>
+                        <option value="planta en maceta">planta en maceta</option>
+                        <option value="cama">cama</option>
+                        <option value="espejo">espejo</option>
+                        <option value="comedor">comedor</option>
+                        <option value="ventana">ventana</option>
+                        <option value="escritorio">escritorio</option>
+                        <option value="baño">baño</option>
+                        <option value="puerta">puerta</option>
+                        <option value="televisión">televisión</option>
+                        <option value="laptop">laptop</option>
+                        <option value="mouse">mouse</option>
+                        <option value="remoto">remoto</option>
+                        <option value="teclado">teclado</option>
+                        <option value="celular">celular</option>
+                        <option value="microondas">microondas</option>
+                        <option value="horno">horno</option>
+                        <option value="tostador">tostador</option>
+                        <option value="sink">sink</option>
+                        <option value="refrigerador">refrigerador</option>
+                        <option value="licuadora">licuadora</option>
+                        <option value="libro">libro</option>
+                        <option value="reloj">reloj</option>
+                        <option value="florero">florero</option>
+                        <option value="tijeras">tijeras</option>
+                        <option value="oso de peluche">oso de peluche</option>
+                        <option value="secador de pelo">secador de pelo</option>
+                        <option value="cepillo de dientes">cepillo de dientes</option>
+                        <option value="cepillo de pelo">cepillo de pelo</option>
                     </select>
-                    <label for="conf_video"
-                        title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
-                    <input type="number" id="conf_video" value="0.25" min="0" max="1" step="0.05" />
+                    <label for="conf_video" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>
+                    <input type="number" id="conf_video" value="0.4" min="0" max="1" step="0.05" />
                     <label for="frameStep">Paso frames:</label>
                     <input type="number" id="frameStep" value="1" min="1" />
                     <label for="maxFrames">Maximo frames:</label>
@@ -86,15 +262,103 @@
                     <input type="url" id="cameraUrl" placeholder="http://ip:port/video" />
                 </div>
                 <div class="margin-top-8">
-                    <label for="modelSelect_camera">Modelo:</label>
-                    <select id="modelSelect_camera">
-                        <option value="yolo">YOLOv11</option>
-                        <option value="ssd">SSD MobileNet</option>
-                        <option value="hog">HOG+SVM</option>
+                    <label for="classSelect_camera" class="classLabel" id="classLabel_camera">Clase:</label>
+                    <select id="classSelect_camera" class="classSelect">
+                        <option value="all">Todas</option>
+                        <option value="persona">persona</option>
+                        <option value="bicicleta">bicicleta</option>
+                        <option value="automovil">automovil</option>
+                        <option value="motocicleta">motocicleta</option>
+                        <option value="avion">avion</option>
+                        <option value="autobus">autobus</option>
+                        <option value="tren">tren</option>
+                        <option value="camion">camion</option>
+                        <option value="barco">barco</option>
+                        <option value="semaforo">semaforo</option>
+                        <option value="boca de incendio">boca de incendio</option>
+                        <option value="street sign">street sign</option>
+                        <option value="señal de alto">señal de alto</option>
+                        <option value="parquimetro">parquimetro</option>
+                        <option value="banco">banco</option>
+                        <option value="pájaro">pájaro</option>
+                        <option value="gato">gato</option>
+                        <option value="perro">perro</option>
+                        <option value="caballo">caballo</option>
+                        <option value="oveja">oveja</option>
+                        <option value="vaca">vaca</option>
+                        <option value="elefante">elefante</option>
+                        <option value="oso">oso</option>
+                        <option value="zebra">zebra</option>
+                        <option value="girafa">girafa</option>
+                        <option value="sombrero">sombrero</option>
+                        <option value="mochila">mochila</option>
+                        <option value="paraguas">paraguas</option>
+                        <option value="zapato">zapato</option>
+                        <option value="lentes">lentes</option>
+                        <option value="bolso de mano">bolso de mano</option>
+                        <option value="tie">tie</option>
+                        <option value="maleta">maleta</option>
+                        <option value="disco volador">disco volador</option>
+                        <option value="esquís">esquís</option>
+                        <option value="patineta de nieve">patineta de nieve</option>
+                        <option value="pelota de deportes">pelota de deportes</option>
+                        <option value="cometa">cometa</option>
+                        <option value="bat de béisbol">bat de béisbol</option>
+                        <option value="guante de béisbol">guante de béisbol</option>
+                        <option value="patineta">patineta</option>
+                        <option value="tabla de surf">tabla de surf</option>
+                        <option value="raqueta de tennis">raqueta de tennis</option>
+                        <option value="botella">botella</option>
+                        <option value="lámina">lámina</option>
+                        <option value="copa de vino">copa de vino</option>
+                        <option value="taza">taza</option>
+                        <option value="tenedor">tenedor</option>
+                        <option value="cuchillo">cuchillo</option>
+                        <option value="cuchara">cuchara</option>
+                        <option value="bol">bol</option>
+                        <option value="platano">platano</option>
+                        <option value="manzana">manzana</option>
+                        <option value="sandwich">sandwich</option>
+                        <option value="naranja">naranja</option>
+                        <option value="brocoli">brocoli</option>
+                        <option value="zanahoria">zanahoria</option>
+                        <option value="hot dog">hot dog</option>
+                        <option value="pizza">pizza</option>
+                        <option value="dona">dona</option>
+                        <option value="pastel">pastel</option>
+                        <option value="silla">silla</option>
+                        <option value="sofá">sofá</option>
+                        <option value="planta en maceta">planta en maceta</option>
+                        <option value="cama">cama</option>
+                        <option value="espejo">espejo</option>
+                        <option value="comedor">comedor</option>
+                        <option value="ventana">ventana</option>
+                        <option value="escritorio">escritorio</option>
+                        <option value="baño">baño</option>
+                        <option value="puerta">puerta</option>
+                        <option value="televisión">televisión</option>
+                        <option value="laptop">laptop</option>
+                        <option value="mouse">mouse</option>
+                        <option value="remoto">remoto</option>
+                        <option value="teclado">teclado</option>
+                        <option value="celular">celular</option>
+                        <option value="microondas">microondas</option>
+                        <option value="horno">horno</option>
+                        <option value="tostador">tostador</option>
+                        <option value="sink">sink</option>
+                        <option value="refrigerador">refrigerador</option>
+                        <option value="licuadora">licuadora</option>
+                        <option value="libro">libro</option>
+                        <option value="reloj">reloj</option>
+                        <option value="florero">florero</option>
+                        <option value="tijeras">tijeras</option>
+                        <option value="oso de peluche">oso de peluche</option>
+                        <option value="secador de pelo">secador de pelo</option>
+                        <option value="cepillo de dientes">cepillo de dientes</option>
+                        <option value="cepillo de pelo">cepillo de pelo</option>
                     </select>
-                    <label for="conf_camera"
-                        title="YOLOv11: 0.25-0.5 (recomendado: 0.3) | SSD: 0.3-0.6 (recomendado: 0.4) | HOG: 0.5-1.5 (recomendado: 0.8)">Umbral:</label>
-                    <input type="number" id="conf_camera" value="0.25" min="0" max="1" step="0.05" />
+                    <label for="conf_camera" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>
+                    <input type="number" id="conf_camera" value="0.4" min="0" max="1" step="0.05" />
                 </div>
                 <div class="margin-top-8">
                     <button id="btnStartLive">Iniciar vista en vivo</button>
@@ -112,7 +376,7 @@
         <div class="right">
             <div id="result-panel-image" class="result-panel active">
                 <h3>Resultado (Imagen):</h3>
-                <img id="resultImage" alt="Resultado de detección de personas" class="result-media" />
+                <img id="resultImage" alt="Resultado de detección" class="result-media" />
                 <div class="margin-top-12 hidden">
                     <h4>Respuesta:</h4>
                     <pre id="jsonOut_image"></pre>

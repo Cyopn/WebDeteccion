@@ -1,6 +1,6 @@
-# Sistema de Detección de Personas
+# Sistema de Detección de Objetos
 
-Sistema de detección y seguimiento de personas en tiempo real utilizando YOLOv11 y OpenCV, con interfaz web mediante Flask.
+Sistema de detección y seguimiento de objetos en tiempo real utilizando modelos preentrenados y OpenCV, con interfaz web mediante Flask.
 
 
 ## Requisitos del Sistema
@@ -41,6 +41,8 @@ pip install -r requirements.txt
 - **opencv-python-headless** (>=4.5.5.64): Procesamiento de visión por computadora
 - **numpy** (>=1.21): Operaciones numéricas
 - **ultralytics** (>=8.0.0): YOLOv11 para detección de objetos
+- **tensorflow** (>=2.13.0): Framework de deep learning
+- **tensorflow-hub** (>=0.14.0): Modelos pre-entrenados de TensorFlow
 - **flask-cors** (>=3.0.10): Manejo de CORS
 - **gunicorn** (>=20.1.0): Servidor WSGI para producción
 
@@ -123,9 +125,59 @@ python device_config.py reset
 ## Características del Sistema de Detección
 
 ### CentroidTracker
-- **Seguimiento persistente**: Asigna IDs únicos a cada persona
-- **Manejo de oclusiones**: Mantiene el seguimiento cuando personas desaparecen temporalmente
-- **Colores distintivos**: Cada persona tiene un color único para fácil identificación
+- **Seguimiento persistente**: Asigna IDs únicos a cada objeto
+- **Manejo de oclusiones**: Mantiene el seguimiento cuando objetos desaparecen temporalmente
+- **Colores distintivos**: Cada objeto tiene un color único para fácil identificación
+
+## Modelos de Detección Disponibles
+
+La aplicación soporta múltiples modelos de detección:
+
+| Modelo | Tipo | Framework | Velocidad | Precisión | Uso |
+|--------|------|-----------|-----------|-----------|-----|
+| **HOG** | Personas | OpenCV | ⚡⚡⚡ | ⭐⭐ | `?model=hog` |
+| **YOLOv11** | Multi-objeto | Ultralytics | ⚡⚡ | ⭐⭐⭐⭐ | `?model=yolo` |
+| **SSD MobileNet** | Multi-objeto | TensorFlow | ⚡⚡ | ⭐⭐⭐ | `?model=ssd` |
+| **TF MobileNet Hub** | Multi-objeto | TensorFlow Hub | ⚡⚡ | ⭐⭐⭐ | `?model=tf_mobilenet` |
+| **TF EfficientDet** | Multi-objeto | TensorFlow Hub | ⚡ | ⭐⭐⭐⭐ | `?model=tf_efficientdet` |
+
+### Integración de TensorFlow
+
+WebDeteccion ahora incluye modelos de **TensorFlow Hub** para detección avanzada:
+
+- **SSD MobileNet v2**: Detector rápido para objetos (COCO)
+- **EfficientDet D0**: Detector multi-objeto con excelente balance entre velocidad y precisión
+
+Consulta [TENSORFLOW_INTEGRATION.md](TENSORFLOW_INTEGRATION.md) para documentación completa.
+
+#### Ejemplo de uso:
+```bash
+# Detección con TensorFlow Hub SSD MobileNet
+curl -X POST -F "image=@imagen.jpg" \
+  "http://localhost:5000/detect/image?model=tf_mobilenet&conf=0.5"
+
+# Detección multi-objeto con EfficientDet
+curl -X POST -F "image=@imagen.jpg" \
+  "http://localhost:5000/detect/image?model=tf_efficientdet&conf=0.4"
+```
+
+#### Ver modelos disponibles:
+```bash
+curl "http://localhost:5000/models/available" | python -m json.tool
+```
+
+#### Script de prueba:
+```bash
+python test_tensorflow.py --image foto.jpg --model tf_mobilenet
+python test_tensorflow.py --image foto.jpg --compare  # Comparar todos los modelos
+```
+
+## Características del Sistema de Detección
+
+### CentroidTracker
+- **Seguimiento persistente**: Asigna IDs únicos a cada objeto
+- **Manejo de oclusiones**: Mantiene el seguimiento cuando objetos desaparecen temporalmente
+- **Colores distintivos**: Cada objeto tiene un color único para fácil identificación
 
 ## Solución de Problemas
 

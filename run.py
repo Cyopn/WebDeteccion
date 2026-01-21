@@ -12,7 +12,7 @@ def clear_screen():
 def show_menu():
     clear_screen()
     print("=" * 50)
-    print("WebDeteccion - Detector de Personas")
+    print("WebDeteccion - Detector de Objetos")
     print("=" * 50)
     print()
 

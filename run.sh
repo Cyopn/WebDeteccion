@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "======================================"
-echo "WebDeteccion - Detector de Personas"
+echo "WebDeteccion - Detector de Objetos"
 echo "======================================"
 echo ""
 

@@ -16,6 +16,16 @@ import sys
 from collections import deque
 import shutil
 
+# Reducir verbosidad de TensorFlow y suprimir warnings deprecados
+import warnings
+# 0=all,1=INFO,2=WARNING,3=ERROR
+os.environ.setdefault('TF_CPP_MIN_LOG_LEVEL', '3')
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+try:
+    logging.getLogger('tensorflow').setLevel(logging.ERROR)
+except Exception:
+    pass
+
 try:
     from device_config import get_device, print_device_info, load_config
     print_device_info()
@@ -33,9 +43,14 @@ if DEVICE == 'cuda':
         DEVICE = 'cpu'
 
 try:
-    from ultralytics import YOLO
-except Exception:
-    YOLO = None
+    import tensorflow as tf
+    import tensorflow_hub as hub
+    TF_AVAILABLE = True
+    TF_VERSION = tf.__version__
+except Exception as e:
+    TF_AVAILABLE = False
+    TF_VERSION = None
+    print(f"Error cargando TensorFlow: {e}")
 
 
 class CentroidTracker:
@@ -262,203 +277,203 @@ try:
     logging.getLogger('werkzeug').setLevel(logging.INFO)
 except Exception:
     pass
-hog = cv2.HOGDescriptor()
-hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-yolo_model = None
-yolo_lock = threading.Lock()
-ssd_net = None
-ssd_lock = threading.Lock()
-ssd_class_names = []
-SSD_DIR = os.path.join(os.path.dirname(__file__), 'ssd_mobileNet')
-SSD_PB = os.path.join(SSD_DIR, 'frozen_inference_graph.pb')
-SSD_PBTXT = os.path.join(SSD_DIR, 'ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
-SSD_CLASSES = os.path.join(SSD_DIR, 'object_detection_classes_coco.txt')
 
-
-def _load_ssd_class_names():
-    global ssd_class_names
-    try:
-        if os.path.exists(SSD_CLASSES):
-            with open(SSD_CLASSES, 'r', encoding='utf-8', errors='ignore') as f:
-                lines = [l.strip() for l in f.readlines() if l.strip()]
-                ssd_class_names = lines
-    except Exception:
-        ssd_class_names = []
-
-
-def get_ssd_model():
-    global ssd_net
-    if ssd_net is None:
-        with ssd_lock:
-            if ssd_net is None:
-                try:
-                    if os.path.exists(SSD_PB) and os.path.exists(SSD_PBTXT):
-                        net = cv2.dnn.readNetFromTensorflow(SSD_PB, SSD_PBTXT)
-                        ssd_net = net
-                    else:
-                        _append_log(f"SSD model files not found in {SSD_DIR}")
-                except Exception as e:
-                    _append_log(f"Error loading SSD model: {e}")
-    if not ssd_class_names:
-        _load_ssd_class_names()
-    return ssd_net
-
-
-def detect_people_ssd(image, conf_threshold=0.5):
-    model = get_ssd_model()
-    if model is None:
-        return []
-    try:
-        net = model
-        if net is None:
-            return []
-        h, w = image.shape[:2]
-        inp_size = 300
-        blob = cv2.dnn.blobFromImage(image, 1.0, size=(
-            inp_size, inp_size), mean=(0, 0, 0), swapRB=True, crop=False)
-        net.setInput(blob)
-        detections_raw = net.forward()
-        detections = []
-        total = int(detections_raw.shape[2])
-        for i in range(total):
-            cls = int(detections_raw[0, 0, i, 1])
-            score = float(detections_raw[0, 0, i, 2])
-            if score < float(conf_threshold):
-                continue
-
-            if cls != 1:
-                continue
-
-            x1 = float(detections_raw[0, 0, i, 3]) * w
-            y1 = float(detections_raw[0, 0, i, 4]) * h
-            x2 = float(detections_raw[0, 0, i, 5]) * w
-            y2 = float(detections_raw[0, 0, i, 6]) * h
-            x = int(max(0, x1))
-            y = int(max(0, y1))
-            bw = int(max(0, x2 - x1))
-            bh = int(max(0, y2 - y1))
-            name = ''
-            try:
-                if ssd_class_names and cls < len(ssd_class_names):
-                    name = ssd_class_names[cls]
-                else:
-                    name = str(cls)
-            except Exception:
-                name = str(cls)
-            label = translate_label(name)
-            detections.append({'x': x, 'y': y, 'w': bw, 'h': bh, 'confidence': float(
-                score), 'class_id': cls, 'label': label})
-        return detections
-    except Exception as e:
-        _append_log(f"SSD detection error: {e}")
-        return []
+# Variables para modelo TensorFlow Hub SSD MobileNet
+tf_hub_model = None
+tf_hub_lock = threading.Lock()
+TF_HUB_MOBILENET_URL = "https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2"
 
 
 def translate_label(label: str) -> str:
+    """Traduce etiquetas al español"""
     if label is None:
         return ''
     lbl = str(label).strip().lower()
     mapping = {
-        'person': 'persona', 'people': 'persona', 'persona': 'persona', 'personas': 'persona',
-        'car': 'coche', 'bicycle': 'bicicleta', 'motorcycle': 'moto', 'truck': 'camión', 'bus': 'autobús',
-        'dog': 'perro', 'cat': 'gato', 'chair': 'silla', 'bench': 'banco', 'bird': 'pájaro',
-        'boat': 'barco', 'traffic light': 'semáforo', 'backpack': 'mochila', 'umbrella': 'paraguas'
+        'person': 'persona', 'people': 'persona', 'persona': 'persona',
     }
     return mapping.get(lbl, lbl)
 
 
-def get_yolo_model():
-    global yolo_model
-    if YOLO is None:
+# COCO class names (index matches TF detection_classes which are 1-based for COCO)
+COCO_CLASSES = [
+    'sin etiqueta', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat',
+    'traffic light', 'fire hydrant', 'street sign', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse',
+    'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'hat', 'backpack', 'umbrella', 'shoe', 'glasses', 'handbag',
+    'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
+    'surfboard', 'tennis racket', 'bottle', 'plate', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+    'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
+    'mirror', 'dining table', 'window', 'desk', 'toilet', 'door', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
+    'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'blender', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
+    'hair drier', 'toothbrush', 'hair brush'
+]
+
+
+# Funciones para modelos de TensorFlow Hub
+def get_tf_hub_mobilenet_model():
+    """Carga el modelo TensorFlow Hub SSD MobileNet con caché"""
+    global tf_hub_model
+    if not TF_AVAILABLE:
+        _append_log("ERROR: TensorFlow no disponible")
         return None
-    if yolo_model is None:
-        with yolo_lock:
-            if yolo_model is None:
-                yolo_model = YOLO('yolo11n.pt')
+
+    if tf_hub_model is None:
+        with tf_hub_lock:
+            if tf_hub_model is None:
                 try:
-                    yolo_model.to(DEVICE)
-                    logging.info(f"Modelo YOLOv11 cargado en {DEVICE.upper()}")
-                except:
-                    logging.warning(
-                        f"No se pudo mover el modelo a {DEVICE}, usando CPU")
-                    yolo_model.to('cpu')
-    return yolo_model
+                    _append_log(
+                        f"Cargando SSD MobileNet v2 de TensorFlow Hub...")
+                    model = hub.load(TF_HUB_MOBILENET_URL)
+                    tf_hub_model = model
+                    _append_log(f"✓ SSD MobileNet v2 cargado exitosamente")
+                except Exception as e:
+                    _append_log(f"✗ Error cargando modelo: {e}")
+                    return None
+
+    return tf_hub_model
 
 
-def detect_people(image, win_stride=(8, 8), padding=(8, 8), scale=1.05):
-    rects, weights = hog.detectMultiScale(
-        image, winStride=win_stride, padding=padding, scale=scale)
-    detections = []
-    for (x, y, w, h), weight in zip(rects, weights):
-        conf = float(weight) if hasattr(weight, 'item') else float(weight)
-        detections.append({
-            "x": int(x),
-            "y": int(y),
-            "w": int(w),
-            "h": int(h),
-            "confidence": conf,
-            "label": translate_label("person")
-        })
-    return detections
-
-
-def detect_people_yolo(image, conf_threshold=0.25):
-    model = get_yolo_model()
-    if model is None:
+def _nms_boxes(boxes, scores, iou_threshold=0.5):
+    # boxes: list of [x1,y1,x2,y2]
+    if not boxes:
         return []
-    img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    results = model(img_rgb, conf=conf_threshold, verbose=False)
-    detections = []
-    if len(results) == 0:
+    boxes = np.array(boxes, dtype=float)
+    scores = np.array(scores, dtype=float)
+    x1 = boxes[:, 0]
+    y1 = boxes[:, 1]
+    x2 = boxes[:, 2]
+    y2 = boxes[:, 3]
+    areas = (x2 - x1 + 1) * (y2 - y1 + 1)
+    order = scores.argsort()[::-1]
+    keep = []
+    while order.size > 0:
+        i = order[0]
+        keep.append(i)
+        xx1 = np.maximum(x1[i], x1[order[1:]])
+        yy1 = np.maximum(y1[i], y1[order[1:]])
+        xx2 = np.minimum(x2[i], x2[order[1:]])
+        yy2 = np.minimum(y2[i], y2[order[1:]])
+        w = np.maximum(0.0, xx2 - xx1 + 1)
+        h = np.maximum(0.0, yy2 - yy1 + 1)
+        inter = w * h
+        iou = inter / (areas[i] + areas[order[1:]] - inter + 1e-6)
+        inds = np.where(iou <= iou_threshold)[0]
+        order = order[inds + 1]
+    return list(keep)
+
+
+def _dedupe_detections(detections, iou_threshold=0.45):
+    """Elimina detecciones muy solapadas dejando la de mayor confianza."""
+    if not detections:
         return detections
-    res = results[0]
-    boxes = getattr(res, 'boxes', None)
-    if boxes is None:
-        return detections
+    boxes = []
+    scores = []
+    for d in detections:
+        x = float(d.get('x', 0))
+        y = float(d.get('y', 0))
+        w = float(d.get('w', 0))
+        h = float(d.get('h', 0))
+        boxes.append([x, y, x + w, y + h])
+        scores.append(float(d.get('confidence', 0.0)))
+    keep = _nms_boxes(boxes, scores, iou_threshold=iou_threshold)
+    kept = [detections[i] for i in keep]
+    return kept
+
+
+def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
+    """Detecta objetos usando TensorFlow Hub SSD MobileNet v2.
+    - `class_id` : si >=0 filtra por esa clase COCO (1-based index as TF returns), -1 acepta todas.
+    - Aplica NMS para eliminar detecciones solapadas.
+    """
+    if not TF_AVAILABLE:
+        _append_log("ERROR: TensorFlow no disponible")
+        return []
+
     try:
-        xyxy = boxes.xyxy.cpu().numpy()
-        confs = boxes.conf.cpu().numpy()
-        clss = boxes.cls.cpu().numpy()
-    except Exception:
-        xyxy = np.array(boxes.xyxy)
-        confs = np.array(boxes.conf)
-        clss = np.array(boxes.cls)
-    names = None
-    try:
-        names = model.names if hasattr(model, 'names') else None
-    except Exception:
-        names = None
-    for idx in range(len(xyxy)):
-        x1, y1, x2, y2 = xyxy[idx]
-        conf = confs[idx]
-        cls = clss[idx]
-        cls_i = int(cls)
+        model = get_tf_hub_mobilenet_model()
+        if model is None:
+            return []
 
-        if cls_i != 0:
-            continue
+        h, w = image.shape[:2]
+        inp_size = 300
 
-        x, y, w, h = int(x1), int(y1), int(x2 - x1), int(y2 - y1)
-        label = None
-        if names and cls_i in names:
-            try:
-                label = names[cls_i]
-            except Exception:
-                label = str(names.get(cls_i, cls_i))
-        else:
-            label = str(cls_i)
+        # Preparar imagen: convertir BGR->RGB, redimensionar y crear tensor [1,H,W,3]
+        try:
+            img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        except Exception:
+            img_rgb = image.copy()
+        resized = cv2.resize(img_rgb, (inp_size, inp_size))
 
-        label = translate_label(label)
+        # Some TF Hub detectors accept uint8 images; keep as uint8 to be safe
+        input_tensor = tf.convert_to_tensor(resized, dtype=tf.uint8)
+        input_tensor = input_tensor[tf.newaxis, ...]
 
-        detections.append({
-            'x': x,
-            'y': y,
-            'w': w,
-            'h': h,
-            'confidence': float(conf),
-            'class_id': cls_i,
-            'label': label
-        })
-    return detections
+        # Ejecutar modelo (proteger con lock por seguridad en entornos multi-hilo)
+        with tf_hub_lock:
+            detections = model(input_tensor)
+
+        results = []
+        detection_boxes = detections['detection_boxes'].numpy()[0]
+        detection_scores = detections['detection_scores'].numpy()[0]
+        detection_classes = detections['detection_classes'].numpy()[0]
+
+        raw_boxes = []
+        raw_scores = []
+        raw_classes = []
+        for i, (box, score, cls) in enumerate(zip(detection_boxes, detection_scores, detection_classes)):
+            if score < conf_threshold:
+                continue
+            cls_int = int(cls)
+            # class_id argument refers to COCO index as in client (0 means 'sin etiqueta', 1 person, ...)
+            if class_id >= 0:
+                # if client provided class index 0 (sin etiqueta) treat as no-match
+                if cls_int != int(class_id):
+                    continue
+            # Coordenadas normalizadas a píxeles
+            y1, x1, y2, x2 = box
+            x1_px = float(x1 * w)
+            y1_px = float(y1 * h)
+            x2_px = float(x2 * w)
+            y2_px = float(y2 * h)
+            raw_boxes.append([x1_px, y1_px, x2_px, y2_px])
+            raw_scores.append(float(score))
+            raw_classes.append(cls_int)
+
+        # Aplicar NMS sobre raw_boxes
+        keep_indices = _nms_boxes(raw_boxes, raw_scores, iou_threshold=nms_iou)
+
+        for idx in keep_indices:
+            x1_px, y1_px, x2_px, y2_px = raw_boxes[idx]
+            x = int(max(0, round(x1_px)))
+            y = int(max(0, round(y1_px)))
+            bw = int(max(0, round(x2_px - x1_px)))
+            bh = int(max(0, round(y2_px - y1_px)))
+            cls_int = raw_classes[idx]
+            label = COCO_CLASSES[cls_int] if 0 <= cls_int < len(
+                COCO_CLASSES) else str(cls_int)
+            results.append({
+                'x': x,
+                'y': y,
+                'w': bw,
+                'h': bh,
+                'confidence': float(raw_scores[idx]),
+                'class_id': int(cls_int),
+                'label': translate_label(label)
+            })
+
+        # Dedupe final sobre cajas ya en píxeles (redundancia de seguridad)
+        try:
+            results = _dedupe_detections(results, iou_threshold=0.45)
+        except Exception:
+            pass
+
+        return results
+
+    except Exception as e:
+        _append_log(f"Error en detección TensorFlow: {e}")
+        import traceback
+        _append_log(traceback.format_exc())
+        return []
 
 
 def draw_boxes(image, detections, color=(0, 255, 0), thickness=2):
@@ -554,7 +569,6 @@ def detect_image():
     start_time = time.time()
     visualize = request.args.get(
         'visualize', 'false').lower() in ('1', 'true', 'yes')
-    model_name = request.args.get('model', 'hog').lower()
     img = None
     if 'image' in request.files:
         file = request.files['image']
@@ -569,29 +583,29 @@ def detect_image():
             img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
     if img is None:
         return jsonify({'error': 'No image provided. Send multipart form `image` or JSON `image_b64`.'}), 400
-    conf = float(request.args.get('conf', 0.25))
-    if model_name == 'yolo':
-        detections = detect_people_yolo(img, conf_threshold=conf)
-        if detections == [] and YOLO is None:
-            return jsonify({'error': 'YOLO model not available. Install ultralytics or check logs.'}), 500
-    elif model_name == 'ssd' or model_name == 'mobilenet':
-        detections = detect_people_ssd(img, conf_threshold=conf)
-    else:
-        detections = detect_people(img)
+    conf = float(request.args.get('conf', 0.4))
+    class_id = int(request.args.get('class_id', -1))
+
+    # Detectar objetos usando TensorFlow SSD MobileNet
+    if not TF_AVAILABLE:
+        return jsonify({'error': 'TensorFlow not available. Run: pip install tensorflow tensorflow-hub'}), 500
+
+    detections = detect_objects(img, conf_threshold=conf, class_id=class_id)
+
     if visualize:
         out_img = draw_boxes(img, detections)
         _, png = cv2.imencode('.png', out_img)
         elapsed_time = time.time() - start_time
         try:
             _append_response_log('/detect/image', 200,
-                                 count=len(detections), model=model_name, time_sec=f"{elapsed_time:.2f}")
+                                 count=len(detections), model='tf_mobilenet', time_sec=f"{elapsed_time:.2f}")
         except Exception:
             pass
         return Response(png.tobytes(), mimetype='image/png')
     elapsed_time = time.time() - start_time
     try:
         _append_response_log('/detect/image', 200,
-                             count=len(detections), model=model_name, time_sec=f"{elapsed_time:.2f}")
+                             count=len(detections), model='tf_mobilenet', time_sec=f"{elapsed_time:.2f}")
     except Exception:
         pass
     return jsonify({'detections': detections, 'count': len(detections), 'elapsed_seconds': elapsed_time})
@@ -606,9 +620,9 @@ def detect_video():
         'visualize', 'false')).lower() in ('1', 'true', 'yes')
     timeline = request.form.get('timeline', request.args.get(
         'timeline', 'false')).lower() in ('1', 'true', 'yes')
-    model_name = request.form.get(
-        'model', request.args.get('model', 'hog')).lower()
-    conf = float(request.form.get('conf', request.args.get('conf', 0.25)))
+    conf = float(request.form.get('conf', request.args.get('conf', 0.4)))
+    class_id = int(request.form.get(
+        'class_id', request.args.get('class_id', -1)))
     cap = None
     tmp_in = None
     tmp_out = None
@@ -686,12 +700,9 @@ def detect_video():
                 if not ret or frame is None:
                     break
             if frame_idx % frame_step == 0:
-                if model_name == 'yolo':
-                    dets = detect_people_yolo(frame, conf_threshold=conf)
-                elif model_name == 'ssd' or model_name == 'mobilenet':
-                    dets = detect_people_ssd(frame, conf_threshold=conf)
-                else:
-                    dets = detect_people(frame)
+                # Detectar objetos usando TensorFlow SSD MobileNet
+                dets = detect_objects(
+                    frame, conf_threshold=conf, class_id=class_id)
 
                 with _tracker_lock:
                     dets = _video_tracker.update(dets)
@@ -745,7 +756,7 @@ def detect_video():
             }
             try:
                 _append_response_log('/detect/video', 200, frames=frame_idx,
-                                     total=total_detections, model=model_name, mode='timeline', visualize=visualize)
+                                     total=total_detections, model='tf_mobilenet', mode='timeline', visualize=visualize)
             except Exception:
                 pass
 
@@ -855,7 +866,7 @@ def detect_video():
                     _append_log(f"FFMPEG exception: {e}")
             try:
                 _append_response_log(
-                    '/detect/video', 200, frames=frame_idx, total=total_detections, model=model_name)
+                    '/detect/video', 200, frames=frame_idx, total=total_detections, model='tf_mobilenet')
             except Exception:
                 pass
             try:
@@ -864,7 +875,7 @@ def detect_video():
                 if tmp_mp4 and os.path.exists(tmp_mp4.name):
                     try:
                         _append_response_log('/detect/video', 200, frames=frame_idx,
-                                             total=total_detections, model=model_name, fallback='mp4')
+                                             total=total_detections, model='tf_mobilenet', fallback='mp4')
                     except Exception:
                         pass
                     return send_file(tmp_mp4.name, as_attachment=True, download_name='detections.mp4', mimetype='video/mp4')
@@ -885,9 +896,9 @@ def stream_video():
     camera_url = request.args.get('camera_url')
     if not camera_url:
         return jsonify({'error': 'camera_url query parameter is required for streaming.'}), 400
-    model_name = request.args.get('model', 'hog').lower()
     frame_step = int(request.args.get('frame_step', 1))
-    conf = float(request.args.get('conf', 0.25))
+    conf = float(request.args.get('conf', 0.4))
+    class_id = int(request.args.get('class_id', -1))
 
     with _tracker_lock:
         _stream_tracker = CentroidTracker(maxDisappeared=20, maxDistance=80)
@@ -911,14 +922,9 @@ def stream_video():
                 if frame_idx % frame_step == 0:
                     try:
                         frame_start = time.time()
-                        if model_name == 'yolo':
-                            dets = detect_people_yolo(
-                                frame, conf_threshold=conf)
-                        elif model_name == 'ssd' or model_name == 'mobilenet':
-                            dets = detect_people_ssd(
-                                frame, conf_threshold=conf)
-                        else:
-                            dets = detect_people(frame)
+                        # Detectar objetos usando TensorFlow SSD MobileNet
+                        dets = detect_objects(
+                            frame, conf_threshold=conf, class_id=class_id)
 
                         with _tracker_lock:
                             dets = _stream_tracker.update(dets)

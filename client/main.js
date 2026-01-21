@@ -1,9 +1,9 @@
 const fileInput = document.getElementById('fileInput');
 const btnDetectImage = document.getElementById('btnDetectImage');
 const btnDetectVideo = document.getElementById('btnDetectVideo');
-const modelSelectImage = document.getElementById('modelSelect_image');
-const modelSelectVideo = document.getElementById('modelSelect_video');
-const modelSelectCamera = document.getElementById('modelSelect_camera');
+const classSelectImage = document.getElementById('classSelect_image');
+const classSelectVideo = document.getElementById('classSelect_video');
+const classSelectCamera = document.getElementById('classSelect_camera');
 const resultImage = document.getElementById('resultImage');
 const resultVideo = document.getElementById('resultVideo');
 const jsonOutImage = document.getElementById('jsonOut_image');
@@ -30,6 +30,30 @@ let showRawCameraLogs = false;
 const tabButtons = Array.from(document.querySelectorAll('.tabbtn'));
 let _logPollId = null;
 const _lastStatus = { image: null, video: null, camera: null };
+
+// Mapa de clases para SSD MobileNet COCO (0-indexed)
+const COCO_CLASSES = [
+    'sin etiqueta', 'persona', 'bicicleta', 'automovil', 'motocicleta', 'avion',
+    'autobus', 'tren', 'camion', 'barco', 'semaforo', 'boca de incendio', 'street sign',
+    'señal de alto', 'parquimetro', 'banco', 'pájaro', 'gato', 'perro', 'caballo',
+    'oveja', 'vaca', 'elefante', 'oso', 'zebra', 'girafa', 'sombrero', 'mochila',
+    'paraguas', 'zapato', 'lentes', 'bolso de mano', 'tie', 'maleta', 'disco volador',
+    'esquís', 'patineta de nieve', 'pelota de deportes', 'cometa', 'bat de béisbol',
+    'guante de béisbol', 'patineta', 'tabla de surf', 'raqueta de tennis', 'botella',
+    'lámina', 'copa de vino', 'taza', 'tenedor', 'cuchillo', 'cuchara', 'bol',
+    'platano', 'manzana', 'sandwich', 'naranja', 'brocoli', 'zanahoria', 'hot dog',
+    'pizza', 'dona', 'pastel', 'silla', 'sofá', 'planta en maceta', 'cama', 'espejo',
+    'comedor', 'ventana', 'escritorio', 'baño', 'puerta', 'televisión', 'laptop',
+    'mouse', 'remoto', 'teclado', 'celular', 'microondas', 'horno', 'tostador',
+    'sink', 'refrigerador', 'licuadora', 'libro', 'reloj', 'florero', 'tijeras',
+    'oso de peluche', 'secador de pelo', 'cepillo de dientes', 'cepillo de pelo'
+];
+
+function getClassIndex(className) {
+    if (className === 'all') return -1;
+    const index = COCO_CLASSES.indexOf(className);
+    return index >= 0 ? index : -1;
+}
 
 function getStatusElement(tab) {
     if (!tab) return null;
@@ -167,7 +191,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
     });
 
     if (personCount === 0) {
-        el.textContent = '(sin detecciones de personas)';
+        el.textContent = '(sin detecciones)';
     }
 }
 
@@ -253,7 +277,7 @@ function renderTimeline(metadata) {
 
     if (timelineInfo) {
         const personsCount = Object.keys(personMap).length;
-        timelineInfo.textContent = `Total: ${metadata.total_detections} detecciones, ${personsCount} personas, ${totalSegments} segmentos`;
+        timelineInfo.textContent = `Total: ${metadata.total_detections} detecciones, ${personsCount} objetos, ${totalSegments} segmentos`;
     }
 
     timelineContainer.classList.remove('hidden');
@@ -367,16 +391,18 @@ tabButtons.forEach(b => b.addEventListener('click', (e) => {
     activateTab(t);
 }));
 
+// Agregar listeners para mostrar/ocultar selects de clase según modelo
 if (btnDetectImage) {
     btnDetectImage.addEventListener('click', async () => {
         const file = fileInput && fileInput.files ? fileInput.files[0] : null;
-        const model = modelSelectImage ? modelSelectImage.value : 'yolo';
-        const conf = confInputImage ? confInputImage.value : '0.25';
+        const conf = confInputImage ? confInputImage.value : '0.4';
+        const classIndex = classSelectImage ? getClassIndex(classSelectImage.value) : -1;
         if (!file) { setStatus('Selecciona primero una imagen.', 'image'); return; }
         setStatus('Enviando imagen...', 'image');
         try {
             const form = new FormData(); form.append('image', file);
-            const url = `${API_BASE}/detect/image?visualize=true&model=${encodeURIComponent(model)}&conf=${encodeURIComponent(conf)}`;
+            let url = `${API_BASE}/detect/image?visualize=true&conf=${encodeURIComponent(conf)}`;
+            if (classIndex >= 0) url += `&class_id=${classIndex}`;
             const res = await fetch(url, { method: 'POST', body: form });
             if (!res.ok) { const txt = await res.text(); setStatus(`Error: ${res.status} - ${txt}`, 'image'); return; }
             const contentType = res.headers.get('content-type') || '';
@@ -389,18 +415,26 @@ if (btnDetectImage) {
                 try { pollLogsOnce(); } catch (e) { }
                 try {
                     const form2 = new FormData(); form2.append('image', file);
-                    const url2 = `${API_BASE}/detect/image?visualize=false&model=${encodeURIComponent(model)}&conf=${encodeURIComponent(conf)}`;
+                    let url2 = `${API_BASE}/detect/image?visualize=false&conf=${encodeURIComponent(conf)}`;
+                    if (classIndex >= 0) url2 += `&class_id=${classIndex}`;
                     const r2 = await fetch(url2, { method: 'POST', body: form2 });
                     if (r2.ok) {
                         const j2 = await r2.json();
                         if (j2 && j2.detections) renderDetectionsToElement('log_image', j2.detections);
+                        if (j2) {
+                            const cnt = j2.count || (j2.detections && j2.detections.length) || 0;
+                            const t = j2.elapsed_seconds ? `${j2.elapsed_seconds.toFixed(2)}s` : '';
+                            setStatus(`Detección de imagen OK (count=${cnt} time=${t})`, 'image');
+                        }
                     }
                 } catch (e) { }
             } else {
                 const j = await res.json();
                 const timeStr = j.elapsed_seconds ? ` (${j.elapsed_seconds.toFixed(2)}s)` : '';
                 if (jsonOutImage) jsonOutImage.textContent = JSON.stringify(j, null, 2);
-                setStatus(`Listo${timeStr}`, 'image');
+                // Mostrar conteo y tiempo directamente desde la respuesta
+                const cnt = j.count || (j.detections && j.detections.length) || 0;
+                setStatus(`Detección de imagen OK (count=${cnt} time=${timeStr.trim()})`, 'image');
                 try { pollLogsOnce(); } catch (e) { }
                 try { if (j && j.detections) renderDetectionsToElement('log_image', j.detections); } catch (e) { }
             }
@@ -411,11 +445,11 @@ if (btnDetectImage) {
 if (btnDetectVideo) {
     btnDetectVideo.addEventListener('click', async () => {
         const vidFile = videoFileInput && videoFileInput.files ? videoFileInput.files[0] : null;
-        const model = modelSelectVideo ? modelSelectVideo.value : 'yolo';
         const frameStep = frameStepInput ? frameStepInput.value : '1';
-        const conf = confInputVideo ? confInputVideo.value : '0.25';
+        const conf = confInputVideo ? confInputVideo.value : '0.4';
         const maxFrames = maxFramesInput ? maxFramesInput.value : '0';
         const showRectangles = visualizeVideoInput ? visualizeVideoInput.checked : false;
+        const classIndex = classSelectVideo ? getClassIndex(classSelectVideo.value) : -1;
         if (!vidFile) { setStatus('Selecciona primero un archivo de video.', 'video'); return; }
 
         if (timelineContainer) timelineContainer.classList.add('hidden');
@@ -424,10 +458,10 @@ if (btnDetectVideo) {
         try {
             const form = new FormData();
             form.append('video', vidFile);
-            form.append('model', model);
             form.append('frame_step', frameStep);
             form.append('max_frames', maxFrames);
             form.append('conf', conf);
+            if (classIndex >= 0) form.append('class_id', classIndex);
 
             form.append('timeline', 'true');
 
@@ -500,7 +534,8 @@ if (btnDetectVideo) {
                             }
 
                             const timeStr = j.elapsed_seconds ? ` (${j.elapsed_seconds.toFixed(2)}s)` : '';
-                            setStatus(`Listo${timeStr}`, 'video');
+                            const total = metadata.total_detections || j.total_detections || 0;
+                            setStatus(`Detección de video OK (total=${total} time=${j.elapsed_seconds ? j.elapsed_seconds.toFixed(2) + 's' : ''})`, 'video');
                             try { pollLogsOnce(); } catch (e) { }
                         } catch (e) {
                             console.error('Error decodificando video base64:', e);
@@ -519,7 +554,9 @@ if (btnDetectVideo) {
                     }
                 } else {
                     if (jsonOutVideo) jsonOutVideo.textContent = JSON.stringify(j, null, 2);
-                    setStatus('Listo (JSON)', 'video');
+                    // When receiving JSON without timeline, try to show sample count/time
+                    const sampleCount = (j.sample && j.sample.reduce((s, f) => s + (f.count || 0), 0)) || j.total_detections || 0;
+                    setStatus(`Detección de video OK (total=${sampleCount} time=${j.elapsed_seconds ? j.elapsed_seconds.toFixed(2) + 's' : ''})`, 'video');
                     try { pollLogsOnce(); } catch (e) { }
                     try { if (j && j.sample) renderVideoSampleToElement('log_video', j.sample, j.fps); } catch (e) { }
                 }
@@ -582,9 +619,9 @@ if (btnDetectVideo) {
 
 function startLiveView() {
     const camUrl = cameraUrlInput && cameraUrlInput.value ? cameraUrlInput.value.trim() : '';
-    const model = modelSelectCamera ? modelSelectCamera.value : 'hog';
     const frameStep = frameStepInput ? frameStepInput.value : '1';
-    const conf = confInputCameraNew ? parseFloat(confInputCameraNew.value) : 0.25;
+    const conf = confInputCameraNew ? parseFloat(confInputCameraNew.value) : 0.4;
+    const classIndex = classSelectCamera ? getClassIndex(classSelectCamera.value) : -1;
     if (!camUrl) { setStatus('Proporciona la URL de la cámara para vista en vivo.', 'camera'); return; }
     try {
         const parsed = new URL(camUrl);
@@ -601,7 +638,8 @@ function startLiveView() {
         setStatus('URL de cámara inválida', 'camera');
         return;
     }
-    const streamUrl = `${API_BASE}/stream/video?camera_url=${encodeURIComponent(camUrl)}&model=${encodeURIComponent(model)}&frame_step=${encodeURIComponent(frameStep)}&conf=${encodeURIComponent(conf)}`;
+    let streamUrl = `${API_BASE}/stream/video?camera_url=${encodeURIComponent(camUrl)}&frame_step=${encodeURIComponent(frameStep)}&conf=${encodeURIComponent(conf)}`;
+    if (classIndex >= 0) streamUrl += `&class_id=${classIndex}`;
     if (liveView) { liveView.src = streamUrl; liveView.style.display = 'block'; }
     if (resultImage) resultImage.style.display = 'none';
     if (resultVideo) resultVideo.style.display = 'none';

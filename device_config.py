@@ -32,14 +32,23 @@ def get_device():
     device_setting = config.get('device', 'auto').lower()
 
     if device_setting == 'auto':
+        # Prefer PyTorch detection, fall back to TensorFlow if PyTorch not available
         try:
             import torch
             if torch.cuda.is_available():
                 return 'cuda'
-            else:
-                return 'cpu'
-        except:
-            return 'cpu'
+        except Exception:
+            pass
+
+        try:
+            import tensorflow as tf
+            gpus = tf.config.list_physical_devices('GPU')
+            if gpus:
+                return 'cuda'
+        except Exception:
+            pass
+
+        return 'cpu'
 
     return device_setting
 
@@ -48,11 +57,38 @@ def get_device_name():
     device = get_device()
 
     if device == 'cuda':
+        # Try PyTorch first (preferred), then TensorFlow, then best-effort heuristics
         try:
             import torch
-            return f"GPU: {torch.cuda.get_device_name(0)}"
-        except:
-            return "GPU: Unknown"
+            try:
+                name = torch.cuda.get_device_name(0)
+                return f"GPU: {name}"
+            except Exception:
+                # torch available but couldn't get name
+                return "GPU: (PyTorch detected GPU, name unknown)"
+        except Exception:
+            pass
+
+        try:
+            import tensorflow as tf
+            gpus = tf.config.list_physical_devices('GPU')
+            if gpus:
+                # Try to extract a readable name if possible
+                try:
+                    details = tf.config.experimental.get_device_details(gpus[0])
+                    name = details.get('device_name') or details.get('name')
+                    if name:
+                        return f"GPU: {name}"
+                except Exception:
+                    # Last resort: return TensorFlow's device string
+                    try:
+                        return f"GPU: {gpus[0].name}"
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
+        return "GPU: Unknown"
     else:
         return "CPU"
 
@@ -67,6 +103,25 @@ def print_device_info():
     print("="*50)
     print(f"Modo configurado: {config.get('device', 'auto').upper()}")
     print(f"Dispositivo actual: {device_name}")
+    # Additional diagnostics
+    try:
+        import importlib
+        torch_spec = importlib.util.find_spec('torch')
+        tf_spec = importlib.util.find_spec('tensorflow')
+        print(f"PyTorch installed: {bool(torch_spec)}")
+        print(f"TensorFlow installed: {bool(tf_spec)}")
+    except Exception:
+        pass
+
+    # Try to show nvidia-smi output (if available)
+    try:
+        import subprocess
+        out = subprocess.check_output(['nvidia-smi', '--query-gpu=name,driver_version,memory.total', '--format=csv,noheader'], stderr=subprocess.STDOUT, universal_newlines=True)
+        print("nvidia-smi:")
+        print(out.strip())
+    except Exception:
+        pass
+
     print(f"Half precision: {config.get('half_precision', False)}")
     print("="*50 + "\n")
 
