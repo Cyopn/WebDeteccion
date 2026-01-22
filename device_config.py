@@ -1,9 +1,9 @@
 import os
 import json
 
-CONFIG_FILE = 'device_config.json'
+config_file = 'device_config.json'
 
-DEFAULT_CONFIG = {
+default_config = {
     'device': 'auto',
     'device_id': 0,
     'half_precision': False,
@@ -11,20 +11,20 @@ DEFAULT_CONFIG = {
 
 
 def load_config():
-    if os.path.exists(CONFIG_FILE):
+    if os.path.exists(config_file):
         try:
-            with open(CONFIG_FILE, 'r') as f:
+            with open(config_file, 'r') as f:
                 config = json.load(f)
                 return config
         except:
-            return DEFAULT_CONFIG.copy()
-    return DEFAULT_CONFIG.copy()
+            return default_config.copy()
+    return default_config.copy()
 
 
 def save_config(config):
-    with open(CONFIG_FILE, 'w') as f:
+    with open(config_file, 'w') as f:
         json.dump(config, f, indent=4)
-    print(f"Configuración guardada en {CONFIG_FILE}")
+    print(f"Configuración guardada en {config_file}")
 
 
 def get_device():
@@ -32,7 +32,6 @@ def get_device():
     device_setting = config.get('device', 'auto').lower()
 
     if device_setting == 'auto':
-        # Prefer PyTorch detection, fall back to TensorFlow if PyTorch not available
         try:
             import torch
             if torch.cuda.is_available():
@@ -57,14 +56,12 @@ def get_device_name():
     device = get_device()
 
     if device == 'cuda':
-        # Try PyTorch first (preferred), then TensorFlow, then best-effort heuristics
         try:
             import torch
             try:
                 name = torch.cuda.get_device_name(0)
                 return f"GPU: {name}"
             except Exception:
-                # torch available but couldn't get name
                 return "GPU: (PyTorch detected GPU, name unknown)"
         except Exception:
             pass
@@ -73,14 +70,13 @@ def get_device_name():
             import tensorflow as tf
             gpus = tf.config.list_physical_devices('GPU')
             if gpus:
-                # Try to extract a readable name if possible
                 try:
-                    details = tf.config.experimental.get_device_details(gpus[0])
+                    details = tf.config.experimental.get_device_details(
+                        gpus[0])
                     name = details.get('device_name') or details.get('name')
                     if name:
                         return f"GPU: {name}"
                 except Exception:
-                    # Last resort: return TensorFlow's device string
                     try:
                         return f"GPU: {gpus[0].name}"
                     except Exception:
@@ -103,7 +99,6 @@ def print_device_info():
     print("="*50)
     print(f"Modo configurado: {config.get('device', 'auto').upper()}")
     print(f"Dispositivo actual: {device_name}")
-    # Additional diagnostics
     try:
         import importlib
         torch_spec = importlib.util.find_spec('torch')
@@ -113,10 +108,10 @@ def print_device_info():
     except Exception:
         pass
 
-    # Try to show nvidia-smi output (if available)
     try:
         import subprocess
-        out = subprocess.check_output(['nvidia-smi', '--query-gpu=name,driver_version,memory.total', '--format=csv,noheader'], stderr=subprocess.STDOUT, universal_newlines=True)
+        out = subprocess.check_output(['nvidia-smi', '--query-gpu=name,driver_version,memory.total',
+                                      '--format=csv,noheader'], stderr=subprocess.STDOUT, universal_newlines=True)
         print("nvidia-smi:")
         print(out.strip())
     except Exception:
@@ -167,7 +162,7 @@ if __name__ == '__main__':
             print_device_info()
 
         elif command == 'reset':
-            save_config(DEFAULT_CONFIG.copy())
+            save_config(default_config.copy())
             print("Configuración restaurada a valores por defecto")
             print_device_info()
 

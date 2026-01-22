@@ -31,7 +31,6 @@ const tabButtons = Array.from(document.querySelectorAll('.tabbtn'));
 let _logPollId = null;
 const _lastStatus = { image: null, video: null, camera: null };
 
-// Mapa de clases para SSD MobileNet COCO (0-indexed)
 const COCO_CLASSES = [
     'sin etiqueta', 'persona', 'bicicleta', 'automovil', 'motocicleta', 'avion',
     'autobus', 'tren', 'camion', 'barco', 'semaforo', 'boca de incendio', 'street sign',
@@ -335,7 +334,7 @@ const API_BASE = (function () {
     if (typeof window.API_BASE === 'string' && window.API_BASE.length) return window.API_BASE.replace(/\/$/, '');
     const qp = new URLSearchParams(window.location.search).get('api');
     if (qp) return qp.replace(/\/$/, '');
-    return 'http://127.0.0.1:5000';
+    return 'http://127.0.0.1:5501';
 })();
 
 function activateTab(tabId) {
@@ -391,7 +390,6 @@ tabButtons.forEach(b => b.addEventListener('click', (e) => {
     activateTab(t);
 }));
 
-// Agregar listeners para mostrar/ocultar selects de clase según modelo
 if (btnDetectImage) {
     btnDetectImage.addEventListener('click', async () => {
         const file = fileInput && fileInput.files ? fileInput.files[0] : null;
@@ -432,7 +430,6 @@ if (btnDetectImage) {
                 const j = await res.json();
                 const timeStr = j.elapsed_seconds ? ` (${j.elapsed_seconds.toFixed(2)}s)` : '';
                 if (jsonOutImage) jsonOutImage.textContent = JSON.stringify(j, null, 2);
-                // Mostrar conteo y tiempo directamente desde la respuesta
                 const cnt = j.count || (j.detections && j.detections.length) || 0;
                 setStatus(`Detección de imagen OK (count=${cnt} time=${timeStr.trim()})`, 'image');
                 try { pollLogsOnce(); } catch (e) { }
@@ -554,7 +551,6 @@ if (btnDetectVideo) {
                     }
                 } else {
                     if (jsonOutVideo) jsonOutVideo.textContent = JSON.stringify(j, null, 2);
-                    // When receiving JSON without timeline, try to show sample count/time
                     const sampleCount = (j.sample && j.sample.reduce((s, f) => s + (f.count || 0), 0)) || j.total_detections || 0;
                     setStatus(`Detección de video OK (total=${sampleCount} time=${j.elapsed_seconds ? j.elapsed_seconds.toFixed(2) + 's' : ''})`, 'video');
                     try { pollLogsOnce(); } catch (e) { }

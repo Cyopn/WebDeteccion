@@ -1,7 +1,6 @@
-from flask import Flask, request, jsonify, send_file, Response, render_template, send_from_directory
+from flask import Flask, request, jsonify, send_file, Response, send_from_directory
 import numpy as np
 import cv2
-import io
 import base64
 import tempfile
 import os
@@ -9,16 +8,10 @@ from flask_cors import CORS
 import threading
 import subprocess
 import time
-import hashlib
-import io
 import logging
-import sys
 from collections import deque
 import shutil
-
-# Reducir verbosidad de TensorFlow y suprimir warnings deprecados
 import warnings
-# 0=all,1=INFO,2=WARNING,3=ERROR
 os.environ.setdefault('TF_CPP_MIN_LOG_LEVEL', '3')
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 try:
@@ -27,29 +20,28 @@ except Exception:
     pass
 
 try:
-    from device_config import get_device, print_device_info, load_config
+    from device_config import get_device, print_device_info
     print_device_info()
-    DEVICE = get_device()
+    device = get_device()
 except ImportError:
     print("device_config no disponible, usando CPU")
-    DEVICE = 'cpu'
+    device = 'cpu'
 
-if DEVICE == 'cuda':
+if device == 'cuda':
     try:
         from cuda_config import check_cuda, empty_cache
         check_cuda()
     except ImportError:
         print("cuda_config no disponible, usando CPU")
-        DEVICE = 'cpu'
+        device = 'cpu'
 
 try:
     import tensorflow as tf
-    import tensorflow_hub as hub
-    TF_AVAILABLE = True
-    TF_VERSION = tf.__version__
+    tf_available = True
+    tf_version = tf.__version__
 except Exception as e:
-    TF_AVAILABLE = False
-    TF_VERSION = None
+    tf_available = False
+    tf_version = None
     print(f"Error cargando TensorFlow: {e}")
 
 
@@ -150,8 +142,8 @@ class CentroidTracker:
 app = Flask(__name__, static_folder='client',
             static_url_path='', template_folder='client')
 CORS(app)
-LOG_BUFFER_SIZE = 1000
-_log_buffer = deque(maxlen=LOG_BUFFER_SIZE)
+log_buffer_size = 1000
+_log_buffer = deque(maxlen=log_buffer_size)
 _log_lock = threading.Lock()
 _created_tmp_files = {}
 _created_tmp_lock = threading.Lock()
@@ -278,10 +270,62 @@ try:
 except Exception:
     pass
 
-# Variables para modelo TensorFlow Hub SSD MobileNet
-tf_hub_model = None
-tf_hub_lock = threading.Lock()
-TF_HUB_MOBILENET_URL = "https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2"
+model_pb = os.path.join('ssd_mobileNet', 'frozen_inference_graph.pb')
+labels_path = os.path.join(
+    'ssd_mobileNet', 'object_detection_classes_coco.txt')
+
+model_pbtxt = os.path.join(
+    'ssd_mobileNet', 'ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
+
+model_image_tensor = 'image_tensor:0'
+model_boxes_tensor = 'detection_boxes:0'
+model_scores_tensor = 'detection_scores:0'
+model_classes_tensor = 'detection_classes:0'
+model_num_tensor = 'num_detections:0'
+
+
+def _load_model_names_from_pbtxt(path):
+    """Extrae nombres relevantes del archivo .pbtxt para configurar
+    los nombres de tensores usados por la aplicación (si es posible).
+    """
+    global model_image_tensor, model_boxes_tensor, model_scores_tensor, model_classes_tensor, model_num_tensor
+    try:
+        if not os.path.exists(path):
+            _append_log(f"Model pbtxt not found: {path}")
+            return
+        text = open(path, 'r', encoding='utf-8', errors='ignore').read()
+        import re
+        nodes = re.findall(r"node\s*\{([^}]+)\}", text, flags=re.DOTALL)
+        for n in nodes:
+            mname = re.search(r'name\s*:\s*"([^"]+)"', n)
+            mop = re.search(r'op\s*:\s*"([^"]+)"', n)
+            if not mname or not mop:
+                continue
+            name = mname.group(1).strip()
+            op = mop.group(1).strip()
+            if op.lower() == 'placeholder' and model_image_tensor == 'image_tensor:0':
+                model_image_tensor = f"{name}:0"
+                _append_log(
+                    f"Configured image tensor name from pbtxt: {model_image_tensor}")
+            if name == 'detection_boxes':
+                model_boxes_tensor = 'detection_boxes:0'
+            if name == 'detection_scores':
+                model_scores_tensor = 'detection_scores:0'
+            if name == 'detection_classes':
+                model_classes_tensor = 'detection_classes:0'
+            if name == 'num_detections':
+                model_num_tensor = 'num_detections:0'
+        _append_log(
+            f"Model tensor names: image={model_image_tensor} boxes={model_boxes_tensor} scores={model_scores_tensor} classes={model_classes_tensor} num={model_num_tensor}")
+    except Exception as e:
+        _append_log(f"Error parsing pbtxt for model names: {e}")
+
+
+_load_model_names_from_pbtxt(model_pbtxt)
+
+model_sess = None
+model_graph = None
+model_lock = threading.Lock()
 
 
 def translate_label(label: str) -> str:
@@ -295,46 +339,61 @@ def translate_label(label: str) -> str:
     return mapping.get(lbl, lbl)
 
 
-# COCO class names (index matches TF detection_classes which are 1-based for COCO)
-COCO_CLASSES = [
-    'sin etiqueta', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat',
-    'traffic light', 'fire hydrant', 'street sign', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse',
-    'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'hat', 'backpack', 'umbrella', 'shoe', 'glasses', 'handbag',
-    'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
-    'surfboard', 'tennis racket', 'bottle', 'plate', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
-    'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
-    'mirror', 'dining table', 'window', 'desk', 'toilet', 'door', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-    'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'blender', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-    'hair drier', 'toothbrush', 'hair brush'
-]
+DEFAULT_LABELS = ['sin etiqueta']
 
 
-# Funciones para modelos de TensorFlow Hub
-def get_tf_hub_mobilenet_model():
-    """Carga el modelo TensorFlow Hub SSD MobileNet con caché"""
-    global tf_hub_model
-    if not TF_AVAILABLE:
-        _append_log("ERROR: TensorFlow no disponible")
-        return None
+def _load_coco_labels(path):
+    try:
+        if os.path.exists(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                lines = [l.strip() for l in f.readlines() if l.strip()]
+                if len(lines) > 0 and lines[0].lower() != 'sin etiqueta':
+                    return ['sin etiqueta'] + lines
+                return lines or DEFAULT_LABELS
+        else:
+            _append_log(f"Labels file not found: {path}")
+    except Exception as e:
+        _append_log(f"Error loading COCO labels from {path}: {e}")
+    return DEFAULT_LABELS
 
-    if tf_hub_model is None:
-        with tf_hub_lock:
-            if tf_hub_model is None:
+
+coco_classes = _load_coco_labels(labels_path)
+
+
+def load_local_model():
+    """Carga el frozen graph TensorFlow local y devuelve (session, graph).
+    Usa tf.compat.v1 para importar el GraphDef desde `model_pb`.
+    """
+    global model_sess, model_graph
+    if not tf_available:
+        _append_log("ERROR: TensorFlow no disponible para cargar modelo local")
+        return None, None
+    if model_sess is None:
+        with model_lock:
+            if model_sess is None:
+                if not os.path.exists(model_pb):
+                    _append_log(f"Local TF model file not found: {model_pb}")
+                    return None, None
                 try:
                     _append_log(
-                        f"Cargando SSD MobileNet v2 de TensorFlow Hub...")
-                    model = hub.load(TF_HUB_MOBILENET_URL)
-                    tf_hub_model = model
-                    _append_log(f"✓ SSD MobileNet v2 cargado exitosamente")
+                        "Cargando modelo SSD MobileNet local (TensorFlow)...")
+                    graph_def = tf.compat.v1.GraphDef()
+                    with tf.io.gfile.GFile(model_pb, 'rb') as f:
+                        graph_def.ParseFromString(f.read())
+                    graph = tf.Graph()
+                    with graph.as_default():
+                        tf.import_graph_def(graph_def, name='')
+                    sess = tf.compat.v1.Session(graph=graph)
+                    model_graph = graph
+                    model_sess = sess
+                    _append_log("✓ Modelo local TensorFlow cargado")
                 except Exception as e:
-                    _append_log(f"✗ Error cargando modelo: {e}")
-                    return None
-
-    return tf_hub_model
+                    _append_log(f"✗ Error cargando modelo TF local: {e}")
+                    return None, None
+    return model_sess, model_graph
 
 
 def _nms_boxes(boxes, scores, iou_threshold=0.5):
-    # boxes: list of [x1,y1,x2,y2]
     if not boxes:
         return []
     boxes = np.array(boxes, dtype=float)
@@ -381,41 +440,42 @@ def _dedupe_detections(detections, iou_threshold=0.45):
 
 
 def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
-    """Detecta objetos usando TensorFlow Hub SSD MobileNet v2.
+    """Detecta objetos usando el modelo local SSD MobileNet (frozen graph).
     - `class_id` : si >=0 filtra por esa clase COCO (1-based index as TF returns), -1 acepta todas.
     - Aplica NMS para eliminar detecciones solapadas.
     """
-    if not TF_AVAILABLE:
+    if not tf_available:
         _append_log("ERROR: TensorFlow no disponible")
         return []
 
     try:
-        model = get_tf_hub_mobilenet_model()
-        if model is None:
+        sess, graph = load_local_model()
+        if sess is None:
             return []
 
         h, w = image.shape[:2]
         inp_size = 300
 
-        # Preparar imagen: convertir BGR->RGB, redimensionar y crear tensor [1,H,W,3]
         try:
             img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         except Exception:
             img_rgb = image.copy()
         resized = cv2.resize(img_rgb, (inp_size, inp_size))
 
-        # Some TF Hub detectors accept uint8 images; keep as uint8 to be safe
-        input_tensor = tf.convert_to_tensor(resized, dtype=tf.uint8)
-        input_tensor = input_tensor[tf.newaxis, ...]
+        input_np = np.expand_dims(resized, 0)
 
-        # Ejecutar modelo (proteger con lock por seguridad en entornos multi-hilo)
-        with tf_hub_lock:
-            detections = model(input_tensor)
+        with model_lock:
+            detection_boxes, detection_scores, detection_classes, _ = sess.run([
+                graph.get_tensor_by_name(model_boxes_tensor),
+                graph.get_tensor_by_name(model_scores_tensor),
+                graph.get_tensor_by_name(model_classes_tensor),
+                graph.get_tensor_by_name(model_num_tensor)
+            ], feed_dict={graph.get_tensor_by_name(model_image_tensor): input_np})
 
         results = []
-        detection_boxes = detections['detection_boxes'].numpy()[0]
-        detection_scores = detections['detection_scores'].numpy()[0]
-        detection_classes = detections['detection_classes'].numpy()[0]
+        detection_boxes = detection_boxes[0]
+        detection_scores = detection_scores[0]
+        detection_classes = detection_classes[0]
 
         raw_boxes = []
         raw_scores = []
@@ -424,12 +484,9 @@ def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
             if score < conf_threshold:
                 continue
             cls_int = int(cls)
-            # class_id argument refers to COCO index as in client (0 means 'sin etiqueta', 1 person, ...)
             if class_id >= 0:
-                # if client provided class index 0 (sin etiqueta) treat as no-match
                 if cls_int != int(class_id):
                     continue
-            # Coordenadas normalizadas a píxeles
             y1, x1, y2, x2 = box
             x1_px = float(x1 * w)
             y1_px = float(y1 * h)
@@ -439,7 +496,6 @@ def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
             raw_scores.append(float(score))
             raw_classes.append(cls_int)
 
-        # Aplicar NMS sobre raw_boxes
         keep_indices = _nms_boxes(raw_boxes, raw_scores, iou_threshold=nms_iou)
 
         for idx in keep_indices:
@@ -449,8 +505,8 @@ def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
             bw = int(max(0, round(x2_px - x1_px)))
             bh = int(max(0, round(y2_px - y1_px)))
             cls_int = raw_classes[idx]
-            label = COCO_CLASSES[cls_int] if 0 <= cls_int < len(
-                COCO_CLASSES) else str(cls_int)
+            label = coco_classes[cls_int] if 0 <= cls_int < len(
+                coco_classes) else str(cls_int)
             results.append({
                 'x': x,
                 'y': y,
@@ -461,7 +517,6 @@ def detect_objects(image, conf_threshold=0.5, class_id=-1, nms_iou=0.5):
                 'label': translate_label(label)
             })
 
-        # Dedupe final sobre cajas ya en píxeles (redundancia de seguridad)
         try:
             results = _dedupe_detections(results, iou_threshold=0.45)
         except Exception:
@@ -585,30 +640,63 @@ def detect_image():
         return jsonify({'error': 'No image provided. Send multipart form `image` or JSON `image_b64`.'}), 400
     conf = float(request.args.get('conf', 0.4))
     class_id = int(request.args.get('class_id', -1))
+    debug = str(request.args.get('debug', 'false')
+                ).lower() in ('1', 'true', 'yes')
 
-    # Detectar objetos usando TensorFlow SSD MobileNet
-    if not TF_AVAILABLE:
-        return jsonify({'error': 'TensorFlow not available. Run: pip install tensorflow tensorflow-hub'}), 500
+    if not tf_available:
+        return jsonify({'error': 'TensorFlow not available. Install tensorflow.'}), 500
+
+    raw_info = None
+    if debug and not visualize:
+        sess, graph = load_local_model()
+        if sess is None:
+            return jsonify({'error': 'Local TensorFlow model not available for debug.'}), 500
+        try:
+            inp_size = 300
+            try:
+                img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            except Exception:
+                img_rgb = img.copy()
+            resized = cv2.resize(img_rgb, (inp_size, inp_size))
+            input_np = np.expand_dims(resized, 0)
+            with model_lock:
+                boxes_raw, scores_raw, classes_raw, _ = sess.run([
+                    graph.get_tensor_by_name(model_boxes_tensor),
+                    graph.get_tensor_by_name(model_scores_tensor),
+                    graph.get_tensor_by_name(model_classes_tensor),
+                    graph.get_tensor_by_name(model_num_tensor)
+                ], feed_dict={graph.get_tensor_by_name(model_image_tensor): input_np})
+            boxes_raw = boxes_raw[0].tolist()
+            scores_raw = scores_raw[0].tolist()
+            classes_raw = classes_raw[0].astype(int).tolist()
+            limit = 50
+            raw_info = {
+                'boxes': boxes_raw[:limit], 'scores': scores_raw[:limit], 'classes': classes_raw[:limit]}
+        except Exception as e:
+            _append_log(f"DEBUG_RAW_ERROR: {e}")
+            raw_info = None
 
     detections = detect_objects(img, conf_threshold=conf, class_id=class_id)
+
+    elapsed_time = time.time() - start_time
 
     if visualize:
         out_img = draw_boxes(img, detections)
         _, png = cv2.imencode('.png', out_img)
         elapsed_time = time.time() - start_time
         try:
-            _append_response_log('/detect/image', 200,
-                                 count=len(detections), model='tf_mobilenet', time_sec=f"{elapsed_time:.2f}")
+            model_name = 'local_model'
+            _append_response_log('/detect/image', 200, count=len(detections),
+                                 model=model_name, time_sec=f"{elapsed_time:.2f}")
         except Exception:
             pass
         return Response(png.tobytes(), mimetype='image/png')
-    elapsed_time = time.time() - start_time
-    try:
-        _append_response_log('/detect/image', 200,
-                             count=len(detections), model='tf_mobilenet', time_sec=f"{elapsed_time:.2f}")
-    except Exception:
         pass
-    return jsonify({'detections': detections, 'count': len(detections), 'elapsed_seconds': elapsed_time})
+    response = {'detections': detections, 'count': len(
+        detections), 'elapsed_seconds': elapsed_time}
+    if raw_info is not None:
+        response['raw_detections'] = raw_info
+    return jsonify(response)
 
 
 @app.route('/detect/video', methods=['POST'])
@@ -623,6 +711,7 @@ def detect_video():
     conf = float(request.form.get('conf', request.args.get('conf', 0.4)))
     class_id = int(request.form.get(
         'class_id', request.args.get('class_id', -1)))
+    model_name = 'local_model'
     cap = None
     tmp_in = None
     tmp_out = None
@@ -646,8 +735,8 @@ def detect_video():
             if not camera_url:
                 return jsonify({'error': 'No video provided. Send multipart `video` file or `camera_url`.'}), 400
             cap = open_video_capture(camera_url)
-        if cap is None or not cap.isOpened():
-            return jsonify({'error': 'No se pudo abrir la fuente de video.'}), 500
+            if cap is None:
+                return jsonify({'error': 'No se pudo abrir la fuente de video.'}), 500
         global _video_tracker, _tracker_lock
         with _tracker_lock:
             _video_tracker = CentroidTracker(
@@ -700,7 +789,6 @@ def detect_video():
                 if not ret or frame is None:
                     break
             if frame_idx % frame_step == 0:
-                # Detectar objetos usando TensorFlow SSD MobileNet
                 dets = detect_objects(
                     frame, conf_threshold=conf, class_id=class_id)
 
@@ -756,7 +844,7 @@ def detect_video():
             }
             try:
                 _append_response_log('/detect/video', 200, frames=frame_idx,
-                                     total=total_detections, model='tf_mobilenet', mode='timeline', visualize=visualize)
+                                     total=total_detections, model=model_name, mode='timeline', visualize=visualize)
             except Exception:
                 pass
 
@@ -866,7 +954,7 @@ def detect_video():
                     _append_log(f"FFMPEG exception: {e}")
             try:
                 _append_response_log(
-                    '/detect/video', 200, frames=frame_idx, total=total_detections, model='tf_mobilenet')
+                    '/detect/video', 200, frames=frame_idx, total=total_detections, model=model_name)
             except Exception:
                 pass
             try:
@@ -875,7 +963,7 @@ def detect_video():
                 if tmp_mp4 and os.path.exists(tmp_mp4.name):
                     try:
                         _append_response_log('/detect/video', 200, frames=frame_idx,
-                                             total=total_detections, model='tf_mobilenet', fallback='mp4')
+                                             total=total_detections, model=model_name, fallback='mp4')
                     except Exception:
                         pass
                     return send_file(tmp_mp4.name, as_attachment=True, download_name='detections.mp4', mimetype='video/mp4')
@@ -922,7 +1010,6 @@ def stream_video():
                 if frame_idx % frame_step == 0:
                     try:
                         frame_start = time.time()
-                        # Detectar objetos usando TensorFlow SSD MobileNet
                         dets = detect_objects(
                             frame, conf_threshold=conf, class_id=class_id)
 
@@ -972,4 +1059,4 @@ def get_logs():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5501, debug=True)
