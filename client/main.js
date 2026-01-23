@@ -82,34 +82,43 @@ function renderVideoSampleToElement(elId, sample, fps) {
     if (!sample || !sample.length) { el.textContent = '(sin muestras)'; return; }
     el.innerHTML = '';
     el.style.cursor = 'default';
-    const personMap = {};
+    const objectMap = {};
+    const noIdCounters = {};
+
+    const normalizeColor = (det) => {
+        if (Array.isArray(det.object_color) && det.object_color.length === 3) return det.object_color;
+        const cid = det.class_id !== undefined ? Number(det.class_id) : 0;
+        return [(cid * 37) % 256, (cid * 97) % 256, (cid * 61) % 256];
+    };
+
     for (let s of sample) {
         if (!s.detections || !s.detections.length) continue;
-        const persons = s.detections.filter(d => {
-            const label = String(d.label || d.class || '').toLowerCase();
-            return label === 'persona' || label === 'person';
-        });
-
-        if (persons.length === 0) continue;
-
         const frame = s.frame || s.index || s.f || 0;
         const timestamp = s.timestamp || (fps ? frame / fps : 0);
 
-        for (let p of persons) {
-            const personId = (p.person_id !== undefined && p.person_id !== null) ? p.person_id : 'desconocido';
-            const personColor = p.person_color || [100, 100, 100];
-            const conf = (typeof p.confidence !== 'undefined') ? p.confidence : (p.score || p.conf || 0);
-            if (!personMap[personId]) {
-                personMap[personId] = { color: personColor, segments: [] };
+        for (let det of s.detections) {
+            const label = String(det.label || det.class || det.class_name || det.class_id || 'obj');
+            const detIdRaw = det.object_id;
+            const detId = (detIdRaw !== undefined && detIdRaw !== null) ? detIdRaw : null;
+            const key = detId !== null ? `${label}#${detId}` : (() => {
+                noIdCounters[label] = (noIdCounters[label] || 0) + 1;
+                return `${label}#${noIdCounters[label]}`;
+            })();
+
+            const colorBgr = normalizeColor(det);
+            const conf = (typeof det.confidence !== 'undefined') ? det.confidence : (det.score || det.conf || 0);
+
+            if (!objectMap[key]) {
+                objectMap[key] = { label, color: colorBgr, segments: [] };
             }
-            const person = personMap[personId];
-            const lastSeg = person.segments[person.segments.length - 1];
+            const obj = objectMap[key];
+            const lastSeg = obj.segments[obj.segments.length - 1];
             if (lastSeg && timestamp - lastSeg.end <= 1.0) {
                 lastSeg.end = timestamp;
                 lastSeg.frames += 1;
                 lastSeg.totalConf += conf;
             } else {
-                person.segments.push({
+                obj.segments.push({
                     start: timestamp,
                     end: timestamp,
                     firstTimestamp: timestamp,
@@ -120,9 +129,9 @@ function renderVideoSampleToElement(elId, sample, fps) {
         }
     }
 
-    let personCount = 0;
-    Object.entries(personMap).forEach(([pid, info]) => {
-        personCount++;
+    let objectCount = 0;
+    Object.entries(objectMap).forEach(([key, info]) => {
+        objectCount++;
         const bgr = info.color;
         const rgb = [bgr[2], bgr[1], bgr[0]];
         const colorStr = `rgb(${rgb.join(',')})`;
@@ -130,7 +139,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
         const totalDuration = info.segments.reduce((sum, seg) => sum + (seg.end - seg.start), 0);
         const totalFrames = info.segments.reduce((sum, seg) => sum + seg.frames, 0);
         const totalConf = info.segments.reduce((sum, seg) => sum + seg.totalConf, 0);
-        const avgConf = totalConf / totalFrames;
+        const avgConf = totalFrames ? (totalConf / totalFrames) : 0;
 
         const timeRanges = info.segments.map(seg =>
             seg.start === seg.end ? `${seg.start.toFixed(1)}s` : `${seg.start.toFixed(1)}-${seg.end.toFixed(1)}s`
@@ -145,7 +154,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
         detectionDiv.style.borderLeft = `6px solid ${colorStr}`;
         detectionDiv.style.transition = 'all 0.2s';
 
-        const personIdHtml = `<div style="
+        const titleHtml = `<div style="
             background: ${colorStr};
             color: white;
             padding: 6px 12px;
@@ -154,7 +163,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
             font-size: 14px;
             display: inline-block;
             margin-bottom: 6px;
-        ">#${pid}</div>`;
+        ">${info.label} — ${key.split('#')[1] || 'id'}</div>`;
 
         const statsHtml = `<div style="color: #aaa; font-size: 13px; margin-top: 4px;">
             <strong>${totalFrames}</strong> detecciones en <strong>${totalDuration.toFixed(1)}s</strong>
@@ -165,7 +174,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
             Rangos: ${timeRanges}
         </div>`;
 
-        detectionDiv.innerHTML = personIdHtml + statsHtml + rangesHtml;
+        detectionDiv.innerHTML = titleHtml + statsHtml + rangesHtml;
 
         detectionDiv.onmouseenter = () => {
             detectionDiv.style.background = '#2a3540';
@@ -189,7 +198,7 @@ function renderVideoSampleToElement(elId, sample, fps) {
         el.appendChild(detectionDiv);
     });
 
-    if (personCount === 0) {
+    if (objectCount === 0) {
         el.textContent = '(sin detecciones)';
     }
 }
@@ -209,42 +218,38 @@ function renderTimeline(metadata) {
         return;
     }
 
-    const personMap = {};
-
-    const ensurePerson = (pid, colorBgr) => {
-        if (!personMap[pid]) {
-            personMap[pid] = {
+    const objectMap = {};
+    const ensureObject = (key, colorBgr, label) => {
+        if (!objectMap[key]) {
+            objectMap[key] = {
+                label: label || key,
                 color: colorBgr || [0, 200, 255],
                 segments: [],
             };
         }
-        return personMap[pid];
+        return objectMap[key];
     };
 
     for (let det of detections) {
         const ts = det.timestamp || (det.frame / (metadata.fps || 25));
         const dets = det.detections || [];
-        const persons = dets.filter(d => {
-            const label = String(d.label || d.class || '').toLowerCase();
-            return label === 'persona' || label === 'person';
-        });
+        if (!dets.length) continue;
 
-        if (persons.length === 0) {
-            const p = ensurePerson('desconocido', [120, 120, 120]);
-            pushSegment(p, ts, det.count || persons.length || 1);
-            continue;
-        }
-
-        for (let p of persons) {
-            const pid = (p.person_id !== undefined && p.person_id !== null) ? `ID#${p.person_id}` : 'desconocido';
-            const colorBgr = Array.isArray(p.person_color) && p.person_color.length === 3 ? p.person_color : [0, 200, 255];
-            const person = ensurePerson(pid, colorBgr);
-            pushSegment(person, ts, 1);
+        for (let d of dets) {
+            const label = String(d.label || d.class || d.class_name || d.class_id || 'obj');
+            const idRaw = d.object_id;
+            const idPart = (idRaw !== undefined && idRaw !== null) ? `#${idRaw}` : '';
+            const key = `${label}${idPart}`;
+            const colorBgr = Array.isArray(d.object_color) && d.object_color.length === 3
+                ? d.object_color
+                : [((d.class_id || 1) * 37) % 256, ((d.class_id || 1) * 97) % 256, ((d.class_id || 1) * 61) % 256];
+            const obj = ensureObject(key, colorBgr, label);
+            pushSegment(obj, ts, 1);
         }
     }
 
-    function pushSegment(person, ts, count) {
-        const segments = person.segments;
+    function pushSegment(obj, ts, count) {
+        const segments = obj.segments;
         const last = segments[segments.length - 1];
         if (last && ts - last.end <= 1.0) {
             last.end = ts;
@@ -255,7 +260,7 @@ function renderTimeline(metadata) {
     }
 
     let totalSegments = 0;
-    Object.entries(personMap).forEach(([pid, info]) => {
+    Object.entries(objectMap).forEach(([key, info]) => {
         const colorBgr = info.color || [0, 200, 255];
         const colorCss = `rgb(${colorBgr[2]}, ${colorBgr[1]}, ${colorBgr[0]})`;
         info.segments.forEach(seg => {
@@ -269,14 +274,14 @@ function renderTimeline(metadata) {
             highlight.style.width = `${Math.max(widthPercent, 0.5)}%`;
             highlight.style.background = colorCss;
             highlight.style.opacity = '0.75';
-            highlight.title = `${pid} — ${seg.start.toFixed(1)}s - ${seg.end.toFixed(1)}s (${seg.count} detecciones)`;
+            highlight.title = `${info.label}${key.includes('#') ? ' ' + key.split('#')[1] : ''} — ${seg.start.toFixed(1)}s - ${seg.end.toFixed(1)}s (${seg.count} detecciones)`;
             timelineBar.appendChild(highlight);
         });
     });
 
     if (timelineInfo) {
-        const personsCount = Object.keys(personMap).length;
-        timelineInfo.textContent = `Total: ${metadata.total_detections} detecciones, ${personsCount} objetos, ${totalSegments} segmentos`;
+        const objectsCount = Object.keys(objectMap).length;
+        timelineInfo.textContent = `Total: ${metadata.total_detections} detecciones, ${objectsCount} objetos, ${totalSegments} segmentos`;
     }
 
     timelineContainer.classList.remove('hidden');
@@ -682,10 +687,33 @@ function analyzeLogs(lines) {
 
     const httpReqRe = /"(GET|POST) ([^ ]+) HTTP\/[0-9.]+"\s+(\d{3})/i;
     const responseRe = /^RESPONSE\s+path=([^\s]+)\s+status=(\d+)(.*)$/i;
+    const detVideoRe = /^DETECTION_VIDEO\s+(.*)$/i;
+    const streamDetRe = /^STREAM_DET\s+(.*)$/i;
 
     for (let i = lines.length - 1; i >= 0; --i) {
         const L = String(lines[i] || '');
         const lower = L.toLowerCase();
+
+        const dvm = L.match(detVideoRe);
+        if (dvm) {
+            const raw = dvm[1].trim();
+            const tokens = raw.split(/\s+/);
+            const filtered = tokens.filter(t => {
+                const low = t.toLowerCase();
+                return !(low.startsWith('classes=') || low.startsWith('timeline=') || low.startsWith('visualize='));
+            });
+            lastVideo = `Detección de video: ${filtered.join(' ')}`;
+            videoLines.push(L);
+            continue;
+        }
+
+        const sdm = L.match(streamDetRe);
+        if (sdm) {
+            lastCamera = `Detecciones en cámara: ${sdm[1].trim()}`;
+            cameraLines.push(L);
+            if (!lastCriticalCameraLine) lastCriticalCameraLine = L;
+            continue;
+        }
 
         const rm = L.match(responseRe);
         if (rm) {

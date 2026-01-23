@@ -119,22 +119,22 @@ class CentroidTracker:
                 objectID = objectIDs[i]
                 self.objects[objectID] = input_centroids[j]
                 self.disappeared[objectID] = 0
-                detections[j]['person_id'] = objectID
-                detections[j]['person_color'] = self.object_colors[objectID]
+                detections[j]['object_id'] = objectID
+                detections[j]['object_color'] = self.object_colors[objectID]
 
             unused_input_indices = [j for j in range(len(input_centroids))
                                     if j not in [m[1] for m in matched_indices]]
             for j in unused_input_indices:
                 self.register(input_centroids[j])
                 last_id = self.nextObjectID - 1
-                detections[j]['person_id'] = last_id
-                detections[j]['person_color'] = self.object_colors[last_id]
+                detections[j]['object_id'] = last_id
+                detections[j]['object_color'] = self.object_colors[last_id]
         else:
             for j, input_centroid in enumerate(input_centroids):
                 self.register(input_centroid)
                 last_id = self.nextObjectID - 1
-                detections[j]['person_id'] = last_id
-                detections[j]['person_color'] = self.object_colors[last_id]
+                detections[j]['object_id'] = last_id
+                detections[j]['object_color'] = self.object_colors[last_id]
 
         return detections
 
@@ -537,11 +537,11 @@ def draw_boxes(image, detections, color=(0, 255, 0), thickness=2):
         x, y, w, h = int(d.get("x", 0)), int(d.get("y", 0)), int(
             d.get("w", 0)), int(d.get("h", 0))
         box_color = color
-        if 'person_color' in d:
+        if 'object_color' in d:
             try:
-                pc = d['person_color']
-                if isinstance(pc, (list, tuple)) and len(pc) == 3:
-                    box_color = tuple(int(c) % 256 for c in pc)
+                oc = d['object_color']
+                if isinstance(oc, (list, tuple)) and len(oc) == 3:
+                    box_color = tuple(int(c) % 256 for c in oc)
                 else:
                     box_color = color
             except Exception:
@@ -552,8 +552,8 @@ def draw_boxes(image, detections, color=(0, 255, 0), thickness=2):
                          256), int((cid * 61) % 256))
         cv2.rectangle(img, (x, y), (x + w, y + h), box_color, thickness)
         label = d.get('label') or d.get('class', '') or ''
-        if 'person_id' in d:
-            label = f"#{d['person_id']} {label}"
+        if 'object_id' in d:
+            label = f"#{d['object_id']} {label}"
         conf = d.get('confidence', None)
         if conf is not None:
             try:
@@ -605,6 +605,24 @@ def open_video_capture(source):
         except Exception:
             pass
     return None
+
+
+def _summarize_class_counts(per_frame):
+    class_counts = {}
+    tracked_ids = set()
+    try:
+        for pf in per_frame or []:
+            for det in pf.get('detections', []):
+                label = det.get('label') or det.get('class') or det.get(
+                    'class_name') or det.get('class_id') or 'obj'
+                label = str(label)
+                class_counts[label] = class_counts.get(label, 0) + 1
+                oid = det.get('object_id')
+                if oid is not None:
+                    tracked_ids.add(oid)
+    except Exception:
+        pass
+    return class_counts, tracked_ids
 
 
 @app.route("/", methods=["GET"])
@@ -811,8 +829,18 @@ def detect_video():
         if out_writer:
             out_writer.release()
         elapsed_time = time.time() - start_time
+        class_counts, tracked_ids = _summarize_class_counts(per_frame)
         result = {'frames_processed': frame_idx,
-                  'total_detections': total_detections, 'sample': per_frame[:20], 'fps': fps, 'elapsed_seconds': elapsed_time}
+                  'total_detections': total_detections, 'sample': per_frame[:20], 'fps': fps, 'elapsed_seconds': elapsed_time,
+                  'class_counts': class_counts, 'unique_ids': len(tracked_ids)}
+
+        try:
+            classes_text = ', '.join(
+                f"{k}:{v}" for k, v in class_counts.items()) or 'sin clases'
+            _append_log(
+                f"DETECTION_VIDEO frames={frame_idx} detections={total_detections} ids={len(tracked_ids)} classes={classes_text} timeline={timeline} visualize={visualize}")
+        except Exception:
+            pass
 
         video_to_send = None
         if timeline:
@@ -840,7 +868,9 @@ def detect_video():
                 'total_frames': frame_idx,
                 'duration': frame_idx / fps,
                 'detections': detection_segments,
-                'total_detections': total_detections
+                'total_detections': total_detections,
+                'class_counts': class_counts,
+                'unique_ids': len(tracked_ids)
             }
             try:
                 _append_response_log('/detect/video', 200, frames=frame_idx,
@@ -995,11 +1025,18 @@ def stream_video():
     if cap is None or not cap.isOpened():
         return jsonify({'error': 'No se pudo abrir la fuente de video para streaming.'}), 500
 
+    try:
+        _append_log(
+            f"STREAM_START camera_url={camera_url} frame_step={frame_step} conf={conf} class_id={class_id}")
+    except Exception:
+        pass
+
     def generate():
         frame_idx = 0
         batch_size = 30
         batch_start_time = time.time()
         frames_in_batch = 0
+        batch_class_counts = {}
         try:
             while True:
                 ret, frame = cap.read()
@@ -1016,6 +1053,13 @@ def stream_video():
                         with _tracker_lock:
                             dets = _stream_tracker.update(dets)
 
+                        for d in dets:
+                            lbl = d.get('label') or d.get('class') or d.get(
+                                'class_name') or d.get('class_id') or 'obj'
+                            lbl = str(lbl)
+                            batch_class_counts[lbl] = batch_class_counts.get(
+                                lbl, 0) + 1
+
                         out_frame = draw_boxes(frame, dets)
                         frame_elapsed = time.time() - frame_start
                         frames_in_batch += 1
@@ -1023,10 +1067,18 @@ def stream_video():
                         if frames_in_batch >= batch_size:
                             batch_elapsed = time.time() - batch_start_time
                             avg_time_per_frame = batch_elapsed / frames_in_batch
-                            _append_log(
-                                f"STREAM_TIMING: {frames_in_batch} frames in {batch_elapsed:.2f}s (avg {avg_time_per_frame*1000:.1f}ms/frame)")
+                            try:
+                                classes_text = ', '.join(
+                                    f"{k}:{v}" for k, v in batch_class_counts.items()) or 'sin clases'
+                                _append_log(
+                                    f"STREAM_TIMING: {frames_in_batch} frames in {batch_elapsed:.2f}s (avg {avg_time_per_frame*1000:.1f}ms/frame) classes={classes_text}")
+                                _append_log(
+                                    f"STREAM_DET frames={frames_in_batch} classes={classes_text}")
+                            except Exception:
+                                pass
                             batch_start_time = time.time()
                             frames_in_batch = 0
+                            batch_class_counts = {}
                     except Exception:
                         out_frame = frame
                     try:
@@ -1054,7 +1106,7 @@ def stream_video():
 def get_logs():
     with _log_lock:
         lines = [l for l in list(_log_buffer) if isinstance(
-            l, str) and l.startswith('RESPONSE ')]
+            l, str) and (l.startswith('RESPONSE ') or l.startswith('DETECTION_') or l.startswith('STREAM_'))]
     return jsonify({'lines': lines})
 
 
