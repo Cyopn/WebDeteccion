@@ -1,0 +1,1062 @@
+- L1: [app.py](app.py#L1) - Importa módulo/atributos (from flask import Flask, request, jsonify, send_file, Response, send_from_directory).
+- L2: [app.py](app.py#L2) - Importa módulo (import numpy as np).
+- L3: [app.py](app.py#L3) - Importa módulo (import cv2).
+- L4: [app.py](app.py#L4) - Importa módulo (import base64).
+- L5: [app.py](app.py#L5) - Importa módulo (import tempfile).
+- L6: [app.py](app.py#L6) - Importa módulo (import os).
+- L7: [app.py](app.py#L7) - Importa módulo/atributos (from flask_cors import CORS).
+- L8: [app.py](app.py#L8) - Importa módulo (import threading).
+- L9: [app.py](app.py#L9) - Importa módulo (import subprocess).
+- L10: [app.py](app.py#L10) - Importa módulo (import time).
+- L11: [app.py](app.py#L11) - Importa módulo (import logging).
+- L12: [app.py](app.py#L12) - Importa módulo/atributos (from collections import deque).
+- L13: [app.py](app.py#L13) - Importa módulo (import shutil).
+- L14: [app.py](app.py#L14) - Importa módulo (import warnings).
+- L15: [app.py](app.py#L15) - Código: os.environ.setdefault('TF_CPP_MIN_LOG_LEVEL', '3')
+- L16: [app.py](app.py#L16) - Código: warnings.filterwarnings('ignore', category=DeprecationWarning)
+- L17: [app.py](app.py#L17) - Inicio de bloque try para manejo de errores.
+- L18: [app.py](app.py#L18) - Código: logging.getLogger('tensorflow').setLevel(logging.ERROR)
+- L19: [app.py](app.py#L19) - Manejo de excepción (except Exception:).
+- L20: [app.py](app.py#L20) - Sentencia pass (sin acción).
+- L21: [app.py](app.py#L21) - Línea vacía.
+- L22: [app.py](app.py#L22) - Inicio de bloque try para manejo de errores.
+- L23: [app.py](app.py#L23) - Importa módulo/atributos (from device_config import get_device, print_device_info).
+- L24: [app.py](app.py#L24) - Código: print_device_info()
+- L25: [app.py](app.py#L25) - Código: device = get_device()
+- L26: [app.py](app.py#L26) - Manejo de excepción (except ImportError:).
+- L27: [app.py](app.py#L27) - Código: print("device_config no disponible, usando CPU")
+- L28: [app.py](app.py#L28) - Código: device = 'cpu'
+- L29: [app.py](app.py#L29) - Línea vacía.
+- L30: [app.py](app.py#L30) - Condicional if (device == 'cuda':).
+- L31: [app.py](app.py#L31) - Inicio de bloque try para manejo de errores.
+- L32: [app.py](app.py#L32) - Importa módulo/atributos (from cuda_config import check_cuda).
+- L33: [app.py](app.py#L33) - Código: check_cuda()
+- L34: [app.py](app.py#L34) - Manejo de excepción (except ImportError:).
+- L35: [app.py](app.py#L35) - Código: print("cuda_config no disponible, usando CPU")
+- L36: [app.py](app.py#L36) - Código: device = 'cpu'
+- L37: [app.py](app.py#L37) - Línea vacía.
+- L38: [app.py](app.py#L38) - Inicio de bloque try para manejo de errores.
+- L39: [app.py](app.py#L39) - Importa módulo (import tensorflow as tf).
+- L40: [app.py](app.py#L40) - Código: tf_available = True
+- L41: [app.py](app.py#L41) - Código: tf_version = tf.__version__
+- L42: [app.py](app.py#L42) - Manejo de excepción (except Exception as e:).
+- L43: [app.py](app.py#L43) - Código: tf_available = False
+- L44: [app.py](app.py#L44) - Código: tf_version = None
+- L45: [app.py](app.py#L45) - Código: print(f"Error cargando TensorFlow: {e}")
+- L46: [app.py](app.py#L46) - Línea vacía.
+- L47: [app.py](app.py#L47) - Línea vacía.
+- L48: [app.py](app.py#L48) - Declara la clase CentroidTracker.
+- L49: [app.py](app.py#L49) - Línea vacía.
+- L50: [app.py](app.py#L50) - Define la función __init__.
+- L51: [app.py](app.py#L51) - Código: self.nextObjectID = 0
+- L52: [app.py](app.py#L52) - Código: self.objects = {}
+- L53: [app.py](app.py#L53) - Código: self.disappeared = {}
+- L54: [app.py](app.py#L54) - Código: self.maxDisappeared = maxDisappeared
+- L55: [app.py](app.py#L55) - Código: self.maxDistance = maxDistance
+- L56: [app.py](app.py#L56) - Código: self.object_colors = {}
+- L57: [app.py](app.py#L57) - Línea vacía.
+- L58: [app.py](app.py#L58) - Define la función register.
+- L59: [app.py](app.py#L59) - Código: color = self._generate_color(self.nextObjectID)
+- L60: [app.py](app.py#L60) - Código: self.object_colors[self.nextObjectID] = color
+- L61: [app.py](app.py#L61) - Código: self.objects[self.nextObjectID] = centroid
+- L62: [app.py](app.py#L62) - Código: self.disappeared[self.nextObjectID] = 0
+- L63: [app.py](app.py#L63) - Código: self.nextObjectID += 1
+- L64: [app.py](app.py#L64) - Línea vacía.
+- L65: [app.py](app.py#L65) - Define la función deregister.
+- L66: [app.py](app.py#L66) - Código: del self.objects[objectID]
+- L67: [app.py](app.py#L67) - Código: del self.disappeared[objectID]
+- L68: [app.py](app.py#L68) - Código: del self.object_colors[objectID]
+- L69: [app.py](app.py#L69) - Línea vacía.
+- L70: [app.py](app.py#L70) - Define la función _generate_color.
+- L71: [app.py](app.py#L71) - Código: hue = (object_id * 60) % 180
+- L72: [app.py](app.py#L72) - Código: saturation = 200 + (object_id * 30) % 55
+- L73: [app.py](app.py#L73) - Código: value = 200 + (object_id * 20) % 55
+- L74: [app.py](app.py#L74) - Código: bgr = cv2.cvtColor(
+- L75: [app.py](app.py#L75) - Código: np.uint8([[[hue, saturation, value]]]), cv2.COLOR_HSV2BGR)
+- L76: [app.py](app.py#L76) - Retorna tuple(int(x) for x in bgr[0][0]).
+- L77: [app.py](app.py#L77) - Línea vacía.
+- L78: [app.py](app.py#L78) - Define la función update.
+- L79: [app.py](app.py#L79) - Condicional if (len(detections) == 0:).
+- L80: [app.py](app.py#L80) - Bucle for (objectID in list(self.disappeared.keys()):).
+- L81: [app.py](app.py#L81) - Código: self.disappeared[objectID] += 1
+- L82: [app.py](app.py#L82) - Condicional if (self.disappeared[objectID] > self.maxDisappeared:).
+- L83: [app.py](app.py#L83) - Código: self.deregister(objectID)
+- L84: [app.py](app.py#L84) - Retorna detections.
+- L85: [app.py](app.py#L85) - Línea vacía.
+- L86: [app.py](app.py#L86) - Código: input_centroids = np.zeros((len(detections), 2))
+- L87: [app.py](app.py#L87) - Bucle for (i, det in enumerate(detections):).
+- L88: [app.py](app.py#L88) - Código: x = det.get('x', 0) + det.get('w', 0) / 2
+- L89: [app.py](app.py#L89) - Código: y = det.get('y', 0) + det.get('h', 0) / 2
+- L90: [app.py](app.py#L90) - Código: input_centroids[i] = [x, y]
+- L91: [app.py](app.py#L91) - Línea vacía.
+- L92: [app.py](app.py#L92) - Condicional if (len(self.objects) > 0:).
+- L93: [app.py](app.py#L93) - Código: objectIDs = list(self.objects.keys())
+- L94: [app.py](app.py#L94) - Código: object_centroids = np.array(list(self.objects.values()))
+- L95: [app.py](app.py#L95) - Línea vacía.
+- L96: [app.py](app.py#L96) - Código: D = np.zeros((len(objectIDs), len(input_centroids)))
+- L97: [app.py](app.py#L97) - Bucle for (i, object_centroid in enumerate(object_centroids):).
+- L98: [app.py](app.py#L98) - Bucle for (j, input_centroid in enumerate(input_centroids):).
+- L99: [app.py](app.py#L99) - Código: dist = np.linalg.norm(object_centroid - input_centroid)
+- L100: [app.py](app.py#L100) - Código: D[i, j] = dist
+- L101: [app.py](app.py#L101) - Línea vacía.
+- L102: [app.py](app.py#L102) - Código: matched_indices = []
+- L103: [app.py](app.py#L103) - Bucle for (i in range(len(objectIDs)):).
+- L104: [app.py](app.py#L104) - Condicional if (D[i].size == 0:).
+- L105: [app.py](app.py#L105) - Código: continue
+- L106: [app.py](app.py#L106) - Código: j = np.argmin(D[i])
+- L107: [app.py](app.py#L107) - Condicional if (D[i, j] < self.maxDistance:).
+- L108: [app.py](app.py#L108) - Condicional if (j not in [m[1] for m in matched_indices]:).
+- L109: [app.py](app.py#L109) - Código: matched_indices.append((i, j))
+- L110: [app.py](app.py#L110) - Línea vacía.
+- L111: [app.py](app.py#L111) - Código: unused_objectIDs = [objectIDs[i] for i in range(len(objectIDs))
+- L112: [app.py](app.py#L112) - Condicional if (i not in [m[0] for m in matched_indices]]).
+- L113: [app.py](app.py#L113) - Bucle for (objectID in unused_objectIDs:).
+- L114: [app.py](app.py#L114) - Código: self.disappeared[objectID] += 1
+- L115: [app.py](app.py#L115) - Condicional if (self.disappeared[objectID] > self.maxDisappeared:).
+- L116: [app.py](app.py#L116) - Código: self.deregister(objectID)
+- L117: [app.py](app.py#L117) - Línea vacía.
+- L118: [app.py](app.py#L118) - Bucle for (i, j in matched_indices:).
+- L119: [app.py](app.py#L119) - Código: objectID = objectIDs[i]
+- L120: [app.py](app.py#L120) - Código: self.objects[objectID] = input_centroids[j]
+- L121: [app.py](app.py#L121) - Código: self.disappeared[objectID] = 0
+- L122: [app.py](app.py#L122) - Código: detections[j]['person_id'] = objectID
+- L123: [app.py](app.py#L123) - Código: detections[j]['person_color'] = self.object_colors[objectID]
+- L124: [app.py](app.py#L124) - Línea vacía.
+- L125: [app.py](app.py#L125) - Código: unused_input_indices = [j for j in range(len(input_centroids))
+- L126: [app.py](app.py#L126) - Condicional if (j not in [m[1] for m in matched_indices]]).
+- L127: [app.py](app.py#L127) - Bucle for (j in unused_input_indices:).
+- L128: [app.py](app.py#L128) - Código: self.register(input_centroids[j])
+- L129: [app.py](app.py#L129) - Código: last_id = self.nextObjectID - 1
+- L130: [app.py](app.py#L130) - Código: detections[j]['person_id'] = last_id
+- L131: [app.py](app.py#L131) - Código: detections[j]['person_color'] = self.object_colors[last_id]
+- L132: [app.py](app.py#L132) - Bloque else.
+- L133: [app.py](app.py#L133) - Bucle for (j, input_centroid in enumerate(input_centroids):).
+- L134: [app.py](app.py#L134) - Código: self.register(input_centroid)
+- L135: [app.py](app.py#L135) - Código: last_id = self.nextObjectID - 1
+- L136: [app.py](app.py#L136) - Código: detections[j]['person_id'] = last_id
+- L137: [app.py](app.py#L137) - Código: detections[j]['person_color'] = self.object_colors[last_id]
+- L138: [app.py](app.py#L138) - Línea vacía.
+- L139: [app.py](app.py#L139) - Retorna detections.
+- L140: [app.py](app.py#L140) - Línea vacía.
+- L141: [app.py](app.py#L141) - Línea vacía.
+- L142: [app.py](app.py#L142) - Código: app = Flask(__name__, static_folder='client',
+- L143: [app.py](app.py#L143) - Código: static_url_path='', template_folder='client')
+- L144: [app.py](app.py#L144) - Código: CORS(app)
+- L145: [app.py](app.py#L145) - Código: log_buffer_size = 1000
+- L146: [app.py](app.py#L146) - Código: _log_buffer = deque(maxlen=log_buffer_size)
+- L147: [app.py](app.py#L147) - Código: _log_lock = threading.Lock()
+- L148: [app.py](app.py#L148) - Código: _created_tmp_files = {}
+- L149: [app.py](app.py#L149) - Código: _created_tmp_lock = threading.Lock()
+- L150: [app.py](app.py#L150) - Código: TMP_FILE_TTL = 60 * 10
+- L151: [app.py](app.py#L151) - Código: TMP_CLEAN_INTERVAL = 60 * 5
+- L152: [app.py](app.py#L152) - Línea vacía.
+- L153: [app.py](app.py#L153) - Línea vacía.
+- L154: [app.py](app.py#L154) - Define la función _append_log.
+- L155: [app.py](app.py#L155) - Inicio de bloque try para manejo de errores.
+- L156: [app.py](app.py#L156) - Context manager (_log_lock:).
+- L157: [app.py](app.py#L157) - Condicional if (line is None:).
+- L158: [app.py](app.py#L158) - Retorna un valor.
+- L159: [app.py](app.py#L159) - Código: s = str(line)
+- L160: [app.py](app.py#L160) - Bucle for (part in s.splitlines():).
+- L161: [app.py](app.py#L161) - Código: _log_buffer.append(part)
+- L162: [app.py](app.py#L162) - Manejo de excepción (except Exception:).
+- L163: [app.py](app.py#L163) - Sentencia pass (sin acción).
+- L164: [app.py](app.py#L164) - Línea vacía.
+- L165: [app.py](app.py#L165) - Línea vacía.
+- L166: [app.py](app.py#L166) - Define la función _register_tmp_file.
+- L167: [app.py](app.py#L167) - Inicio de bloque try para manejo de errores.
+- L168: [app.py](app.py#L168) - Context manager (_created_tmp_lock:).
+- L169: [app.py](app.py#L169) - Código: _created_tmp_files[path] = time.time()
+- L170: [app.py](app.py#L170) - Código: _append_log(f"TMP_REGISTER {path}")
+- L171: [app.py](app.py#L171) - Manejo de excepción (except Exception:).
+- L172: [app.py](app.py#L172) - Sentencia pass (sin acción).
+- L173: [app.py](app.py#L173) - Línea vacía.
+- L174: [app.py](app.py#L174) - Línea vacía.
+- L175: [app.py](app.py#L175) - Define la función _append_response_log.
+- L176: [app.py](app.py#L176) - Inicio de bloque try para manejo de errores.
+- L177: [app.py](app.py#L177) - Código: extra = ' '.join(f"{k}={v}" for k, v in kwargs.items())
+- L178: [app.py](app.py#L178) - Código: _append_log(f"RESPONSE path={path} status={int(status)} {extra}")
+- L179: [app.py](app.py#L179) - Manejo de excepción (except Exception:).
+- L180: [app.py](app.py#L180) - Sentencia pass (sin acción).
+- L181: [app.py](app.py#L181) - Línea vacía.
+- L182: [app.py](app.py#L182) - Línea vacía.
+- L183: [app.py](app.py#L183) - Código: _video_tracker = CentroidTracker(maxDisappeared=30, maxDistance=100)
+- L184: [app.py](app.py#L184) - Código: _stream_tracker = CentroidTracker(maxDisappeared=20, maxDistance=80)
+- L185: [app.py](app.py#L185) - Código: _tracker_lock = threading.Lock()
+- L186: [app.py](app.py#L186) - Línea vacía.
+- L187: [app.py](app.py#L187) - Línea vacía.
+- L188: [app.py](app.py#L188) - Define la función _temp_cleanup_worker.
+- L189: [app.py](app.py#L189) - Bucle while (True:).
+- L190: [app.py](app.py#L190) - Inicio de bloque try para manejo de errores.
+- L191: [app.py](app.py#L191) - Código: now = time.time()
+- L192: [app.py](app.py#L192) - Código: to_remove = []
+- L193: [app.py](app.py#L193) - Context manager (_created_tmp_lock:).
+- L194: [app.py](app.py#L194) - Bucle for (p, ts in list(_created_tmp_files.items()):).
+- L195: [app.py](app.py#L195) - Inicio de bloque try para manejo de errores.
+- L196: [app.py](app.py#L196) - Condicional if (now - ts > TMP_FILE_TTL:).
+- L197: [app.py](app.py#L197) - Código: to_remove.append(p)
+- L198: [app.py](app.py#L198) - Manejo de excepción (except Exception:).
+- L199: [app.py](app.py#L199) - Código: to_remove.append(p)
+- L200: [app.py](app.py#L200) - Bucle for (p in to_remove:).
+- L201: [app.py](app.py#L201) - Inicio de bloque try para manejo de errores.
+- L202: [app.py](app.py#L202) - Condicional if (os.path.exists(p):).
+- L203: [app.py](app.py#L203) - Código: os.unlink(p)
+- L204: [app.py](app.py#L204) - Código: _append_log(f"TMP_CLEANED {p}")
+- L205: [app.py](app.py#L205) - Manejo de excepción (except Exception as e:).
+- L206: [app.py](app.py#L206) - Código: _append_log(f"TMP_CLEAN_ERROR {p}: {e}")
+- L207: [app.py](app.py#L207) - Inicio de bloque try para manejo de errores.
+- L208: [app.py](app.py#L208) - Context manager (_created_tmp_lock:).
+- L209: [app.py](app.py#L209) - Código: _created_tmp_files.pop(p, None)
+- L210: [app.py](app.py#L210) - Manejo de excepción (except Exception:).
+- L211: [app.py](app.py#L211) - Sentencia pass (sin acción).
+- L212: [app.py](app.py#L212) - Manejo de excepción (except Exception:).
+- L213: [app.py](app.py#L213) - Sentencia pass (sin acción).
+- L214: [app.py](app.py#L214) - Inicio de bloque try para manejo de errores.
+- L215: [app.py](app.py#L215) - Código: time.sleep(TMP_CLEAN_INTERVAL)
+- L216: [app.py](app.py#L216) - Manejo de excepción (except Exception:).
+- L217: [app.py](app.py#L217) - Código: time.sleep(60)
+- L218: [app.py](app.py#L218) - Línea vacía.
+- L219: [app.py](app.py#L219) - Línea vacía.
+- L220: [app.py](app.py#L220) - Inicio de bloque try para manejo de errores.
+- L221: [app.py](app.py#L221) - Código: t_cleanup = threading.Thread(target=_temp_cleanup_worker, daemon=True)
+- L222: [app.py](app.py#L222) - Código: t_cleanup.start()
+- L223: [app.py](app.py#L223) - Manejo de excepción (except Exception:).
+- L224: [app.py](app.py#L224) - Sentencia pass (sin acción).
+- L225: [app.py](app.py#L225) - Línea vacía.
+- L226: [app.py](app.py#L226) - Línea vacía.
+- L227: [app.py](app.py#L227) - Declara la clase BufferHandler.
+- L228: [app.py](app.py#L228) - Define la función emit.
+- L229: [app.py](app.py#L229) - Inicio de bloque try para manejo de errores.
+- L230: [app.py](app.py#L230) - Código: msg = self.format(record)
+- L231: [app.py](app.py#L231) - Código: _append_log(msg)
+- L232: [app.py](app.py#L232) - Manejo de excepción (except Exception:).
+- L233: [app.py](app.py#L233) - Sentencia pass (sin acción).
+- L234: [app.py](app.py#L234) - Línea vacía.
+- L235: [app.py](app.py#L235) - Línea vacía.
+- L236: [app.py](app.py#L236) - Declara la clase StderrWrapper.
+- L237: [app.py](app.py#L237) - Define la función __init__.
+- L238: [app.py](app.py#L238) - Código: self.orig = orig
+- L239: [app.py](app.py#L239) - Código: self._buf = ''
+- L240: [app.py](app.py#L240) - Línea vacía.
+- L241: [app.py](app.py#L241) - Define la función write.
+- L242: [app.py](app.py#L242) - Inicio de bloque try para manejo de errores.
+- L243: [app.py](app.py#L243) - Inicio de bloque try para manejo de errores.
+- L244: [app.py](app.py#L244) - Código: self.orig.write(data)
+- L245: [app.py](app.py#L245) - Manejo de excepción (except Exception:).
+- L246: [app.py](app.py#L246) - Sentencia pass (sin acción).
+- L247: [app.py](app.py#L247) - Condicional if (not data:).
+- L248: [app.py](app.py#L248) - Retorna un valor.
+- L249: [app.py](app.py#L249) - Código: self._buf += str(data)
+- L250: [app.py](app.py#L250) - Condicional if ('\n' in self._buf:).
+- L251: [app.py](app.py#L251) - Código: parts = self._buf.split('\n')
+- L252: [app.py](app.py#L252) - Bucle for (p in parts[:-1]:).
+- L253: [app.py](app.py#L253) - Condicional if (p:).
+- L254: [app.py](app.py#L254) - Código: _append_log(p)
+- L255: [app.py](app.py#L255) - Código: self._buf = parts[-1]
+- L256: [app.py](app.py#L256) - Manejo de excepción (except Exception:).
+- L257: [app.py](app.py#L257) - Sentencia pass (sin acción).
+- L258: [app.py](app.py#L258) - Línea vacía.
+- L259: [app.py](app.py#L259) - Define la función flush.
+- L260: [app.py](app.py#L260) - Inicio de bloque try para manejo de errores.
+- L261: [app.py](app.py#L261) - Condicional if (self._buf:).
+- L262: [app.py](app.py#L262) - Código: _append_log(self._buf)
+- L263: [app.py](app.py#L263) - Código: self._buf = ''
+- L264: [app.py](app.py#L264) - Manejo de excepción (except Exception:).
+- L265: [app.py](app.py#L265) - Sentencia pass (sin acción).
+- L266: [app.py](app.py#L266) - Línea vacía.
+- L267: [app.py](app.py#L267) - Línea vacía.
+- L268: [app.py](app.py#L268) - Inicio de bloque try para manejo de errores.
+- L269: [app.py](app.py#L269) - Código: logging.getLogger('werkzeug').setLevel(logging.INFO)
+- L270: [app.py](app.py#L270) - Manejo de excepción (except Exception:).
+- L271: [app.py](app.py#L271) - Sentencia pass (sin acción).
+- L272: [app.py](app.py#L272) - Línea vacía.
+- L273: [app.py](app.py#L273) - Código: model_pb = os.path.join('ssd_mobileNet', 'frozen_inference_graph.pb')
+- L274: [app.py](app.py#L274) - Código: labels_path = os.path.join(
+- L275: [app.py](app.py#L275) - Código: 'ssd_mobileNet', 'object_detection_classes_coco.txt')
+- L276: [app.py](app.py#L276) - Línea vacía.
+- L277: [app.py](app.py#L277) - Código: model_pbtxt = os.path.join(
+- L278: [app.py](app.py#L278) - Código: 'ssd_mobileNet', 'ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
+- L279: [app.py](app.py#L279) - Línea vacía.
+- L280: [app.py](app.py#L280) - Código: model_image_tensor = 'image_tensor:0'
+- L281: [app.py](app.py#L281) - Código: model_boxes_tensor = 'detection_boxes:0'
+- L282: [app.py](app.py#L282) - Código: model_scores_tensor = 'detection_scores:0'
+- L283: [app.py](app.py#L283) - Código: model_classes_tensor = 'detection_classes:0'
+- L284: [app.py](app.py#L284) - Código: model_num_tensor = 'num_detections:0'
+- L285: [app.py](app.py#L285) - Línea vacía.
+- L286: [app.py](app.py#L286) - Línea vacía.
+- L287: [app.py](app.py#L287) - Define la función _load_model_names_from_pbtxt.
+- L288: [app.py](app.py#L288) - Inicio o fin de cadena multilínea.
+- L289: [app.py](app.py#L289) - Código: los nombres de tensores usados por la aplicación (si es posible).
+- L290: [app.py](app.py#L290) - Inicio o fin de cadena multilínea.
+- L291: [app.py](app.py#L291) - Declara uso de variables globales (model_image_tensor, model_boxes_tensor, model_scores_tensor, model_classes_tensor, model_num_tensor).
+- L292: [app.py](app.py#L292) - Inicio de bloque try para manejo de errores.
+- L293: [app.py](app.py#L293) - Condicional if (not os.path.exists(path):).
+- L294: [app.py](app.py#L294) - Código: _append_log(f"Model pbtxt not found: {path}")
+- L295: [app.py](app.py#L295) - Retorna un valor.
+- L296: [app.py](app.py#L296) - Código: text = open(path, 'r', encoding='utf-8', errors='ignore').read()
+- L297: [app.py](app.py#L297) - Importa módulo (import re).
+- L298: [app.py](app.py#L298) - Código: nodes = re.findall(r"node\s*\{([^}]+)\}", text, flags=re.DOTALL)
+- L299: [app.py](app.py#L299) - Bucle for (n in nodes:).
+- L300: [app.py](app.py#L300) - Código: mname = re.search(r'name\s*:\s*"([^"]+)"', n)
+- L301: [app.py](app.py#L301) - Código: mop = re.search(r'op\s*:\s*"([^"]+)"', n)
+- L302: [app.py](app.py#L302) - Condicional if (not mname or not mop:).
+- L303: [app.py](app.py#L303) - Código: continue
+- L304: [app.py](app.py#L304) - Código: name = mname.group(1).strip()
+- L305: [app.py](app.py#L305) - Código: op = mop.group(1).strip()
+- L306: [app.py](app.py#L306) - Condicional if (op.lower() == 'placeholder' and model_image_tensor == 'image_tensor:0':).
+- L307: [app.py](app.py#L307) - Código: model_image_tensor = f"{name}:0"
+- L308: [app.py](app.py#L308) - Código: _append_log(
+- L309: [app.py](app.py#L309) - Código: f"Configured image tensor name from pbtxt: {model_image_tensor}")
+- L310: [app.py](app.py#L310) - Condicional if (name == 'detection_boxes':).
+- L311: [app.py](app.py#L311) - Código: model_boxes_tensor = 'detection_boxes:0'
+- L312: [app.py](app.py#L312) - Condicional if (name == 'detection_scores':).
+- L313: [app.py](app.py#L313) - Código: model_scores_tensor = 'detection_scores:0'
+- L314: [app.py](app.py#L314) - Condicional if (name == 'detection_classes':).
+- L315: [app.py](app.py#L315) - Código: model_classes_tensor = 'detection_classes:0'
+- L316: [app.py](app.py#L316) - Condicional if (name == 'num_detections':).
+- L317: [app.py](app.py#L317) - Código: model_num_tensor = 'num_detections:0'
+- L318: [app.py](app.py#L318) - Código: _append_log(
+- L319: [app.py](app.py#L319) - Código: f"Model tensor names: image={model_image_tensor} boxes={model_boxes_tensor} scores={model_scores_tensor} classes={model_classes_tensor} num={model_num_tensor}")
+- L320: [app.py](app.py#L320) - Manejo de excepción (except Exception as e:).
+- L321: [app.py](app.py#L321) - Código: _append_log(f"Error parsing pbtxt for model names: {e}")
+- L322: [app.py](app.py#L322) - Línea vacía.
+- L323: [app.py](app.py#L323) - Línea vacía.
+- L324: [app.py](app.py#L324) - Código: _load_model_names_from_pbtxt(model_pbtxt)
+- L325: [app.py](app.py#L325) - Línea vacía.
+- L326: [app.py](app.py#L326) - Código: model_sess = None
+- L327: [app.py](app.py#L327) - Código: model_graph = None
+- L328: [app.py](app.py#L328) - Código: model_lock = threading.Lock()
+- L329: [app.py](app.py#L329) - Línea vacía.
+- L330: [app.py](app.py#L330) - Línea vacía.
+- L331: [app.py](app.py#L331) - Define la función translate_label.
+- L332: [app.py](app.py#L332) - Inicio o fin de cadena multilínea.
+- L333: [app.py](app.py#L333) - Condicional if (label is None:).
+- L334: [app.py](app.py#L334) - Retorna ''.
+- L335: [app.py](app.py#L335) - Código: lbl = str(label).strip().lower()
+- L336: [app.py](app.py#L336) - Código: mapping = {
+- L337: [app.py](app.py#L337) - Código: 'person': 'persona', 'people': 'persona', 'persona': 'persona',
+- L338: [app.py](app.py#L338) - Código: }
+- L339: [app.py](app.py#L339) - Retorna mapping.get(lbl, lbl).
+- L340: [app.py](app.py#L340) - Línea vacía.
+- L341: [app.py](app.py#L341) - Línea vacía.
+- L342: [app.py](app.py#L342) - Código: DEFAULT_LABELS = ['sin etiqueta']
+- L343: [app.py](app.py#L343) - Línea vacía.
+- L344: [app.py](app.py#L344) - Línea vacía.
+- L345: [app.py](app.py#L345) - Define la función _load_coco_labels.
+- L346: [app.py](app.py#L346) - Inicio de bloque try para manejo de errores.
+- L347: [app.py](app.py#L347) - Condicional if (os.path.exists(path):).
+- L348: [app.py](app.py#L348) - Context manager (open(path, 'r', encoding='utf-8') as f:).
+- L349: [app.py](app.py#L349) - Código: lines = [l.strip() for l in f.readlines() if l.strip()]
+- L350: [app.py](app.py#L350) - Condicional if (len(lines) > 0 and lines[0].lower() != 'sin etiqueta':).
+- L351: [app.py](app.py#L351) - Retorna ['sin etiqueta'] + lines.
+- L352: [app.py](app.py#L352) - Retorna lines or DEFAULT_LABELS.
+- L353: [app.py](app.py#L353) - Bloque else.
+- L354: [app.py](app.py#L354) - Código: _append_log(f"Labels file not found: {path}")
+- L355: [app.py](app.py#L355) - Manejo de excepción (except Exception as e:).
+- L356: [app.py](app.py#L356) - Código: _append_log(f"Error loading COCO labels from {path}: {e}")
+- L357: [app.py](app.py#L357) - Retorna DEFAULT_LABELS.
+- L358: [app.py](app.py#L358) - Línea vacía.
+- L359: [app.py](app.py#L359) - Línea vacía.
+- L360: [app.py](app.py#L360) - Código: coco_classes = _load_coco_labels(labels_path)
+- L361: [app.py](app.py#L361) - Línea vacía.
+- L362: [app.py](app.py#L362) - Línea vacía.
+- L363: [app.py](app.py#L363) - Define la función load_local_model.
+- L364: [app.py](app.py#L364) - Inicio o fin de cadena multilínea.
+- L365: [app.py](app.py#L365) - Código: Usa tf.compat.v1 para importar el GraphDef desde `model_pb`.
+- L366: [app.py](app.py#L366) - Inicio o fin de cadena multilínea.
+- L367: [app.py](app.py#L367) - Declara uso de variables globales (model_sess, model_graph).
+- L368: [app.py](app.py#L368) - Condicional if (not tf_available:).
+- L369: [app.py](app.py#L369) - Código: _append_log("ERROR: TensorFlow no disponible para cargar modelo local")
+- L370: [app.py](app.py#L370) - Retorna None, None.
+- L371: [app.py](app.py#L371) - Condicional if (model_sess is None:).
+- L372: [app.py](app.py#L372) - Context manager (model_lock:).
+- L373: [app.py](app.py#L373) - Condicional if (model_sess is None:).
+- L374: [app.py](app.py#L374) - Condicional if (not os.path.exists(model_pb):).
+- L375: [app.py](app.py#L375) - Código: _append_log(f"Local TF model file not found: {model_pb}")
+- L376: [app.py](app.py#L376) - Retorna None, None.
+- L377: [app.py](app.py#L377) - Inicio de bloque try para manejo de errores.
+- L378: [app.py](app.py#L378) - Código: _append_log(
+- L379: [app.py](app.py#L379) - Código: "Cargando modelo SSD MobileNet local (TensorFlow)...")
+- L380: [app.py](app.py#L380) - Código: graph_def = tf.compat.v1.GraphDef()
+- L381: [app.py](app.py#L381) - Context manager (tf.io.gfile.GFile(model_pb, 'rb') as f:).
+- L382: [app.py](app.py#L382) - Código: graph_def.ParseFromString(f.read())
+- L383: [app.py](app.py#L383) - Código: graph = tf.Graph()
+- L384: [app.py](app.py#L384) - Context manager (graph.as_default():).
+- L385: [app.py](app.py#L385) - Código: tf.import_graph_def(graph_def, name='')
+- L386: [app.py](app.py#L386) - Código: sess = tf.compat.v1.Session(graph=graph)
+- L387: [app.py](app.py#L387) - Código: model_graph = graph
+- L388: [app.py](app.py#L388) - Código: model_sess = sess
+- L389: [app.py](app.py#L389) - Código: _append_log("Modelo local TensorFlow cargado")
+- L390: [app.py](app.py#L390) - Manejo de excepción (except Exception as e:).
+- L391: [app.py](app.py#L391) - Código: _append_log(f"Error cargando modelo TF local: {e}")
+- L392: [app.py](app.py#L392) - Retorna None, None.
+- L393: [app.py](app.py#L393) - Retorna model_sess, model_graph.
+- L394: [app.py](app.py#L394) - Línea vacía.
+- L395: [app.py](app.py#L395) - Línea vacía.
+- L396: [app.py](app.py#L396) - Define la función _nms_boxes.
+- L397: [app.py](app.py#L397) - Condicional if (not boxes:).
+- L398: [app.py](app.py#L398) - Retorna [].
+- L399: [app.py](app.py#L399) - Código: boxes = np.array(boxes, dtype=float)
+- L400: [app.py](app.py#L400) - Código: scores = np.array(scores, dtype=float)
+- L401: [app.py](app.py#L401) - Código: x1 = boxes[:, 0]
+- L402: [app.py](app.py#L402) - Código: y1 = boxes[:, 1]
+- L403: [app.py](app.py#L403) - Código: x2 = boxes[:, 2]
+- L404: [app.py](app.py#L404) - Código: y2 = boxes[:, 3]
+- L405: [app.py](app.py#L405) - Código: areas = (x2 - x1 + 1) * (y2 - y1 + 1)
+- L406: [app.py](app.py#L406) - Código: order = scores.argsort()[::-1]
+- L407: [app.py](app.py#L407) - Código: keep = []
+- L408: [app.py](app.py#L408) - Bucle while (order.size > 0:).
+- L409: [app.py](app.py#L409) - Código: i = order[0]
+- L410: [app.py](app.py#L410) - Código: keep.append(i)
+- L411: [app.py](app.py#L411) - Código: xx1 = np.maximum(x1[i], x1[order[1:]])
+- L412: [app.py](app.py#L412) - Código: yy1 = np.maximum(y1[i], y1[order[1:]])
+- L413: [app.py](app.py#L413) - Código: xx2 = np.minimum(x2[i], x2[order[1:]])
+- L414: [app.py](app.py#L414) - Código: yy2 = np.minimum(y2[i], y2[order[1:]])
+- L415: [app.py](app.py#L415) - Código: w = np.maximum(0.0, xx2 - xx1 + 1)
+- L416: [app.py](app.py#L416) - Código: h = np.maximum(0.0, yy2 - yy1 + 1)
+- L417: [app.py](app.py#L417) - Código: inter = w * h
+- L418: [app.py](app.py#L418) - Código: iou = inter / (areas[i] + areas[order[1:]] - inter + 1e-6)
+- L419: [app.py](app.py#L419) - Código: inds = np.where(iou <= iou_threshold)[0]
+- L420: [app.py](app.py#L420) - Código: order = order[inds + 1]
+- L421: [app.py](app.py#L421) - Retorna list(keep).
+- L422: [app.py](app.py#L422) - Línea vacía.
+- L423: [app.py](app.py#L423) - Línea vacía.
+- L424: [app.py](app.py#L424) - Define la función _dedupe_detections.
+- L425: [app.py](app.py#L425) - Inicio o fin de cadena multilínea.
+- L426: [app.py](app.py#L426) - Condicional if (not detections:).
+- L427: [app.py](app.py#L427) - Retorna detections.
+- L428: [app.py](app.py#L428) - Código: boxes = []
+- L429: [app.py](app.py#L429) - Código: scores = []
+- L430: [app.py](app.py#L430) - Bucle for (d in detections:).
+- L431: [app.py](app.py#L431) - Código: x = float(d.get('x', 0))
+- L432: [app.py](app.py#L432) - Código: y = float(d.get('y', 0))
+- L433: [app.py](app.py#L433) - Código: w = float(d.get('w', 0))
+- L434: [app.py](app.py#L434) - Código: h = float(d.get('h', 0))
+- L435: [app.py](app.py#L435) - Código: boxes.append([x, y, x + w, y + h])
+- L436: [app.py](app.py#L436) - Código: scores.append(float(d.get('confidence', 0.0)))
+- L437: [app.py](app.py#L437) - Código: keep = _nms_boxes(boxes, scores, iou_threshold=iou_threshold)
+- L438: [app.py](app.py#L438) - Código: kept = [detections[i] for i in keep]
+- L439: [app.py](app.py#L439) - Retorna kept.
+- L440: [app.py](app.py#L440) - Línea vacía.
+- L441: [app.py](app.py#L441) - Línea vacía.
+- L442: [app.py](app.py#L442) - Define la función detect_objects.
+- L443: [app.py](app.py#L443) - Inicio o fin de cadena multilínea.
+- L444: [app.py](app.py#L444) - Código: - `class_id` : si >=0 filtra por esa clase COCO (1-based index as TF returns), -1 acepta todas.
+- L445: [app.py](app.py#L445) - Código: - Aplica NMS para eliminar detecciones solapadas.
+- L446: [app.py](app.py#L446) - Inicio o fin de cadena multilínea.
+- L447: [app.py](app.py#L447) - Condicional if (not tf_available:).
+- L448: [app.py](app.py#L448) - Código: _append_log("ERROR: TensorFlow no disponible")
+- L449: [app.py](app.py#L449) - Retorna [].
+- L450: [app.py](app.py#L450) - Línea vacía.
+- L451: [app.py](app.py#L451) - Inicio de bloque try para manejo de errores.
+- L452: [app.py](app.py#L452) - Código: sess, graph = load_local_model()
+- L453: [app.py](app.py#L453) - Condicional if (sess is None:).
+- L454: [app.py](app.py#L454) - Retorna [].
+- L455: [app.py](app.py#L455) - Línea vacía.
+- L456: [app.py](app.py#L456) - Código: h, w = image.shape[:2]
+- L457: [app.py](app.py#L457) - Código: inp_size = 300
+- L458: [app.py](app.py#L458) - Línea vacía.
+- L459: [app.py](app.py#L459) - Inicio de bloque try para manejo de errores.
+- L460: [app.py](app.py#L460) - Código: img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+- L461: [app.py](app.py#L461) - Manejo de excepción (except Exception:).
+- L462: [app.py](app.py#L462) - Código: img_rgb = image.copy()
+- L463: [app.py](app.py#L463) - Código: resized = cv2.resize(img_rgb, (inp_size, inp_size))
+- L464: [app.py](app.py#L464) - Línea vacía.
+- L465: [app.py](app.py#L465) - Código: input_np = np.expand_dims(resized, 0)
+- L466: [app.py](app.py#L466) - Línea vacía.
+- L467: [app.py](app.py#L467) - Context manager (model_lock:).
+- L468: [app.py](app.py#L468) - Código: detection_boxes, detection_scores, detection_classes, _ = sess.run([
+- L469: [app.py](app.py#L469) - Código: graph.get_tensor_by_name(model_boxes_tensor),
+- L470: [app.py](app.py#L470) - Código: graph.get_tensor_by_name(model_scores_tensor),
+- L471: [app.py](app.py#L471) - Código: graph.get_tensor_by_name(model_classes_tensor),
+- L472: [app.py](app.py#L472) - Código: graph.get_tensor_by_name(model_num_tensor)
+- L473: [app.py](app.py#L473) - Código: ], feed_dict={graph.get_tensor_by_name(model_image_tensor): input_np})
+- L474: [app.py](app.py#L474) - Línea vacía.
+- L475: [app.py](app.py#L475) - Código: results = []
+- L476: [app.py](app.py#L476) - Código: detection_boxes = detection_boxes[0]
+- L477: [app.py](app.py#L477) - Código: detection_scores = detection_scores[0]
+- L478: [app.py](app.py#L478) - Código: detection_classes = detection_classes[0]
+- L479: [app.py](app.py#L479) - Línea vacía.
+- L480: [app.py](app.py#L480) - Código: raw_boxes = []
+- L481: [app.py](app.py#L481) - Código: raw_scores = []
+- L482: [app.py](app.py#L482) - Código: raw_classes = []
+- L483: [app.py](app.py#L483) - Bucle for (i, (box, score, cls) in enumerate(zip(detection_boxes, detection_scores, detection_classes)):).
+- L484: [app.py](app.py#L484) - Condicional if (score < conf_threshold:).
+- L485: [app.py](app.py#L485) - Código: continue
+- L486: [app.py](app.py#L486) - Código: cls_int = int(cls)
+- L487: [app.py](app.py#L487) - Condicional if (class_id >= 0:).
+- L488: [app.py](app.py#L488) - Condicional if (cls_int != int(class_id):).
+- L489: [app.py](app.py#L489) - Código: continue
+- L490: [app.py](app.py#L490) - Código: y1, x1, y2, x2 = box
+- L491: [app.py](app.py#L491) - Código: x1_px = float(x1 * w)
+- L492: [app.py](app.py#L492) - Código: y1_px = float(y1 * h)
+- L493: [app.py](app.py#L493) - Código: x2_px = float(x2 * w)
+- L494: [app.py](app.py#L494) - Código: y2_px = float(y2 * h)
+- L495: [app.py](app.py#L495) - Código: raw_boxes.append([x1_px, y1_px, x2_px, y2_px])
+- L496: [app.py](app.py#L496) - Código: raw_scores.append(float(score))
+- L497: [app.py](app.py#L497) - Código: raw_classes.append(cls_int)
+- L498: [app.py](app.py#L498) - Línea vacía.
+- L499: [app.py](app.py#L499) - Código: keep_indices = _nms_boxes(raw_boxes, raw_scores, iou_threshold=nms_iou)
+- L500: [app.py](app.py#L500) - Línea vacía.
+- L501: [app.py](app.py#L501) - Bucle for (idx in keep_indices:).
+- L502: [app.py](app.py#L502) - Código: x1_px, y1_px, x2_px, y2_px = raw_boxes[idx]
+- L503: [app.py](app.py#L503) - Código: x = int(max(0, round(x1_px)))
+- L504: [app.py](app.py#L504) - Código: y = int(max(0, round(y1_px)))
+- L505: [app.py](app.py#L505) - Código: bw = int(max(0, round(x2_px - x1_px)))
+- L506: [app.py](app.py#L506) - Código: bh = int(max(0, round(y2_px - y1_px)))
+- L507: [app.py](app.py#L507) - Código: cls_int = raw_classes[idx]
+- L508: [app.py](app.py#L508) - Código: label = coco_classes[cls_int] if 0 <= cls_int < len(
+- L509: [app.py](app.py#L509) - Código: coco_classes) else str(cls_int)
+- L510: [app.py](app.py#L510) - Código: results.append({
+- L511: [app.py](app.py#L511) - Código: 'x': x,
+- L512: [app.py](app.py#L512) - Código: 'y': y,
+- L513: [app.py](app.py#L513) - Código: 'w': bw,
+- L514: [app.py](app.py#L514) - Código: 'h': bh,
+- L515: [app.py](app.py#L515) - Código: 'confidence': float(raw_scores[idx]),
+- L516: [app.py](app.py#L516) - Código: 'class_id': int(cls_int),
+- L517: [app.py](app.py#L517) - Código: 'label': translate_label(label)
+- L518: [app.py](app.py#L518) - Código: })
+- L519: [app.py](app.py#L519) - Línea vacía.
+- L520: [app.py](app.py#L520) - Inicio de bloque try para manejo de errores.
+- L521: [app.py](app.py#L521) - Código: results = _dedupe_detections(results, iou_threshold=0.45)
+- L522: [app.py](app.py#L522) - Manejo de excepción (except Exception:).
+- L523: [app.py](app.py#L523) - Sentencia pass (sin acción).
+- L524: [app.py](app.py#L524) - Línea vacía.
+- L525: [app.py](app.py#L525) - Retorna results.
+- L526: [app.py](app.py#L526) - Línea vacía.
+- L527: [app.py](app.py#L527) - Manejo de excepción (except Exception as e:).
+- L528: [app.py](app.py#L528) - Código: _append_log(f"Error en detección TensorFlow: {e}")
+- L529: [app.py](app.py#L529) - Importa módulo (import traceback).
+- L530: [app.py](app.py#L530) - Código: _append_log(traceback.format_exc())
+- L531: [app.py](app.py#L531) - Retorna [].
+- L532: [app.py](app.py#L532) - Línea vacía.
+- L533: [app.py](app.py#L533) - Línea vacía.
+- L534: [app.py](app.py#L534) - Define la función draw_boxes.
+- L535: [app.py](app.py#L535) - Código: img = image.copy()
+- L536: [app.py](app.py#L536) - Bucle for (d in detections:).
+- L537: [app.py](app.py#L537) - Código: x, y, w, h = int(d.get("x", 0)), int(d.get("y", 0)), int(
+- L538: [app.py](app.py#L538) - Código: d.get("w", 0)), int(d.get("h", 0))
+- L539: [app.py](app.py#L539) - Código: box_color = color
+- L540: [app.py](app.py#L540) - Condicional if ('person_color' in d:).
+- L541: [app.py](app.py#L541) - Inicio de bloque try para manejo de errores.
+- L542: [app.py](app.py#L542) - Código: pc = d['person_color']
+- L543: [app.py](app.py#L543) - Condicional if (isinstance(pc, (list, tuple)) and len(pc) == 3:).
+- L544: [app.py](app.py#L544) - Código: box_color = tuple(int(c) % 256 for c in pc)
+- L545: [app.py](app.py#L545) - Bloque else.
+- L546: [app.py](app.py#L546) - Código: box_color = color
+- L547: [app.py](app.py#L547) - Manejo de excepción (except Exception:).
+- L548: [app.py](app.py#L548) - Código: box_color = color
+- L549: [app.py](app.py#L549) - Condicional elif ('class_id' in d:).
+- L550: [app.py](app.py#L550) - Código: cid = int(d.get('class_id', 0))
+- L551: [app.py](app.py#L551) - Código: box_color = (int((cid * 37) % 256), int((cid * 97) %
+- L552: [app.py](app.py#L552) - Código: 256), int((cid * 61) % 256))
+- L553: [app.py](app.py#L553) - Código: cv2.rectangle(img, (x, y), (x + w, y + h), box_color, thickness)
+- L554: [app.py](app.py#L554) - Código: label = d.get('label') or d.get('class', '') or ''
+- L555: [app.py](app.py#L555) - Condicional if ('person_id' in d:).
+- L556: [app.py](app.py#L556) - Código: label = f"#{d['person_id']} {label}"
+- L557: [app.py](app.py#L557) - Código: conf = d.get('confidence', None)
+- L558: [app.py](app.py#L558) - Condicional if (conf is not None:).
+- L559: [app.py](app.py#L559) - Inicio de bloque try para manejo de errores.
+- L560: [app.py](app.py#L560) - Código: conf_text = f"{conf:.2f}"
+- L561: [app.py](app.py#L561) - Manejo de excepción (except Exception:).
+- L562: [app.py](app.py#L562) - Código: conf_text = str(conf)
+- L563: [app.py](app.py#L563) - Código: text = f"{label}: {conf_text}"
+- L564: [app.py](app.py#L564) - Bloque else.
+- L565: [app.py](app.py#L565) - Código: text = f"{label}"
+- L566: [app.py](app.py#L566) - Condicional if (text:).
+- L567: [app.py](app.py#L567) - Código: font = cv2.FONT_HERSHEY_SIMPLEX
+- L568: [app.py](app.py#L568) - Código: font_scale = max(0.5, min(1.0, img.shape[1] / 1000.0))
+- L569: [app.py](app.py#L569) - Código: txt_th = 1
+- L570: [app.py](app.py#L570) - Código: (tw, th), _ = cv2.getTextSize(text, font, font_scale, txt_th)
+- L571: [app.py](app.py#L571) - Código: text_x = x
+- L572: [app.py](app.py#L572) - Código: text_y = y - 5
+- L573: [app.py](app.py#L573) - Código: rect_top_left = (text_x, text_y - th - 4)
+- L574: [app.py](app.py#L574) - Código: rect_bottom_right = (text_x + tw + 4, text_y)
+- L575: [app.py](app.py#L575) - Código: rect_top_left = (
+- L576: [app.py](app.py#L576) - Código: max(rect_top_left[0], 0), max(rect_top_left[1], 0))
+- L577: [app.py](app.py#L577) - Código: rect_bottom_right = (min(rect_bottom_right[0], img.shape[1]), min(
+- L578: [app.py](app.py#L578) - Código: rect_bottom_right[1], img.shape[0]))
+- L579: [app.py](app.py#L579) - Código: cv2.rectangle(img, rect_top_left, rect_bottom_right, box_color, -1)
+- L580: [app.py](app.py#L580) - Código: cv2.putText(img, text, (rect_top_left[0] + 2, rect_bottom_right[1] - 2),
+- L581: [app.py](app.py#L581) - Código: font, font_scale, (255, 255, 255), txt_th, cv2.LINE_AA)
+- L582: [app.py](app.py#L582) - Retorna img.
+- L583: [app.py](app.py#L583) - Línea vacía.
+- L584: [app.py](app.py#L584) - Línea vacía.
+- L585: [app.py](app.py#L585) - Define la función open_video_capture.
+- L586: [app.py](app.py#L586) - Código: backends = []
+- L587: [app.py](app.py#L587) - Inicio de bloque try para manejo de errores.
+- L588: [app.py](app.py#L588) - Código: backends = [cv2.CAP_FFMPEG, cv2.CAP_GSTREAMER, cv2.CAP_ANY]
+- L589: [app.py](app.py#L589) - Manejo de excepción (except Exception:).
+- L590: [app.py](app.py#L590) - Código: backends = [cv2.CAP_ANY]
+- L591: [app.py](app.py#L591) - Línea vacía.
+- L592: [app.py](app.py#L592) - Bucle for (b in backends:).
+- L593: [app.py](app.py#L593) - Inicio de bloque try para manejo de errores.
+- L594: [app.py](app.py#L594) - Código: cap_try = cv2.VideoCapture(source, b)
+- L595: [app.py](app.py#L595) - Manejo de excepción (except Exception:).
+- L596: [app.py](app.py#L596) - Inicio de bloque try para manejo de errores.
+- L597: [app.py](app.py#L597) - Código: cap_try = cv2.VideoCapture(source)
+- L598: [app.py](app.py#L598) - Manejo de excepción (except Exception:).
+- L599: [app.py](app.py#L599) - Código: cap_try = None
+- L600: [app.py](app.py#L600) - Condicional if (cap_try is not None and cap_try.isOpened():).
+- L601: [app.py](app.py#L601) - Retorna cap_try.
+- L602: [app.py](app.py#L602) - Inicio de bloque try para manejo de errores.
+- L603: [app.py](app.py#L603) - Condicional if (cap_try is not None:).
+- L604: [app.py](app.py#L604) - Código: cap_try.release()
+- L605: [app.py](app.py#L605) - Manejo de excepción (except Exception:).
+- L606: [app.py](app.py#L606) - Sentencia pass (sin acción).
+- L607: [app.py](app.py#L607) - Retorna None.
+- L608: [app.py](app.py#L608) - Línea vacía.
+- L609: [app.py](app.py#L609) - Línea vacía.
+- L610: [app.py](app.py#L610) - Decorador @app.route("/", methods=["GET"]).
+- L611: [app.py](app.py#L611) - Define la función index.
+- L612: [app.py](app.py#L612) - Inicio o fin de cadena multilínea.
+- L613: [app.py](app.py#L613) - Retorna send_from_directory('client', 'index.html').
+- L614: [app.py](app.py#L614) - Línea vacía.
+- L615: [app.py](app.py#L615) - Línea vacía.
+- L616: [app.py](app.py#L616) - Decorador @app.route("/<path:filename>", methods=["GET"]).
+- L617: [app.py](app.py#L617) - Define la función static_files.
+- L618: [app.py](app.py#L618) - Inicio o fin de cadena multilínea.
+- L619: [app.py](app.py#L619) - Retorna send_from_directory('client', filename).
+- L620: [app.py](app.py#L620) - Línea vacía.
+- L621: [app.py](app.py#L621) - Línea vacía.
+- L622: [app.py](app.py#L622) - Decorador @app.route('/detect/image', methods=['POST']).
+- L623: [app.py](app.py#L623) - Define la función detect_image.
+- L624: [app.py](app.py#L624) - Código: start_time = time.time()
+- L625: [app.py](app.py#L625) - Código: visualize = request.args.get(
+- L626: [app.py](app.py#L626) - Código: 'visualize', 'false').lower() in ('1', 'true', 'yes')
+- L627: [app.py](app.py#L627) - Código: img = None
+- L628: [app.py](app.py#L628) - Condicional if ('image' in request.files:).
+- L629: [app.py](app.py#L629) - Código: file = request.files['image']
+- L630: [app.py](app.py#L630) - Código: data = file.read()
+- L631: [app.py](app.py#L631) - Código: arr = np.frombuffer(data, np.uint8)
+- L632: [app.py](app.py#L632) - Código: img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+- L633: [app.py](app.py#L633) - Bloque else.
+- L634: [app.py](app.py#L634) - Código: j = request.get_json(silent=True)
+- L635: [app.py](app.py#L635) - Condicional if (j and 'image_b64' in j:).
+- L636: [app.py](app.py#L636) - Código: data = base64.b64decode(j['image_b64'])
+- L637: [app.py](app.py#L637) - Código: arr = np.frombuffer(data, np.uint8)
+- L638: [app.py](app.py#L638) - Código: img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+- L639: [app.py](app.py#L639) - Condicional if (img is None:).
+- L640: [app.py](app.py#L640) - Retorna jsonify({'error': 'No image provided. Send multipart form `image` or JSON `image_b64`.'}), 400.
+- L641: [app.py](app.py#L641) - Código: conf = float(request.args.get('conf', 0.4))
+- L642: [app.py](app.py#L642) - Código: class_id = int(request.args.get('class_id', -1))
+- L643: [app.py](app.py#L643) - Código: debug = str(request.args.get('debug', 'false')
+- L644: [app.py](app.py#L644) - Código: ).lower() in ('1', 'true', 'yes')
+- L645: [app.py](app.py#L645) - Línea vacía.
+- L646: [app.py](app.py#L646) - Condicional if (not tf_available:).
+- L647: [app.py](app.py#L647) - Retorna jsonify({'error': 'TensorFlow not available. Install tensorflow.'}), 500.
+- L648: [app.py](app.py#L648) - Línea vacía.
+- L649: [app.py](app.py#L649) - Código: raw_info = None
+- L650: [app.py](app.py#L650) - Condicional if (debug and not visualize:).
+- L651: [app.py](app.py#L651) - Código: sess, graph = load_local_model()
+- L652: [app.py](app.py#L652) - Condicional if (sess is None:).
+- L653: [app.py](app.py#L653) - Retorna jsonify({'error': 'Local TensorFlow model not available for debug.'}), 500.
+- L654: [app.py](app.py#L654) - Inicio de bloque try para manejo de errores.
+- L655: [app.py](app.py#L655) - Código: inp_size = 300
+- L656: [app.py](app.py#L656) - Inicio de bloque try para manejo de errores.
+- L657: [app.py](app.py#L657) - Código: img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+- L658: [app.py](app.py#L658) - Manejo de excepción (except Exception:).
+- L659: [app.py](app.py#L659) - Código: img_rgb = img.copy()
+- L660: [app.py](app.py#L660) - Código: resized = cv2.resize(img_rgb, (inp_size, inp_size))
+- L661: [app.py](app.py#L661) - Código: input_np = np.expand_dims(resized, 0)
+- L662: [app.py](app.py#L662) - Context manager (model_lock:).
+- L663: [app.py](app.py#L663) - Código: boxes_raw, scores_raw, classes_raw, _ = sess.run([
+- L664: [app.py](app.py#L664) - Código: graph.get_tensor_by_name(model_boxes_tensor),
+- L665: [app.py](app.py#L665) - Código: graph.get_tensor_by_name(model_scores_tensor),
+- L666: [app.py](app.py#L666) - Código: graph.get_tensor_by_name(model_classes_tensor),
+- L667: [app.py](app.py#L667) - Código: graph.get_tensor_by_name(model_num_tensor)
+- L668: [app.py](app.py#L668) - Código: ], feed_dict={graph.get_tensor_by_name(model_image_tensor): input_np})
+- L669: [app.py](app.py#L669) - Código: boxes_raw = boxes_raw[0].tolist()
+- L670: [app.py](app.py#L670) - Código: scores_raw = scores_raw[0].tolist()
+- L671: [app.py](app.py#L671) - Código: classes_raw = classes_raw[0].astype(int).tolist()
+- L672: [app.py](app.py#L672) - Código: limit = 50
+- L673: [app.py](app.py#L673) - Código: raw_info = {
+- L674: [app.py](app.py#L674) - Código: 'boxes': boxes_raw[:limit], 'scores': scores_raw[:limit], 'classes': classes_raw[:limit]}
+- L675: [app.py](app.py#L675) - Manejo de excepción (except Exception as e:).
+- L676: [app.py](app.py#L676) - Código: _append_log(f"DEBUG_RAW_ERROR: {e}")
+- L677: [app.py](app.py#L677) - Código: raw_info = None
+- L678: [app.py](app.py#L678) - Línea vacía.
+- L679: [app.py](app.py#L679) - Código: detections = detect_objects(img, conf_threshold=conf, class_id=class_id)
+- L680: [app.py](app.py#L680) - Línea vacía.
+- L681: [app.py](app.py#L681) - Código: elapsed_time = time.time() - start_time
+- L682: [app.py](app.py#L682) - Línea vacía.
+- L683: [app.py](app.py#L683) - Condicional if (visualize:).
+- L684: [app.py](app.py#L684) - Código: out_img = draw_boxes(img, detections)
+- L685: [app.py](app.py#L685) - Código: _, png = cv2.imencode('.png', out_img)
+- L686: [app.py](app.py#L686) - Código: elapsed_time = time.time() - start_time
+- L687: [app.py](app.py#L687) - Inicio de bloque try para manejo de errores.
+- L688: [app.py](app.py#L688) - Código: model_name = 'local_model'
+- L689: [app.py](app.py#L689) - Código: _append_response_log('/detect/image', 200, count=len(detections),
+- L690: [app.py](app.py#L690) - Código: model=model_name, time_sec=f"{elapsed_time:.2f}")
+- L691: [app.py](app.py#L691) - Manejo de excepción (except Exception:).
+- L692: [app.py](app.py#L692) - Sentencia pass (sin acción).
+- L693: [app.py](app.py#L693) - Retorna Response(png.tobytes(), mimetype='image/png').
+- L694: [app.py](app.py#L694) - Sentencia pass (sin acción).
+- L695: [app.py](app.py#L695) - Código: response = {'detections': detections, 'count': len(
+- L696: [app.py](app.py#L696) - Código: detections), 'elapsed_seconds': elapsed_time}
+- L697: [app.py](app.py#L697) - Condicional if (raw_info is not None:).
+- L698: [app.py](app.py#L698) - Código: response['raw_detections'] = raw_info
+- L699: [app.py](app.py#L699) - Retorna jsonify(response).
+- L700: [app.py](app.py#L700) - Línea vacía.
+- L701: [app.py](app.py#L701) - Línea vacía.
+- L702: [app.py](app.py#L702) - Decorador @app.route('/detect/video', methods=['POST']).
+- L703: [app.py](app.py#L703) - Define la función detect_video.
+- L704: [app.py](app.py#L704) - Código: start_time = time.time()
+- L705: [app.py](app.py#L705) - Código: frame_step = int(request.form.get(
+- L706: [app.py](app.py#L706) - Código: 'frame_step', request.args.get('frame_step', 1)))
+- L707: [app.py](app.py#L707) - Código: visualize = request.form.get('visualize', request.args.get(
+- L708: [app.py](app.py#L708) - Código: 'visualize', 'false')).lower() in ('1', 'true', 'yes')
+- L709: [app.py](app.py#L709) - Código: timeline = request.form.get('timeline', request.args.get(
+- L710: [app.py](app.py#L710) - Código: 'timeline', 'false')).lower() in ('1', 'true', 'yes')
+- L711: [app.py](app.py#L711) - Código: conf = float(request.form.get('conf', request.args.get('conf', 0.4)))
+- L712: [app.py](app.py#L712) - Código: class_id = int(request.form.get(
+- L713: [app.py](app.py#L713) - Código: 'class_id', request.args.get('class_id', -1)))
+- L714: [app.py](app.py#L714) - Código: model_name = 'local_model'
+- L715: [app.py](app.py#L715) - Código: cap = None
+- L716: [app.py](app.py#L716) - Código: tmp_in = None
+- L717: [app.py](app.py#L717) - Código: tmp_out = None
+- L718: [app.py](app.py#L718) - Código: tmp_mp4 = None
+- L719: [app.py](app.py#L719) - Código: out_writer = None
+- L720: [app.py](app.py#L720) - Código: transcode = request.form.get(
+- L721: [app.py](app.py#L721) - Código: 'transcode', request.args.get('transcode', '0'))
+- L722: [app.py](app.py#L722) - Código: transcode = str(transcode).lower() in ('1', 'true', 'yes')
+- L723: [app.py](app.py#L723) - Inicio de bloque try para manejo de errores.
+- L724: [app.py](app.py#L724) - Condicional if ('video' in request.files:).
+- L725: [app.py](app.py#L725) - Código: file = request.files['video']
+- L726: [app.py](app.py#L726) - Código: tmp_in = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+- L727: [app.py](app.py#L727) - Código: file.save(tmp_in.name)
+- L728: [app.py](app.py#L728) - Código: cap = open_video_capture(tmp_in.name)
+- L729: [app.py](app.py#L729) - Bloque else.
+- L730: [app.py](app.py#L730) - Código: camera_url = request.form.get(
+- L731: [app.py](app.py#L731) - Código: 'camera_url') or request.args.get('camera_url')
+- L732: [app.py](app.py#L732) - Condicional if (not camera_url:).
+- L733: [app.py](app.py#L733) - Código: j = request.get_json(silent=True) or {}
+- L734: [app.py](app.py#L734) - Código: camera_url = j.get('camera_url')
+- L735: [app.py](app.py#L735) - Condicional if (not camera_url:).
+- L736: [app.py](app.py#L736) - Retorna jsonify({'error': 'No video provided. Send multipart `video` file or `camera_url`.'}), 400.
+- L737: [app.py](app.py#L737) - Código: cap = open_video_capture(camera_url)
+- L738: [app.py](app.py#L738) - Condicional if (cap is None:).
+- L739: [app.py](app.py#L739) - Retorna jsonify({'error': 'No se pudo abrir la fuente de video.'}), 500.
+- L740: [app.py](app.py#L740) - Declara uso de variables globales (_video_tracker, _tracker_lock).
+- L741: [app.py](app.py#L741) - Context manager (_tracker_lock:).
+- L742: [app.py](app.py#L742) - Código: _video_tracker = CentroidTracker(
+- L743: [app.py](app.py#L743) - Código: maxDisappeared=30, maxDistance=100)
+- L744: [app.py](app.py#L744) - Línea vacía.
+- L745: [app.py](app.py#L745) - Código: fps = cap.get(cv2.CAP_PROP_FPS) or 25
+- L746: [app.py](app.py#L746) - Condicional if (fps <= 0 or fps > 120:).
+- L747: [app.py](app.py#L747) - Código: fps = 25
+- L748: [app.py](app.py#L748) - Código: width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) or 640)
+- L749: [app.py](app.py#L749) - Código: height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 480)
+- L750: [app.py](app.py#L750) - Condicional if (width <= 0 or width > 4096:).
+- L751: [app.py](app.py#L751) - Código: width = 640
+- L752: [app.py](app.py#L752) - Condicional if (height <= 0 or height > 4096:).
+- L753: [app.py](app.py#L753) - Código: height = 480
+- L754: [app.py](app.py#L754) - Condicional if (visualize:).
+- L755: [app.py](app.py#L755) - Código: tmp_out = tempfile.NamedTemporaryFile(delete=False, suffix='.avi')
+- L756: [app.py](app.py#L756) - Código: tmp_out.close()
+- L757: [app.py](app.py#L757) - Inicio de bloque try para manejo de errores.
+- L758: [app.py](app.py#L758) - Código: _register_tmp_file(tmp_out.name)
+- L759: [app.py](app.py#L759) - Manejo de excepción (except Exception:).
+- L760: [app.py](app.py#L760) - Sentencia pass (sin acción).
+- L761: [app.py](app.py#L761) - Código: fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+- L762: [app.py](app.py#L762) - Código: out_writer = cv2.VideoWriter(
+- L763: [app.py](app.py#L763) - Código: tmp_out.name, fourcc, fps, (width, height))
+- L764: [app.py](app.py#L764) - Condicional if (not out_writer.isOpened():).
+- L765: [app.py](app.py#L765) - Código: _append_log(
+- L766: [app.py](app.py#L766) - Código: f"WARNING: VideoWriter failed to open. fps={fps}, size=({width}, {height})")
+- L767: [app.py](app.py#L767) - Código: out_writer = None
+- L768: [app.py](app.py#L768) - Código: frame_idx = 0
+- L769: [app.py](app.py#L769) - Código: total_detections = 0
+- L770: [app.py](app.py#L770) - Código: per_frame = []
+- L771: [app.py](app.py#L771) - Código: max_frames = int(request.form.get(
+- L772: [app.py](app.py#L772) - Código: 'max_frames', request.args.get('max_frames', 0)))
+- L773: [app.py](app.py#L773) - Bucle while (True:).
+- L774: [app.py](app.py#L774) - Inicio de bloque try para manejo de errores.
+- L775: [app.py](app.py#L775) - Código: ret, frame = cap.read()
+- L776: [app.py](app.py#L776) - Manejo de excepción (except Exception:).
+- L777: [app.py](app.py#L777) - Código: ret, frame = False, None
+- L778: [app.py](app.py#L778) - Condicional if (not ret or frame is None:).
+- L779: [app.py](app.py#L779) - Condicional if (tmp_in is not None:).
+- L780: [app.py](app.py#L780) - Código: break
+- L781: [app.py](app.py#L781) - Código: retry = 0
+- L782: [app.py](app.py#L782) - Código: max_retries = 3
+- L783: [app.py](app.py#L783) - Bucle while (retry < max_retries and (not ret or frame is None):).
+- L784: [app.py](app.py#L784) - Inicio de bloque try para manejo de errores.
+- L785: [app.py](app.py#L785) - Código: ret, frame = cap.read()
+- L786: [app.py](app.py#L786) - Manejo de excepción (except Exception:).
+- L787: [app.py](app.py#L787) - Código: ret, frame = False, None
+- L788: [app.py](app.py#L788) - Código: retry += 1
+- L789: [app.py](app.py#L789) - Condicional if (not ret or frame is None:).
+- L790: [app.py](app.py#L790) - Código: break
+- L791: [app.py](app.py#L791) - Condicional if (frame_idx % frame_step == 0:).
+- L792: [app.py](app.py#L792) - Código: dets = detect_objects(
+- L793: [app.py](app.py#L793) - Código: frame, conf_threshold=conf, class_id=class_id)
+- L794: [app.py](app.py#L794) - Línea vacía.
+- L795: [app.py](app.py#L795) - Context manager (_tracker_lock:).
+- L796: [app.py](app.py#L796) - Código: dets = _video_tracker.update(dets)
+- L797: [app.py](app.py#L797) - Línea vacía.
+- L798: [app.py](app.py#L798) - Código: total_detections += len(dets)
+- L799: [app.py](app.py#L799) - Código: per_frame.append(
+- L800: [app.py](app.py#L800) - Código: {'frame': frame_idx, 'count': len(dets), 'detections': dets})
+- L801: [app.py](app.py#L801) - Condicional if (visualize:).
+- L802: [app.py](app.py#L802) - Código: out_frame = draw_boxes(frame, dets)
+- L803: [app.py](app.py#L803) - Inicio de bloque try para manejo de errores.
+- L804: [app.py](app.py#L804) - Código: out_writer.write(out_frame)
+- L805: [app.py](app.py#L805) - Manejo de excepción (except Exception:).
+- L806: [app.py](app.py#L806) - Sentencia pass (sin acción).
+- L807: [app.py](app.py#L807) - Código: frame_idx += 1
+- L808: [app.py](app.py#L808) - Condicional if (max_frames and frame_idx >= max_frames:).
+- L809: [app.py](app.py#L809) - Código: break
+- L810: [app.py](app.py#L810) - Código: cap.release()
+- L811: [app.py](app.py#L811) - Condicional if (out_writer:).
+- L812: [app.py](app.py#L812) - Código: out_writer.release()
+- L813: [app.py](app.py#L813) - Código: elapsed_time = time.time() - start_time
+- L814: [app.py](app.py#L814) - Código: result = {'frames_processed': frame_idx,
+- L815: [app.py](app.py#L815) - Código: 'total_detections': total_detections, 'sample': per_frame[:20], 'fps': fps, 'elapsed_seconds': elapsed_time}
+- L816: [app.py](app.py#L816) - Línea vacía.
+- L817: [app.py](app.py#L817) - Código: video_to_send = None
+- L818: [app.py](app.py#L818) - Condicional if (timeline:).
+- L819: [app.py](app.py#L819) - Condicional if (visualize and tmp_out and os.path.exists(tmp_out.name):).
+- L820: [app.py](app.py#L820) - Código: video_to_send = tmp_out.name
+- L821: [app.py](app.py#L821) - Condicional elif (tmp_in and os.path.exists(tmp_in.name):).
+- L822: [app.py](app.py#L822) - Código: video_to_send = tmp_in.name
+- L823: [app.py](app.py#L823) - Condicional elif (visualize and tmp_out and os.path.exists(tmp_out.name):).
+- L824: [app.py](app.py#L824) - Código: video_to_send = tmp_out.name
+- L825: [app.py](app.py#L825) - Línea vacía.
+- L826: [app.py](app.py#L826) - Condicional if (timeline and video_to_send:).
+- L827: [app.py](app.py#L827) - Código: detection_segments = []
+- L828: [app.py](app.py#L828) - Bucle for (pf in per_frame:).
+- L829: [app.py](app.py#L829) - Condicional if (pf['count'] > 0:).
+- L830: [app.py](app.py#L830) - Código: frame_num = pf['frame']
+- L831: [app.py](app.py#L831) - Código: timestamp = frame_num / fps
+- L832: [app.py](app.py#L832) - Código: detection_segments.append({
+- L833: [app.py](app.py#L833) - Código: 'frame': frame_num,
+- L834: [app.py](app.py#L834) - Código: 'timestamp': timestamp,
+- L835: [app.py](app.py#L835) - Código: 'count': pf['count'],
+- L836: [app.py](app.py#L836) - Código: 'detections': pf['detections']
+- L837: [app.py](app.py#L837) - Código: })
+- L838: [app.py](app.py#L838) - Código: metadata = {
+- L839: [app.py](app.py#L839) - Código: 'fps': fps,
+- L840: [app.py](app.py#L840) - Código: 'total_frames': frame_idx,
+- L841: [app.py](app.py#L841) - Código: 'duration': frame_idx / fps,
+- L842: [app.py](app.py#L842) - Código: 'detections': detection_segments,
+- L843: [app.py](app.py#L843) - Código: 'total_detections': total_detections
+- L844: [app.py](app.py#L844) - Código: }
+- L845: [app.py](app.py#L845) - Inicio de bloque try para manejo de errores.
+- L846: [app.py](app.py#L846) - Código: _append_response_log('/detect/video', 200, frames=frame_idx,
+- L847: [app.py](app.py#L847) - Código: total=total_detections, model=model_name, mode='timeline', visualize=visualize)
+- L848: [app.py](app.py#L848) - Manejo de excepción (except Exception:).
+- L849: [app.py](app.py#L849) - Sentencia pass (sin acción).
+- L850: [app.py](app.py#L850) - Línea vacía.
+- L851: [app.py](app.py#L851) - Código: video_file_to_embed = video_to_send
+- L852: [app.py](app.py#L852) - Código: _append_log(
+- L853: [app.py](app.py#L853) - Código: f"Timeline: video_to_send={video_to_send}, visualize={visualize}, file_exists={os.path.exists(video_to_send) if video_to_send else False}")
+- L854: [app.py](app.py#L854) - Línea vacía.
+- L855: [app.py](app.py#L855) - Condicional if (visualize and video_to_send and video_to_send.endswith('.avi') and shutil.which('ffmpeg'):).
+- L856: [app.py](app.py#L856) - Condicional if (os.path.exists(video_to_send) and os.path.getsize(video_to_send) > 1000:).
+- L857: [app.py](app.py#L857) - Código: _append_log(
+- L858: [app.py](app.py#L858) - Código: f"Timeline+Visualize: transcoding AVI to MP4 for embedding (size: {os.path.getsize(video_to_send)} bytes)")
+- L859: [app.py](app.py#L859) - Inicio de bloque try para manejo de errores.
+- L860: [app.py](app.py#L860) - Código: tmp_mp4_embed = tempfile.NamedTemporaryFile(
+- L861: [app.py](app.py#L861) - Código: delete=False, suffix='.mp4')
+- L862: [app.py](app.py#L862) - Código: tmp_mp4_embed.close()
+- L863: [app.py](app.py#L863) - Inicio de bloque try para manejo de errores.
+- L864: [app.py](app.py#L864) - Código: _register_tmp_file(tmp_mp4_embed.name)
+- L865: [app.py](app.py#L865) - Manejo de excepción (except Exception:).
+- L866: [app.py](app.py#L866) - Sentencia pass (sin acción).
+- L867: [app.py](app.py#L867) - Código: cmd = [
+- L868: [app.py](app.py#L868) - Código: 'ffmpeg', '-y', '-i', video_to_send,
+- L869: [app.py](app.py#L869) - Código: '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-pix_fmt', 'yuv420p',
+- L870: [app.py](app.py#L870) - Código: '-movflags', 'faststart', tmp_mp4_embed.name
+- L871: [app.py](app.py#L871) - Código: ]
+- L872: [app.py](app.py#L872) - Código: proc = subprocess.run(
+- L873: [app.py](app.py#L873) - Código: cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=120)
+- L874: [app.py](app.py#L874) - Condicional if (proc.returncode == 0 and os.path.exists(tmp_mp4_embed.name) and os.path.getsize(tmp_mp4_embed.name) > 1000:).
+- L875: [app.py](app.py#L875) - Código: video_file_to_embed = tmp_mp4_embed.name
+- L876: [app.py](app.py#L876) - Código: _append_log(
+- L877: [app.py](app.py#L877) - Código: f"Transcode success: {tmp_mp4_embed.name} (size: {os.path.getsize(tmp_mp4_embed.name)} bytes)")
+- L878: [app.py](app.py#L878) - Bloque else.
+- L879: [app.py](app.py#L879) - Código: _append_log(
+- L880: [app.py](app.py#L880) - Código: f"Transcode failed/empty: returncode={proc.returncode}")
+- L881: [app.py](app.py#L881) - Condicional if (proc.stderr:).
+- L882: [app.py](app.py#L882) - Código: _append_log(
+- L883: [app.py](app.py#L883) - Código: f"FFmpeg stderr: {proc.stderr[:200]}")
+- L884: [app.py](app.py#L884) - Manejo de excepción (except Exception as e:).
+- L885: [app.py](app.py#L885) - Código: _append_log(f"Transcode exception: {e}")
+- L886: [app.py](app.py#L886) - Bloque else.
+- L887: [app.py](app.py#L887) - Código: _append_log(
+- L888: [app.py](app.py#L888) - Código: f"Video file too small or missing for transcode: {video_to_send}")
+- L889: [app.py](app.py#L889) - Línea vacía.
+- L890: [app.py](app.py#L890) - Inicio de bloque try para manejo de errores.
+- L891: [app.py](app.py#L891) - Importa módulo (import base64).
+- L892: [app.py](app.py#L892) - Código: _append_log(
+- L893: [app.py](app.py#L893) - Código: f"Attempting to read video file: {video_file_to_embed} (exists: {os.path.exists(video_file_to_embed)})")
+- L894: [app.py](app.py#L894) - Condicional if (not os.path.exists(video_file_to_embed):).
+- L895: [app.py](app.py#L895) - Código: _append_log(f"ERROR: video file not found!")
+- L896: [app.py](app.py#L896) - Código: result['timeline'] = metadata
+- L897: [app.py](app.py#L897) - Código: result['error'] = 'Video file not found'
+- L898: [app.py](app.py#L898) - Retorna jsonify(result).
+- L899: [app.py](app.py#L899) - Línea vacía.
+- L900: [app.py](app.py#L900) - Código: file_size = os.path.getsize(video_file_to_embed)
+- L901: [app.py](app.py#L901) - Código: _append_log(
+- L902: [app.py](app.py#L902) - Código: f"Video file size: {file_size} bytes (~{file_size / 1024 / 1024:.2f} MB)")
+- L903: [app.py](app.py#L903) - Línea vacía.
+- L904: [app.py](app.py#L904) - Context manager (open(video_file_to_embed, 'rb') as vf:).
+- L905: [app.py](app.py#L905) - Código: video_data = vf.read()
+- L906: [app.py](app.py#L906) - Condicional if (not video_data:).
+- L907: [app.py](app.py#L907) - Código: _append_log(
+- L908: [app.py](app.py#L908) - Código: f"ERROR: read {len(video_data)} bytes from file")
+- L909: [app.py](app.py#L909) - Código: result['timeline'] = metadata
+- L910: [app.py](app.py#L910) - Código: result['error'] = 'Video file empty'
+- L911: [app.py](app.py#L911) - Retorna jsonify(result).
+- L912: [app.py](app.py#L912) - Código: video_b64 = base64.b64encode(video_data).decode('utf-8')
+- L913: [app.py](app.py#L913) - Línea vacía.
+- L914: [app.py](app.py#L914) - Código: _append_log(
+- L915: [app.py](app.py#L915) - Código: f"Video base64 encoded: {len(video_b64)} chars (~{len(video_b64) * 3 / 4 / 1024 / 1024:.2f} MB base64)")
+- L916: [app.py](app.py#L916) - Código: result['timeline'] = metadata
+- L917: [app.py](app.py#L917) - Código: result['video_data'] = video_b64
+- L918: [app.py](app.py#L918) - Código: result['video_mime'] = 'video/mp4'
+- L919: [app.py](app.py#L919) - Código: _append_log("Timeline response ready with video_data")
+- L920: [app.py](app.py#L920) - Retorna jsonify(result).
+- L921: [app.py](app.py#L921) - Manejo de excepción (except Exception as e:).
+- L922: [app.py](app.py#L922) - Código: _append_log(f"Timeline video encoding error: {e}")
+- L923: [app.py](app.py#L923) - Importa módulo (import traceback).
+- L924: [app.py](app.py#L924) - Código: _append_log(f"Traceback: {traceback.format_exc()}")
+- L925: [app.py](app.py#L925) - Código: result['timeline'] = metadata
+- L926: [app.py](app.py#L926) - Código: result['error'] = f'Video encoding error: {str(e)}'
+- L927: [app.py](app.py#L927) - Código: _append_log(f"Fallback: returning timeline without video")
+- L928: [app.py](app.py#L928) - Retorna jsonify(result).
+- L929: [app.py](app.py#L929) - Condicional elif (visualize and tmp_out:).
+- L930: [app.py](app.py#L930) - Condicional if (transcode and shutil.which('ffmpeg'):).
+- L931: [app.py](app.py#L931) - Inicio de bloque try para manejo de errores.
+- L932: [app.py](app.py#L932) - Código: tmp_mp4 = tempfile.NamedTemporaryFile(
+- L933: [app.py](app.py#L933) - Código: delete=False, suffix='.mp4')
+- L934: [app.py](app.py#L934) - Código: tmp_mp4.close()
+- L935: [app.py](app.py#L935) - Inicio de bloque try para manejo de errores.
+- L936: [app.py](app.py#L936) - Código: _register_tmp_file(tmp_mp4.name)
+- L937: [app.py](app.py#L937) - Manejo de excepción (except Exception:).
+- L938: [app.py](app.py#L938) - Sentencia pass (sin acción).
+- L939: [app.py](app.py#L939) - Código: cmd = [
+- L940: [app.py](app.py#L940) - Código: 'ffmpeg', '-y', '-i', tmp_out.name,
+- L941: [app.py](app.py#L941) - Código: '-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-pix_fmt', 'yuv420p',
+- L942: [app.py](app.py#L942) - Código: '-movflags', 'faststart', tmp_mp4.name
+- L943: [app.py](app.py#L943) - Código: ]
+- L944: [app.py](app.py#L944) - Código: proc = subprocess.run(
+- L945: [app.py](app.py#L945) - Código: cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+- L946: [app.py](app.py#L946) - Condicional if (proc.returncode == 0:).
+- L947: [app.py](app.py#L947) - Código: _append_log(
+- L948: [app.py](app.py#L948) - Código: f"FFMPEG: transcode success {tmp_mp4.name}")
+- L949: [app.py](app.py#L949) - Retorna send_file(tmp_mp4.name, as_attachment=True, download_name='detections.mp4', mimetype='video/mp4').
+- L950: [app.py](app.py#L950) - Bloque else.
+- L951: [app.py](app.py#L951) - Código: _append_log(
+- L952: [app.py](app.py#L952) - Código: f"FFMPEG ERROR returncode={proc.returncode}: {proc.stderr}")
+- L953: [app.py](app.py#L953) - Manejo de excepción (except Exception as e:).
+- L954: [app.py](app.py#L954) - Código: _append_log(f"FFMPEG exception: {e}")
+- L955: [app.py](app.py#L955) - Inicio de bloque try para manejo de errores.
+- L956: [app.py](app.py#L956) - Código: _append_response_log(
+- L957: [app.py](app.py#L957) - Código: '/detect/video', 200, frames=frame_idx, total=total_detections, model=model_name)
+- L958: [app.py](app.py#L958) - Manejo de excepción (except Exception:).
+- L959: [app.py](app.py#L959) - Sentencia pass (sin acción).
+- L960: [app.py](app.py#L960) - Inicio de bloque try para manejo de errores.
+- L961: [app.py](app.py#L961) - Retorna send_file(tmp_out.name, as_attachment=True, download_name='detections.avi').
+- L962: [app.py](app.py#L962) - Manejo de excepción (except Exception as e:).
+- L963: [app.py](app.py#L963) - Condicional if (tmp_mp4 and os.path.exists(tmp_mp4.name):).
+- L964: [app.py](app.py#L964) - Inicio de bloque try para manejo de errores.
+- L965: [app.py](app.py#L965) - Código: _append_response_log('/detect/video', 200, frames=frame_idx,
+- L966: [app.py](app.py#L966) - Código: total=total_detections, model=model_name, fallback='mp4')
+- L967: [app.py](app.py#L967) - Manejo de excepción (except Exception:).
+- L968: [app.py](app.py#L968) - Sentencia pass (sin acción).
+- L969: [app.py](app.py#L969) - Retorna send_file(tmp_mp4.name, as_attachment=True, download_name='detections.mp4', mimetype='video/mp4').
+- L970: [app.py](app.py#L970) - Código: _append_log(f"Failed to send video file (AVI or MP4): {e}")
+- L971: [app.py](app.py#L971) - Retorna jsonify(result).
+- L972: [app.py](app.py#L972) - Retorna jsonify(result).
+- L973: [app.py](app.py#L973) - Bloque finally.
+- L974: [app.py](app.py#L974) - Inicio de bloque try para manejo de errores.
+- L975: [app.py](app.py#L975) - Condicional if (tmp_in:).
+- L976: [app.py](app.py#L976) - Código: os.unlink(tmp_in.name)
+- L977: [app.py](app.py#L977) - Manejo de excepción (except Exception:).
+- L978: [app.py](app.py#L978) - Sentencia pass (sin acción).
+- L979: [app.py](app.py#L979) - Línea vacía.
+- L980: [app.py](app.py#L980) - Línea vacía.
+- L981: [app.py](app.py#L981) - Decorador @app.route('/stream/video').
+- L982: [app.py](app.py#L982) - Define la función stream_video.
+- L983: [app.py](app.py#L983) - Declara uso de variables globales (_stream_tracker, _tracker_lock).
+- L984: [app.py](app.py#L984) - Código: camera_url = request.args.get('camera_url')
+- L985: [app.py](app.py#L985) - Condicional if (not camera_url:).
+- L986: [app.py](app.py#L986) - Retorna jsonify({'error': 'camera_url query parameter is required for streaming.'}), 400.
+- L987: [app.py](app.py#L987) - Código: frame_step = int(request.args.get('frame_step', 1))
+- L988: [app.py](app.py#L988) - Código: conf = float(request.args.get('conf', 0.4))
+- L989: [app.py](app.py#L989) - Código: class_id = int(request.args.get('class_id', -1))
+- L990: [app.py](app.py#L990) - Línea vacía.
+- L991: [app.py](app.py#L991) - Context manager (_tracker_lock:).
+- L992: [app.py](app.py#L992) - Código: _stream_tracker = CentroidTracker(maxDisappeared=20, maxDistance=80)
+- L993: [app.py](app.py#L993) - Línea vacía.
+- L994: [app.py](app.py#L994) - Código: cap = open_video_capture(camera_url)
+- L995: [app.py](app.py#L995) - Condicional if (cap is None or not cap.isOpened():).
+- L996: [app.py](app.py#L996) - Retorna jsonify({'error': 'No se pudo abrir la fuente de video para streaming.'}), 500.
+- L997: [app.py](app.py#L997) - Línea vacía.
+- L998: [app.py](app.py#L998) - Define la función generate.
+- L999: [app.py](app.py#L999) - Código: frame_idx = 0
+- L1000: [app.py](app.py#L1000) - Código: batch_size = 30
+- L1001: [app.py](app.py#L1001) - Código: batch_start_time = time.time()
+- L1002: [app.py](app.py#L1002) - Código: frames_in_batch = 0
+- L1003: [app.py](app.py#L1003) - Inicio de bloque try para manejo de errores.
+- L1004: [app.py](app.py#L1004) - Bucle while (True:).
+- L1005: [app.py](app.py#L1005) - Código: ret, frame = cap.read()
+- L1006: [app.py](app.py#L1006) - Condicional if (not ret or frame is None:).
+- L1007: [app.py](app.py#L1007) - Importa módulo (import time as time_module).
+- L1008: [app.py](app.py#L1008) - Código: time_module.sleep(0.1)
+- L1009: [app.py](app.py#L1009) - Código: continue
+- L1010: [app.py](app.py#L1010) - Condicional if (frame_idx % frame_step == 0:).
+- L1011: [app.py](app.py#L1011) - Inicio de bloque try para manejo de errores.
+- L1012: [app.py](app.py#L1012) - Código: frame_start = time.time()
+- L1013: [app.py](app.py#L1013) - Código: dets = detect_objects(
+- L1014: [app.py](app.py#L1014) - Código: frame, conf_threshold=conf, class_id=class_id)
+- L1015: [app.py](app.py#L1015) - Línea vacía.
+- L1016: [app.py](app.py#L1016) - Context manager (_tracker_lock:).
+- L1017: [app.py](app.py#L1017) - Código: dets = _stream_tracker.update(dets)
+- L1018: [app.py](app.py#L1018) - Línea vacía.
+- L1019: [app.py](app.py#L1019) - Código: out_frame = draw_boxes(frame, dets)
+- L1020: [app.py](app.py#L1020) - Código: frame_elapsed = time.time() - frame_start
+- L1021: [app.py](app.py#L1021) - Código: frames_in_batch += 1
+- L1022: [app.py](app.py#L1022) - Línea vacía.
+- L1023: [app.py](app.py#L1023) - Condicional if (frames_in_batch >= batch_size:).
+- L1024: [app.py](app.py#L1024) - Código: batch_elapsed = time.time() - batch_start_time
+- L1025: [app.py](app.py#L1025) - Código: avg_time_per_frame = batch_elapsed / frames_in_batch
+- L1026: [app.py](app.py#L1026) - Código: _append_log(
+- L1027: [app.py](app.py#L1027) - Código: f"STREAM_TIMING: {frames_in_batch} frames in {batch_elapsed:.2f}s (avg {avg_time_per_frame*1000:.1f}ms/frame)")
+- L1028: [app.py](app.py#L1028) - Código: batch_start_time = time.time()
+- L1029: [app.py](app.py#L1029) - Código: frames_in_batch = 0
+- L1030: [app.py](app.py#L1030) - Manejo de excepción (except Exception:).
+- L1031: [app.py](app.py#L1031) - Código: out_frame = frame
+- L1032: [app.py](app.py#L1032) - Inicio de bloque try para manejo de errores.
+- L1033: [app.py](app.py#L1033) - Código: ret2, jpg = cv2.imencode(
+- L1034: [app.py](app.py#L1034) - Código: '.jpg', out_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
+- L1035: [app.py](app.py#L1035) - Manejo de excepción (except Exception:).
+- L1036: [app.py](app.py#L1036) - Código: ret2 = False
+- L1037: [app.py](app.py#L1037) - Código: jpg = None
+- L1038: [app.py](app.py#L1038) - Condicional if (not ret2 or jpg is None:).
+- L1039: [app.py](app.py#L1039) - Código: continue
+- L1040: [app.py](app.py#L1040) - Código: chunk = jpg.tobytes()
+- L1041: [app.py](app.py#L1041) - Genera (b'--frame\r\n'.
+- L1042: [app.py](app.py#L1042) - Código: b'Content-Type: image/jpeg\r\n'
+- L1043: [app.py](app.py#L1043) - Código: b'Content-Length: ' + f"{len(chunk)}".encode() + b"\r\n\r\n" + chunk + b"\r\n")
+- L1044: [app.py](app.py#L1044) - Código: frame_idx += 1
+- L1045: [app.py](app.py#L1045) - Bloque finally.
+- L1046: [app.py](app.py#L1046) - Inicio de bloque try para manejo de errores.
+- L1047: [app.py](app.py#L1047) - Código: cap.release()
+- L1048: [app.py](app.py#L1048) - Manejo de excepción (except Exception:).
+- L1049: [app.py](app.py#L1049) - Sentencia pass (sin acción).
+- L1050: [app.py](app.py#L1050) - Retorna Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame').
+- L1051: [app.py](app.py#L1051) - Línea vacía.
+- L1052: [app.py](app.py#L1052) - Línea vacía.
+- L1053: [app.py](app.py#L1053) - Decorador @app.route('/logs').
+- L1054: [app.py](app.py#L1054) - Define la función get_logs.
+- L1055: [app.py](app.py#L1055) - Context manager (_log_lock:).
+- L1056: [app.py](app.py#L1056) - Código: lines = [l for l in list(_log_buffer) if isinstance(
+- L1057: [app.py](app.py#L1057) - Código: l, str) and l.startswith('RESPONSE ')]
+- L1058: [app.py](app.py#L1058) - Retorna jsonify({'lines': lines}).
+- L1059: [app.py](app.py#L1059) - Línea vacía.
+- L1060: [app.py](app.py#L1060) - Línea vacía.
+- L1061: [app.py](app.py#L1061) - Condicional if (__name__ == '__main__':).
+- L1062: [app.py](app.py#L1062) - Código: app.run(host='0.0.0.0', port=5501, debug=True)

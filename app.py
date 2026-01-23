@@ -29,7 +29,7 @@ except ImportError:
 
 if device == 'cuda':
     try:
-        from cuda_config import check_cuda, empty_cache
+        from cuda_config import check_cuda
         check_cuda()
     except ImportError:
         print("cuda_config no disponible, usando CPU")
@@ -386,9 +386,9 @@ def load_local_model():
                     sess = tf.compat.v1.Session(graph=graph)
                     model_graph = graph
                     model_sess = sess
-                    _append_log("✓ Modelo local TensorFlow cargado")
+                    _append_log("Modelo local TensorFlow cargado")
                 except Exception as e:
-                    _append_log(f"✗ Error cargando modelo TF local: {e}")
+                    _append_log(f"Error cargando modelo TF local: {e}")
                     return None, None
     return model_sess, model_graph
 

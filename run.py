@@ -58,7 +58,7 @@ def set_half_precision():
     current = "ACTIVADA" if config.get('half_precision') else "DESACTIVADA"
     print(f"Precisión Media (float16): {current}")
     print()
-    print("⚠ Advertencia:")
+    print("Advertencia:")
     print("  - Activar: Más rápido, menos memoria GPU, puede afectar precisión")
     print("  - Desactivar: Más lento, más memoria, máxima precisión")
     print()
@@ -104,7 +104,6 @@ def show_advanced_menu():
 
 def run_app():
     print("\nIniciando aplicación...")
-    print("La aplicación está disponible en: http://localhost:5000")
     print("Presiona CTRL+C para detener")
     print()
 

@@ -330,7 +330,9 @@ function friendlyCameraMessageFromLine(line) {
     return line;
 }
 
-const API_BASE = (function () {
+let API_BASE = (function () {
+    const stored = (typeof localStorage !== 'undefined') ? localStorage.getItem('apiBase') : null;
+    if (stored) return String(stored).replace(/\/$/, '');
     if (typeof window.API_BASE === 'string' && window.API_BASE.length) return window.API_BASE.replace(/\/$/, '');
     const qp = new URLSearchParams(window.location.search).get('api');
     if (qp) return qp.replace(/\/$/, '');
@@ -825,6 +827,55 @@ function stopLogPolling() {
 
 window.addEventListener('load', () => {
     clearAllLogs();
+});
+
+window.addEventListener('load', () => {
+    try {
+        const btnOpen = document.getElementById('btnOpenApiSettings');
+        const panel = document.getElementById('apiSettingsPanel');
+        const input = document.getElementById('apiBaseInput');
+        const btnSave = document.getElementById('btnSaveApiBase');
+        const btnReset = document.getElementById('btnResetApiBase');
+        const note = document.getElementById('apiSettingsNote');
+
+        if (!btnOpen || !panel || !input || !btnSave || !btnReset) return;
+
+        const current = (typeof localStorage !== 'undefined' && localStorage.getItem('apiBase')) || API_BASE || '';
+        input.value = current;
+        if (note) note.textContent = `Usando: ${API_BASE}`;
+
+        btnOpen.addEventListener('click', (e) => {
+            panel.classList.toggle('hidden');
+            input.value = (typeof localStorage !== 'undefined' && localStorage.getItem('apiBase')) || API_BASE || '';
+        });
+
+        btnSave.addEventListener('click', (e) => {
+            const v = input.value ? String(input.value).trim().replace(/\/$/, '') : '';
+            try {
+                if (v) {
+                    localStorage.setItem('apiBase', v);
+                    API_BASE = v;
+                    if (note) note.textContent = `Guardado. Usando: ${v}`;
+                } else {
+                    localStorage.removeItem('apiBase');
+                    API_BASE = (window.location && window.location.origin) ? window.location.origin : 'http://127.0.0.1:5501';
+                    if (note) note.textContent = `Restablecido. Usando: ${API_BASE}`;
+                }
+            } catch (err) {
+                console.warn('No se pudo guardar en localStorage:', err);
+                if (note) note.textContent = 'Error al guardar la configuración en localStorage.';
+            }
+            try { panel.classList.add('hidden'); } catch (e) { }
+        });
+
+        btnReset.addEventListener('click', (e) => {
+            try { localStorage.removeItem('apiBase'); } catch (err) { }
+            API_BASE = (window.location && window.location.origin) ? window.location.origin : 'http://127.0.0.1:5501';
+            input.value = '';
+            if (note) note.textContent = `Restablecido. Usando: ${API_BASE}`;
+            try { panel.classList.add('hidden'); } catch (e) { }
+        });
+    } catch (e) { console.warn('Inicialización ajustes API falló', e); }
 });
 
 if (btnToggleRawLogs) {

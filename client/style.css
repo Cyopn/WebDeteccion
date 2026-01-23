@@ -237,3 +237,118 @@ pre#jsonOut {
     font-size: 0.9rem;
     color: #333;
 }
+
+.api-settings {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 60;
+}
+
+.api-settings {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 2100;
+}
+
+#btnOpenApiSettings {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 2150;
+    cursor: pointer;
+    transition: transform .25s ease;
+}
+
+.api-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 2040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .18s ease, visibility .18s ease;
+}
+
+.api-backdrop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.api-settings-panel {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    width: 340px;
+    max-width: 95%;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 16px;
+    transform: translateX(100%);
+    transition: transform .25s ease;
+    z-index: 2220;
+    overflow: auto;
+}
+
+.api-settings.open #apiSettingsPanel,
+.api-settings.open .api-settings-panel {
+    transform: translateX(0);
+}
+
+.api-settings.open #btnOpenApiSettings {
+    transform: none;
+}
+
+body.menu-open .tabs,
+body.menu-open main {
+    pointer-events: none;
+    opacity: 0.5;
+    filter: blur(2px) brightness(0.85);
+    transition: opacity .18s ease, filter .18s ease;
+}
+
+.api-settings-note {
+    font-size: 0.9em;
+    color: #333
+}
+
+.api-settings-panel.visible {
+    transform: translateX(0) !important;
+    display: block !important;
+}
+
+.api-settings-panel {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+    width: 320px;
+    height: auto;
+    box-shadow: 0 6px 18px rgba(10, 20, 30, 0.12);
+}
+
+.api-settings-panel input[type="text"] {
+    width: 100%;
+    padding: 6px 8px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.api-settings-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.api-settings-note {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.api-action{
+    cursor: pointer;
+}

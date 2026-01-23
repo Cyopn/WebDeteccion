@@ -1,0 +1,1386 @@
+- L1: [client/main.js](client/main.js#L1) - Define constante (const fileInput = document.getElementById('fileInput');).
+- L2: [client/main.js](client/main.js#L2) - Define constante (const btnDetectImage = document.getElementById('btnDetectImage');).
+- L3: [client/main.js](client/main.js#L3) - Define constante (const btnDetectVideo = document.getElementById('btnDetectVideo');).
+- L4: [client/main.js](client/main.js#L4) - Define constante (const classSelectImage = document.getElementById('classSelect_image');).
+- L5: [client/main.js](client/main.js#L5) - Define constante (const classSelectVideo = document.getElementById('classSelect_video');).
+- L6: [client/main.js](client/main.js#L6) - Define constante (const classSelectCamera = document.getElementById('classSelect_camera');).
+- L7: [client/main.js](client/main.js#L7) - Define constante (const resultImage = document.getElementById('resultImage');).
+- L8: [client/main.js](client/main.js#L8) - Define constante (const resultVideo = document.getElementById('resultVideo');).
+- L9: [client/main.js](client/main.js#L9) - Define constante (const jsonOutImage = document.getElementById('jsonOut_image');).
+- L10: [client/main.js](client/main.js#L10) - Define constante (const jsonOutVideo = document.getElementById('jsonOut_video');).
+- L11: [client/main.js](client/main.js#L11) - Define constante (const jsonOutCamera = document.getElementById('jsonOut_camera');).
+- L12: [client/main.js](client/main.js#L12) - Define constante (const videoFileInput = document.getElementById('videoFile');).
+- L13: [client/main.js](client/main.js#L13) - Define constante (const cameraUrlInput = document.getElementById('cameraUrl');).
+- L14: [client/main.js](client/main.js#L14) - Define constante (const frameStepInput = document.getElementById('frameStep');).
+- L15: [client/main.js](client/main.js#L15) - Define constante (const maxFramesInput = document.getElementById('maxFrames');).
+- L16: [client/main.js](client/main.js#L16) - Define constante (const visualizeVideoInput = document.getElementById('visualizeVideo');).
+- L17: [client/main.js](client/main.js#L17) - Define constante (const timelineContainer = document.getElementById('timeline_container');).
+- L18: [client/main.js](client/main.js#L18) - Define constante (const timelineBar = document.getElementById('timeline_bar');).
+- L19: [client/main.js](client/main.js#L19) - Define constante (const timelineCursor = document.getElementById('timeline_cursor');).
+- L20: [client/main.js](client/main.js#L20) - Define constante (const timelineInfo = document.getElementById('timeline_info');).
+- L21: [client/main.js](client/main.js#L21) - Define constante (const confInputCamera = document.getElementById('confInput_camera');).
+- L22: [client/main.js](client/main.js#L22) - Define constante (const confInputImage = document.getElementById('conf_image');).
+- L23: [client/main.js](client/main.js#L23) - Define constante (const confInputVideo = document.getElementById('conf_video');).
+- L24: [client/main.js](client/main.js#L24) - Define constante (const confInputCameraNew = document.getElementById('conf_camera');).
+- L25: [client/main.js](client/main.js#L25) - Define constante (const btnStartLive = document.getElementById('btnStartLive');).
+- L26: [client/main.js](client/main.js#L26) - Define constante (const btnStopLive = document.getElementById('btnStopLive');).
+- L27: [client/main.js](client/main.js#L27) - Define constante (const liveView = document.getElementById('liveView');).
+- L28: [client/main.js](client/main.js#L28) - Define constante (const btnToggleRawLogs = document.getElementById('btnToggleRawLogs');).
+- L29: [client/main.js](client/main.js#L29) - Define variable (let showRawCameraLogs = false;).
+- L30: [client/main.js](client/main.js#L30) - Define constante (const tabButtons = Array.from(document.querySelectorAll('.tabbtn'));).
+- L31: [client/main.js](client/main.js#L31) - Define variable (let _logPollId = null;).
+- L32: [client/main.js](client/main.js#L32) - Define constante (const _lastStatus = { image: null, video: null, camera: null };).
+- L33: [client/main.js](client/main.js#L33) - Línea vacía.
+- L34: [client/main.js](client/main.js#L34) - Define constante (const COCO_CLASSES = [).
+- L35: [client/main.js](client/main.js#L35) - Código: 'sin etiqueta', 'persona', 'bicicleta', 'automovil', 'motocicleta', 'avion',
+- L36: [client/main.js](client/main.js#L36) - Código: 'autobus', 'tren', 'camion', 'barco', 'semaforo', 'boca de incendio', 'street sign',
+- L37: [client/main.js](client/main.js#L37) - Código: 'señal de alto', 'parquimetro', 'banco', 'pájaro', 'gato', 'perro', 'caballo',
+- L38: [client/main.js](client/main.js#L38) - Código: 'oveja', 'vaca', 'elefante', 'oso', 'zebra', 'girafa', 'sombrero', 'mochila',
+- L39: [client/main.js](client/main.js#L39) - Código: 'paraguas', 'zapato', 'lentes', 'bolso de mano', 'tie', 'maleta', 'disco volador',
+- L40: [client/main.js](client/main.js#L40) - Código: 'esquís', 'patineta de nieve', 'pelota de deportes', 'cometa', 'bat de béisbol',
+- L41: [client/main.js](client/main.js#L41) - Código: 'guante de béisbol', 'patineta', 'tabla de surf', 'raqueta de tennis', 'botella',
+- L42: [client/main.js](client/main.js#L42) - Código: 'lámina', 'copa de vino', 'taza', 'tenedor', 'cuchillo', 'cuchara', 'bol',
+- L43: [client/main.js](client/main.js#L43) - Código: 'platano', 'manzana', 'sandwich', 'naranja', 'brocoli', 'zanahoria', 'hot dog',
+- L44: [client/main.js](client/main.js#L44) - Código: 'pizza', 'dona', 'pastel', 'silla', 'sofá', 'planta en maceta', 'cama', 'espejo',
+- L45: [client/main.js](client/main.js#L45) - Código: 'comedor', 'ventana', 'escritorio', 'baño', 'puerta', 'televisión', 'laptop',
+- L46: [client/main.js](client/main.js#L46) - Código: 'mouse', 'remoto', 'teclado', 'celular', 'microondas', 'horno', 'tostador',
+- L47: [client/main.js](client/main.js#L47) - Código: 'sink', 'refrigerador', 'licuadora', 'libro', 'reloj', 'florero', 'tijeras',
+- L48: [client/main.js](client/main.js#L48) - Código: 'oso de peluche', 'secador de pelo', 'cepillo de dientes', 'cepillo de pelo'
+- L49: [client/main.js](client/main.js#L49) - Código: ];
+- L50: [client/main.js](client/main.js#L50) - Línea vacía.
+- L51: [client/main.js](client/main.js#L51) - Define la función getClassIndex.
+- L52: [client/main.js](client/main.js#L52) - Condicional if ((className === 'all') return -1;).
+- L53: [client/main.js](client/main.js#L53) - Define constante (const index = COCO_CLASSES.indexOf(className);).
+- L54: [client/main.js](client/main.js#L54) - Retorna index >= 0 ? index : -1;.
+- L55: [client/main.js](client/main.js#L55) - Código: }
+- L56: [client/main.js](client/main.js#L56) - Línea vacía.
+- L57: [client/main.js](client/main.js#L57) - Define la función getStatusElement.
+- L58: [client/main.js](client/main.js#L58) - Condicional if ((!tab) return null;).
+- L59: [client/main.js](client/main.js#L59) - Define constante (const id = `status_${tab}`;).
+- L60: [client/main.js](client/main.js#L60) - Retorna document.getElementById(id);.
+- L61: [client/main.js](client/main.js#L61) - Código: }
+- L62: [client/main.js](client/main.js#L62) - Línea vacía.
+- L63: [client/main.js](client/main.js#L63) - Define la función renderDetectionsToElement.
+- L64: [client/main.js](client/main.js#L64) - Define constante (const el = document.getElementById(elId);).
+- L65: [client/main.js](client/main.js#L65) - Condicional if ((!el) return;).
+- L66: [client/main.js](client/main.js#L66) - Condicional if ((!detections || !detections.length) {).
+- L67: [client/main.js](client/main.js#L67) - Código: el.textContent = '(sin detecciones)';
+- L68: [client/main.js](client/main.js#L68) - Retorna ;.
+- L69: [client/main.js](client/main.js#L69) - Código: }
+- L70: [client/main.js](client/main.js#L70) - Define constante (const lines = detections.map((d, i) => {).
+- L71: [client/main.js](client/main.js#L71) - Define constante (const label = d.label || d.class || d.class_name || d.class_id || 'obj';).
+- L72: [client/main.js](client/main.js#L72) - Define constante (const conf = (typeof d.confidence !== 'undefined') ? d.confidence : (d.score || d.conf || 0);).
+- L73: [client/main.js](client/main.js#L73) - Define constante (const bbox = (d.x !== undefined && d.y !== undefined) ? ` [x:${Math.round(d.x)},y:${Math.round(d.y)},w:${Math.round(d.w || d.width || 0)},h:${Math.round(d.h || d.height || 0)}]` : '';).
+- L74: [client/main.js](client/main.js#L74) - Retorna `${i + 1}. ${label} (${(conf * 100).toFixed(1)}%)${bbox}`;.
+- L75: [client/main.js](client/main.js#L75) - Código: });
+- L76: [client/main.js](client/main.js#L76) - Código: el.textContent = lines.join('\n');
+- L77: [client/main.js](client/main.js#L77) - Código: }
+- L78: [client/main.js](client/main.js#L78) - Línea vacía.
+- L79: [client/main.js](client/main.js#L79) - Define la función renderVideoSampleToElement.
+- L80: [client/main.js](client/main.js#L80) - Define constante (const el = document.getElementById(elId);).
+- L81: [client/main.js](client/main.js#L81) - Condicional if ((!el) return;).
+- L82: [client/main.js](client/main.js#L82) - Condicional if ((!sample || !sample.length) { el.textContent = '(sin muestras)'; return; }).
+- L83: [client/main.js](client/main.js#L83) - Código: el.innerHTML = '';
+- L84: [client/main.js](client/main.js#L84) - Código: el.style.cursor = 'default';
+- L85: [client/main.js](client/main.js#L85) - Define constante (const personMap = {};).
+- L86: [client/main.js](client/main.js#L86) - Bucle for ((let s of sample) {).
+- L87: [client/main.js](client/main.js#L87) - Condicional if ((!s.detections || !s.detections.length) continue;).
+- L88: [client/main.js](client/main.js#L88) - Define constante (const persons = s.detections.filter(d => {).
+- L89: [client/main.js](client/main.js#L89) - Define constante (const label = String(d.label || d.class || '').toLowerCase();).
+- L90: [client/main.js](client/main.js#L90) - Retorna label === 'persona' || label === 'person';.
+- L91: [client/main.js](client/main.js#L91) - Código: });
+- L92: [client/main.js](client/main.js#L92) - Línea vacía.
+- L93: [client/main.js](client/main.js#L93) - Condicional if ((persons.length === 0) continue;).
+- L94: [client/main.js](client/main.js#L94) - Línea vacía.
+- L95: [client/main.js](client/main.js#L95) - Define constante (const frame = s.frame || s.index || s.f || 0;).
+- L96: [client/main.js](client/main.js#L96) - Define constante (const timestamp = s.timestamp || (fps ? frame / fps : 0);).
+- L97: [client/main.js](client/main.js#L97) - Línea vacía.
+- L98: [client/main.js](client/main.js#L98) - Bucle for ((let p of persons) {).
+- L99: [client/main.js](client/main.js#L99) - Define constante (const personId = (p.person_id !== undefined && p.person_id !== null) ? p.person_id : 'desconocido';).
+- L100: [client/main.js](client/main.js#L100) - Define constante (const personColor = p.person_color || [100, 100, 100];).
+- L101: [client/main.js](client/main.js#L101) - Define constante (const conf = (typeof p.confidence !== 'undefined') ? p.confidence : (p.score || p.conf || 0);).
+- L102: [client/main.js](client/main.js#L102) - Condicional if ((!personMap[personId]) {).
+- L103: [client/main.js](client/main.js#L103) - Código: personMap[personId] = { color: personColor, segments: [] };
+- L104: [client/main.js](client/main.js#L104) - Código: }
+- L105: [client/main.js](client/main.js#L105) - Define constante (const person = personMap[personId];).
+- L106: [client/main.js](client/main.js#L106) - Define constante (const lastSeg = person.segments[person.segments.length - 1];).
+- L107: [client/main.js](client/main.js#L107) - Condicional if ((lastSeg && timestamp - lastSeg.end <= 1.0) {).
+- L108: [client/main.js](client/main.js#L108) - Código: lastSeg.end = timestamp;
+- L109: [client/main.js](client/main.js#L109) - Código: lastSeg.frames += 1;
+- L110: [client/main.js](client/main.js#L110) - Código: lastSeg.totalConf += conf;
+- L111: [client/main.js](client/main.js#L111) - Código: } else {
+- L112: [client/main.js](client/main.js#L112) - Código: person.segments.push({
+- L113: [client/main.js](client/main.js#L113) - Código: start: timestamp,
+- L114: [client/main.js](client/main.js#L114) - Código: end: timestamp,
+- L115: [client/main.js](client/main.js#L115) - Código: firstTimestamp: timestamp,
+- L116: [client/main.js](client/main.js#L116) - Código: frames: 1,
+- L117: [client/main.js](client/main.js#L117) - Código: totalConf: conf
+- L118: [client/main.js](client/main.js#L118) - Código: });
+- L119: [client/main.js](client/main.js#L119) - Código: }
+- L120: [client/main.js](client/main.js#L120) - Código: }
+- L121: [client/main.js](client/main.js#L121) - Código: }
+- L122: [client/main.js](client/main.js#L122) - Línea vacía.
+- L123: [client/main.js](client/main.js#L123) - Define variable (let personCount = 0;).
+- L124: [client/main.js](client/main.js#L124) - Código: Object.entries(personMap).forEach(([pid, info]) => {
+- L125: [client/main.js](client/main.js#L125) - Código: personCount++;
+- L126: [client/main.js](client/main.js#L126) - Define constante (const bgr = info.color;).
+- L127: [client/main.js](client/main.js#L127) - Define constante (const rgb = [bgr[2], bgr[1], bgr[0]];).
+- L128: [client/main.js](client/main.js#L128) - Define constante (const colorStr = `rgb(${rgb.join(',')})`;).
+- L129: [client/main.js](client/main.js#L129) - Línea vacía.
+- L130: [client/main.js](client/main.js#L130) - Define constante (const totalDuration = info.segments.reduce((sum, seg) => sum + (seg.end - seg.start), 0);).
+- L131: [client/main.js](client/main.js#L131) - Define constante (const totalFrames = info.segments.reduce((sum, seg) => sum + seg.frames, 0);).
+- L132: [client/main.js](client/main.js#L132) - Define constante (const totalConf = info.segments.reduce((sum, seg) => sum + seg.totalConf, 0);).
+- L133: [client/main.js](client/main.js#L133) - Define constante (const avgConf = totalConf / totalFrames;).
+- L134: [client/main.js](client/main.js#L134) - Línea vacía.
+- L135: [client/main.js](client/main.js#L135) - Define constante (const timeRanges = info.segments.map(seg =>).
+- L136: [client/main.js](client/main.js#L136) - Código: seg.start === seg.end ? `${seg.start.toFixed(1)}s` : `${seg.start.toFixed(1)}-${seg.end.toFixed(1)}s`
+- L137: [client/main.js](client/main.js#L137) - Código: ).join(', ');
+- L138: [client/main.js](client/main.js#L138) - Línea vacía.
+- L139: [client/main.js](client/main.js#L139) - Define constante (const detectionDiv = document.createElement('div');).
+- L140: [client/main.js](client/main.js#L140) - Código: detectionDiv.style.padding = '12px';
+- L141: [client/main.js](client/main.js#L141) - Código: detectionDiv.style.margin = '6px 0';
+- L142: [client/main.js](client/main.js#L142) - Código: detectionDiv.style.cursor = 'pointer';
+- L143: [client/main.js](client/main.js#L143) - Código: detectionDiv.style.borderRadius = '6px';
+- L144: [client/main.js](client/main.js#L144) - Código: detectionDiv.style.background = '#1a2530';
+- L145: [client/main.js](client/main.js#L145) - Código: detectionDiv.style.borderLeft = `6px solid ${colorStr}`;
+- L146: [client/main.js](client/main.js#L146) - Código: detectionDiv.style.transition = 'all 0.2s';
+- L147: [client/main.js](client/main.js#L147) - Línea vacía.
+- L148: [client/main.js](client/main.js#L148) - Define constante (const personIdHtml = `<div style=").
+- L149: [client/main.js](client/main.js#L149) - Código: background: ${colorStr};
+- L150: [client/main.js](client/main.js#L150) - Código: color: white;
+- L151: [client/main.js](client/main.js#L151) - Código: padding: 6px 12px;
+- L152: [client/main.js](client/main.js#L152) - Código: border-radius: 12px;
+- L153: [client/main.js](client/main.js#L153) - Código: font-weight: bold;
+- L154: [client/main.js](client/main.js#L154) - Código: font-size: 14px;
+- L155: [client/main.js](client/main.js#L155) - Código: display: inline-block;
+- L156: [client/main.js](client/main.js#L156) - Código: margin-bottom: 6px;
+- L157: [client/main.js](client/main.js#L157) - Código: ">#${pid}</div>`;
+- L158: [client/main.js](client/main.js#L158) - Línea vacía.
+- L159: [client/main.js](client/main.js#L159) - Define constante (const statsHtml = `<div style="color: #aaa; font-size: 13px; margin-top: 4px;">).
+- L160: [client/main.js](client/main.js#L160) - Etiqueta/elemento HTML (<strong>${totalFrames}</strong> detecciones en <strong>${totalDuration.toFixed(1)}s</strong>).
+- L161: [client/main.js](client/main.js#L161) - Código: — Confianza promedio: <strong>${(avgConf * 100).toFixed(1)}%</strong>
+- L162: [client/main.js](client/main.js#L162) - Etiqueta/elemento HTML (</div>`;).
+- L163: [client/main.js](client/main.js#L163) - Línea vacía.
+- L164: [client/main.js](client/main.js#L164) - Define constante (const rangesHtml = `<div style="color: #888; font-size: 12px; margin-top: 4px;">).
+- L165: [client/main.js](client/main.js#L165) - Código: Rangos: ${timeRanges}
+- L166: [client/main.js](client/main.js#L166) - Etiqueta/elemento HTML (</div>`;).
+- L167: [client/main.js](client/main.js#L167) - Línea vacía.
+- L168: [client/main.js](client/main.js#L168) - Código: detectionDiv.innerHTML = personIdHtml + statsHtml + rangesHtml;
+- L169: [client/main.js](client/main.js#L169) - Línea vacía.
+- L170: [client/main.js](client/main.js#L170) - Código: detectionDiv.onmouseenter = () => {
+- L171: [client/main.js](client/main.js#L171) - Código: detectionDiv.style.background = '#2a3540';
+- L172: [client/main.js](client/main.js#L172) - Código: };
+- L173: [client/main.js](client/main.js#L173) - Código: detectionDiv.onmouseleave = () => {
+- L174: [client/main.js](client/main.js#L174) - Código: detectionDiv.style.background = '#1a2530';
+- L175: [client/main.js](client/main.js#L175) - Código: };
+- L176: [client/main.js](client/main.js#L176) - Línea vacía.
+- L177: [client/main.js](client/main.js#L177) - Código: detectionDiv.onclick = () => {
+- L178: [client/main.js](client/main.js#L178) - Define constante (const video = document.getElementById('resultVideo');).
+- L179: [client/main.js](client/main.js#L179) - Condicional if ((video && info.segments.length > 0) {).
+- L180: [client/main.js](client/main.js#L180) - Código: video.currentTime = info.segments[0].firstTimestamp;
+- L181: [client/main.js](client/main.js#L181) - Condicional if ((video.paused) video.play();).
+- L182: [client/main.js](client/main.js#L182) - Código: detectionDiv.style.background = '#0066cc';
+- L183: [client/main.js](client/main.js#L183) - Código: setTimeout(() => {
+- L184: [client/main.js](client/main.js#L184) - Código: detectionDiv.style.background = '#1a2530';
+- L185: [client/main.js](client/main.js#L185) - Código: }, 500);
+- L186: [client/main.js](client/main.js#L186) - Código: }
+- L187: [client/main.js](client/main.js#L187) - Código: };
+- L188: [client/main.js](client/main.js#L188) - Línea vacía.
+- L189: [client/main.js](client/main.js#L189) - Código: el.appendChild(detectionDiv);
+- L190: [client/main.js](client/main.js#L190) - Código: });
+- L191: [client/main.js](client/main.js#L191) - Línea vacía.
+- L192: [client/main.js](client/main.js#L192) - Condicional if ((personCount === 0) {).
+- L193: [client/main.js](client/main.js#L193) - Código: el.textContent = '(sin detecciones)';
+- L194: [client/main.js](client/main.js#L194) - Código: }
+- L195: [client/main.js](client/main.js#L195) - Código: }
+- L196: [client/main.js](client/main.js#L196) - Línea vacía.
+- L197: [client/main.js](client/main.js#L197) - Línea vacía.
+- L198: [client/main.js](client/main.js#L198) - Define la función renderTimeline.
+- L199: [client/main.js](client/main.js#L199) - Condicional if ((!timelineContainer || !timelineBar || !metadata) return;).
+- L200: [client/main.js](client/main.js#L200) - Línea vacía.
+- L201: [client/main.js](client/main.js#L201) - Define constante (const existingHighlights = timelineBar.querySelectorAll('.timeline-highlight');).
+- L202: [client/main.js](client/main.js#L202) - Código: existingHighlights.forEach(h => h.remove());
+- L203: [client/main.js](client/main.js#L203) - Línea vacía.
+- L204: [client/main.js](client/main.js#L204) - Define constante (const duration = metadata.duration || 1;).
+- L205: [client/main.js](client/main.js#L205) - Define constante (const detections = metadata.detections || [];).
+- L206: [client/main.js](client/main.js#L206) - Línea vacía.
+- L207: [client/main.js](client/main.js#L207) - Condicional if ((detections.length === 0) {).
+- L208: [client/main.js](client/main.js#L208) - Condicional if ((timelineInfo) timelineInfo.textContent = 'No se detectaron objetos en el video.';).
+- L209: [client/main.js](client/main.js#L209) - Retorna ;.
+- L210: [client/main.js](client/main.js#L210) - Código: }
+- L211: [client/main.js](client/main.js#L211) - Línea vacía.
+- L212: [client/main.js](client/main.js#L212) - Define constante (const personMap = {};).
+- L213: [client/main.js](client/main.js#L213) - Línea vacía.
+- L214: [client/main.js](client/main.js#L214) - Define constante (const ensurePerson = (pid, colorBgr) => {).
+- L215: [client/main.js](client/main.js#L215) - Condicional if ((!personMap[pid]) {).
+- L216: [client/main.js](client/main.js#L216) - Código: personMap[pid] = {
+- L217: [client/main.js](client/main.js#L217) - Código: color: colorBgr || [0, 200, 255],
+- L218: [client/main.js](client/main.js#L218) - Código: segments: [],
+- L219: [client/main.js](client/main.js#L219) - Código: };
+- L220: [client/main.js](client/main.js#L220) - Código: }
+- L221: [client/main.js](client/main.js#L221) - Retorna personMap[pid];.
+- L222: [client/main.js](client/main.js#L222) - Código: };
+- L223: [client/main.js](client/main.js#L223) - Línea vacía.
+- L224: [client/main.js](client/main.js#L224) - Bucle for ((let det of detections) {).
+- L225: [client/main.js](client/main.js#L225) - Define constante (const ts = det.timestamp || (det.frame / (metadata.fps || 25));).
+- L226: [client/main.js](client/main.js#L226) - Define constante (const dets = det.detections || [];).
+- L227: [client/main.js](client/main.js#L227) - Define constante (const persons = dets.filter(d => {).
+- L228: [client/main.js](client/main.js#L228) - Define constante (const label = String(d.label || d.class || '').toLowerCase();).
+- L229: [client/main.js](client/main.js#L229) - Retorna label === 'persona' || label === 'person';.
+- L230: [client/main.js](client/main.js#L230) - Código: });
+- L231: [client/main.js](client/main.js#L231) - Línea vacía.
+- L232: [client/main.js](client/main.js#L232) - Condicional if ((persons.length === 0) {).
+- L233: [client/main.js](client/main.js#L233) - Define constante (const p = ensurePerson('desconocido', [120, 120, 120]);).
+- L234: [client/main.js](client/main.js#L234) - Código: pushSegment(p, ts, det.count || persons.length || 1);
+- L235: [client/main.js](client/main.js#L235) - Código: continue;
+- L236: [client/main.js](client/main.js#L236) - Código: }
+- L237: [client/main.js](client/main.js#L237) - Línea vacía.
+- L238: [client/main.js](client/main.js#L238) - Bucle for ((let p of persons) {).
+- L239: [client/main.js](client/main.js#L239) - Define constante (const pid = (p.person_id !== undefined && p.person_id !== null) ? `ID#${p.person_id}` : 'desconocido';).
+- L240: [client/main.js](client/main.js#L240) - Define constante (const colorBgr = Array.isArray(p.person_color) && p.person_color.length === 3 ? p.person_color : [0, 200, 255];).
+- L241: [client/main.js](client/main.js#L241) - Define constante (const person = ensurePerson(pid, colorBgr);).
+- L242: [client/main.js](client/main.js#L242) - Código: pushSegment(person, ts, 1);
+- L243: [client/main.js](client/main.js#L243) - Código: }
+- L244: [client/main.js](client/main.js#L244) - Código: }
+- L245: [client/main.js](client/main.js#L245) - Línea vacía.
+- L246: [client/main.js](client/main.js#L246) - Define la función pushSegment.
+- L247: [client/main.js](client/main.js#L247) - Define constante (const segments = person.segments;).
+- L248: [client/main.js](client/main.js#L248) - Define constante (const last = segments[segments.length - 1];).
+- L249: [client/main.js](client/main.js#L249) - Condicional if ((last && ts - last.end <= 1.0) {).
+- L250: [client/main.js](client/main.js#L250) - Código: last.end = ts;
+- L251: [client/main.js](client/main.js#L251) - Código: last.count += count;
+- L252: [client/main.js](client/main.js#L252) - Código: } else {
+- L253: [client/main.js](client/main.js#L253) - Código: segments.push({ start: ts, end: ts, count: count });
+- L254: [client/main.js](client/main.js#L254) - Código: }
+- L255: [client/main.js](client/main.js#L255) - Código: }
+- L256: [client/main.js](client/main.js#L256) - Línea vacía.
+- L257: [client/main.js](client/main.js#L257) - Define variable (let totalSegments = 0;).
+- L258: [client/main.js](client/main.js#L258) - Código: Object.entries(personMap).forEach(([pid, info]) => {
+- L259: [client/main.js](client/main.js#L259) - Define constante (const colorBgr = info.color || [0, 200, 255];).
+- L260: [client/main.js](client/main.js#L260) - Define constante (const colorCss = `rgb(${colorBgr[2]}, ${colorBgr[1]}, ${colorBgr[0]})`;).
+- L261: [client/main.js](client/main.js#L261) - Código: info.segments.forEach(seg => {
+- L262: [client/main.js](client/main.js#L262) - Código: totalSegments += 1;
+- L263: [client/main.js](client/main.js#L263) - Define constante (const startPercent = (seg.start / duration) * 100;).
+- L264: [client/main.js](client/main.js#L264) - Define constante (const widthPercent = ((seg.end - seg.start + 0.5) / duration) * 100;).
+- L265: [client/main.js](client/main.js#L265) - Línea vacía.
+- L266: [client/main.js](client/main.js#L266) - Define constante (const highlight = document.createElement('div');).
+- L267: [client/main.js](client/main.js#L267) - Código: highlight.className = 'timeline-highlight';
+- L268: [client/main.js](client/main.js#L268) - Código: highlight.style.left = `${startPercent}%`;
+- L269: [client/main.js](client/main.js#L269) - Código: highlight.style.width = `${Math.max(widthPercent, 0.5)}%`;
+- L270: [client/main.js](client/main.js#L270) - Código: highlight.style.background = colorCss;
+- L271: [client/main.js](client/main.js#L271) - Código: highlight.style.opacity = '0.75';
+- L272: [client/main.js](client/main.js#L272) - Código: highlight.title = `${pid} — ${seg.start.toFixed(1)}s - ${seg.end.toFixed(1)}s (${seg.count} detecciones)`;
+- L273: [client/main.js](client/main.js#L273) - Código: timelineBar.appendChild(highlight);
+- L274: [client/main.js](client/main.js#L274) - Código: });
+- L275: [client/main.js](client/main.js#L275) - Código: });
+- L276: [client/main.js](client/main.js#L276) - Línea vacía.
+- L277: [client/main.js](client/main.js#L277) - Condicional if ((timelineInfo) {).
+- L278: [client/main.js](client/main.js#L278) - Define constante (const personsCount = Object.keys(personMap).length;).
+- L279: [client/main.js](client/main.js#L279) - Código: timelineInfo.textContent = `Total: ${metadata.total_detections} detecciones, ${personsCount} objetos, ${totalSegments} segmentos`;
+- L280: [client/main.js](client/main.js#L280) - Código: }
+- L281: [client/main.js](client/main.js#L281) - Línea vacía.
+- L282: [client/main.js](client/main.js#L282) - Código: timelineContainer.classList.remove('hidden');
+- L283: [client/main.js](client/main.js#L283) - Código: }
+- L284: [client/main.js](client/main.js#L284) - Línea vacía.
+- L285: [client/main.js](client/main.js#L285) - Define la función syncTimelineCursor.
+- L286: [client/main.js](client/main.js#L286) - Condicional if ((!video || !timelineCursor || !video.duration) return;).
+- L287: [client/main.js](client/main.js#L287) - Define constante (const percent = (video.currentTime / video.duration) * 100;).
+- L288: [client/main.js](client/main.js#L288) - Código: timelineCursor.style.left = `${percent}%`;
+- L289: [client/main.js](client/main.js#L289) - Código: }
+- L290: [client/main.js](client/main.js#L290) - Línea vacía.
+- L291: [client/main.js](client/main.js#L291) - Define la función setupTimelineClick.
+- L292: [client/main.js](client/main.js#L292) - Condicional if ((!timelineBar || !video || !metadata) return;).
+- L293: [client/main.js](client/main.js#L293) - Código: timelineBar.addEventListener('click', (e) => {
+- L294: [client/main.js](client/main.js#L294) - Define constante (const rect = timelineBar.getBoundingClientRect();).
+- L295: [client/main.js](client/main.js#L295) - Define constante (const clickX = e.clientX - rect.left;).
+- L296: [client/main.js](client/main.js#L296) - Define constante (const percent = clickX / rect.width;).
+- L297: [client/main.js](client/main.js#L297) - Define constante (const duration = metadata.duration || video.duration || 1;).
+- L298: [client/main.js](client/main.js#L298) - Define constante (const targetTime = percent * duration;).
+- L299: [client/main.js](client/main.js#L299) - Código: video.currentTime = targetTime;
+- L300: [client/main.js](client/main.js#L300) - Código: });
+- L301: [client/main.js](client/main.js#L301) - Código: }
+- L302: [client/main.js](client/main.js#L302) - Línea vacía.
+- L303: [client/main.js](client/main.js#L303) - Define la función setStatus.
+- L304: [client/main.js](client/main.js#L304) - Define constante (const el = getStatusElement(tab);).
+- L305: [client/main.js](client/main.js#L305) - Define constante (const key = tab || 'global';).
+- L306: [client/main.js](client/main.js#L306) - Condicional if ((_lastStatus.hasOwnProperty(key) && _lastStatus[key] === text) return;).
+- L307: [client/main.js](client/main.js#L307) - Código: _lastStatus[key] = text;
+- L308: [client/main.js](client/main.js#L308) - Condicional if ((el) {).
+- L309: [client/main.js](client/main.js#L309) - Define constante (const lower = String(text || '').toLowerCase();).
+- L310: [client/main.js](client/main.js#L310) - Código: el.textContent = text;
+- L311: [client/main.js](client/main.js#L311) - Código: el.classList.remove('error', 'ok');
+- L312: [client/main.js](client/main.js#L312) - Condicional if ((lower.includes('error') || lower.includes('no existe') || lower.includes('no encontrado') || lower.includes('no se')) {).
+- L313: [client/main.js](client/main.js#L313) - Código: el.classList.add('error');
+- L314: [client/main.js](client/main.js#L314) - Código: } else if (lower.includes('listo') || lower.includes('iniciado') || lower.includes('ok')) {
+- L315: [client/main.js](client/main.js#L315) - Código: el.classList.add('ok');
+- L316: [client/main.js](client/main.js#L316) - Código: }
+- L317: [client/main.js](client/main.js#L317) - Código: } else {
+- L318: [client/main.js](client/main.js#L318) - Código: console.log('[status]', key, text);
+- L319: [client/main.js](client/main.js#L319) - Código: }
+- L320: [client/main.js](client/main.js#L320) - Código: }
+- L321: [client/main.js](client/main.js#L321) - Línea vacía.
+- L322: [client/main.js](client/main.js#L322) - Define la función friendlyCameraMessageFromLine.
+- L323: [client/main.js](client/main.js#L323) - Define constante (const L = String(line || '').toLowerCase();).
+- L324: [client/main.js](client/main.js#L324) - Condicional if ((L.includes('connection refused')) return 'Conexión rechazada (verifica IP/puerto)';).
+- L325: [client/main.js](client/main.js#L325) - Condicional if ((L.includes('connection to') && L.includes('failed')) return 'Conexión fallida a la cámara';).
+- L326: [client/main.js](client/main.js#L326) - Condicional if ((L.includes('no se pudo abrir')) return 'No se pudo abrir la fuente de video';).
+- L327: [client/main.js](client/main.js#L327) - Condicional if ((L.includes('overread')) return 'Stream corrupto o invalido (overread)';).
+- L328: [client/main.js](client/main.js#L328) - Condicional if ((L.includes('mjpeg') && L.includes('overread')) return 'Stream MJPEG corrupto';).
+- L329: [client/main.js](client/main.js#L329) - Condicional if ((L.includes('tcp @') && L.includes('failed')) return 'Fallo en conexión TCP';).
+- L330: [client/main.js](client/main.js#L330) - Retorna line;.
+- L331: [client/main.js](client/main.js#L331) - Código: }
+- L332: [client/main.js](client/main.js#L332) - Línea vacía.
+- L333: [client/main.js](client/main.js#L333) - Define variable (let API_BASE = (function () {).
+- L334: [client/main.js](client/main.js#L334) - Define constante (const stored = (typeof localStorage !== 'undefined') ? localStorage.getItem('apiBase') : null;).
+- L335: [client/main.js](client/main.js#L335) - Condicional if ((stored) return String(stored).replace(/\/$/, '');).
+- L336: [client/main.js](client/main.js#L336) - Condicional if ((typeof window.API_BASE === 'string' && window.API_BASE.length) return window.API_BASE.replace(/\/$/, '');).
+- L337: [client/main.js](client/main.js#L337) - Define constante (const qp = new URLSearchParams(window.location.search).get('api');).
+- L338: [client/main.js](client/main.js#L338) - Condicional if ((qp) return qp.replace(/\/$/, '');).
+- L339: [client/main.js](client/main.js#L339) - Retorna 'http://127.0.0.1:5501';.
+- L340: [client/main.js](client/main.js#L340) - Código: })();
+- L341: [client/main.js](client/main.js#L341) - Línea vacía.
+- L342: [client/main.js](client/main.js#L342) - Define la función activateTab.
+- L343: [client/main.js](client/main.js#L343) - Código: document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+- L344: [client/main.js](client/main.js#L344) - Código: document.querySelectorAll('.tabbtn').forEach(b => b.classList.remove('active'));
+- L345: [client/main.js](client/main.js#L345) - Define constante (const panel = document.getElementById(tabId);).
+- L346: [client/main.js](client/main.js#L346) - Define constante (const btn = document.querySelector(`.tabbtn[data-tab="${tabId}"]`);).
+- L347: [client/main.js](client/main.js#L347) - Condicional if ((panel) panel.classList.add('active');).
+- L348: [client/main.js](client/main.js#L348) - Condicional if ((btn) btn.classList.add('active');).
+- L349: [client/main.js](client/main.js#L349) - Línea vacía.
+- L350: [client/main.js](client/main.js#L350) - Define constante (const mapping = {).
+- L351: [client/main.js](client/main.js#L351) - Código: 'tab-image': 'result-panel-image',
+- L352: [client/main.js](client/main.js#L352) - Código: 'tab-video': 'result-panel-video',
+- L353: [client/main.js](client/main.js#L353) - Código: 'tab-camera': 'result-panel-camera'
+- L354: [client/main.js](client/main.js#L354) - Código: };
+- L355: [client/main.js](client/main.js#L355) - Código: document.querySelectorAll('.result-panel').forEach(p => p.classList.remove('active'));
+- L356: [client/main.js](client/main.js#L356) - Define constante (const rid = mapping[tabId];).
+- L357: [client/main.js](client/main.js#L357) - Condicional if ((rid) {).
+- L358: [client/main.js](client/main.js#L358) - Define constante (const rp = document.getElementById(rid);).
+- L359: [client/main.js](client/main.js#L359) - Condicional if ((rp) rp.classList.add('active');).
+- L360: [client/main.js](client/main.js#L360) - Código: }
+- L361: [client/main.js](client/main.js#L361) - Define constante (const key = tabIdToKey(tabId);).
+- L362: [client/main.js](client/main.js#L362) - Condicional if ((key) clearLogsForKey(key);).
+- L363: [client/main.js](client/main.js#L363) - Código: }
+- L364: [client/main.js](client/main.js#L364) - Línea vacía.
+- L365: [client/main.js](client/main.js#L365) - Define la función tabIdToKey.
+- L366: [client/main.js](client/main.js#L366) - Condicional if ((!tabId) return null;).
+- L367: [client/main.js](client/main.js#L367) - Condicional if ((tabId === 'tab-image') return 'image';).
+- L368: [client/main.js](client/main.js#L368) - Condicional if ((tabId === 'tab-video') return 'video';).
+- L369: [client/main.js](client/main.js#L369) - Condicional if ((tabId === 'tab-camera') return 'camera';).
+- L370: [client/main.js](client/main.js#L370) - Retorna null;.
+- L371: [client/main.js](client/main.js#L371) - Código: }
+- L372: [client/main.js](client/main.js#L372) - Línea vacía.
+- L373: [client/main.js](client/main.js#L373) - Define la función clearLogsForKey.
+- L374: [client/main.js](client/main.js#L374) - Condicional if ((!key) return;).
+- L375: [client/main.js](client/main.js#L375) - Define constante (const statusEl = getStatusElement(key);).
+- L376: [client/main.js](client/main.js#L376) - Condicional if ((statusEl) {).
+- L377: [client/main.js](client/main.js#L377) - Código: statusEl.textContent = '';
+- L378: [client/main.js](client/main.js#L378) - Código: statusEl.classList.remove('error', 'ok');
+- L379: [client/main.js](client/main.js#L379) - Código: }
+- L380: [client/main.js](client/main.js#L380) - Condicional if ((_lastStatus.hasOwnProperty(key)) _lastStatus[key] = null;).
+- L381: [client/main.js](client/main.js#L381) - Condicional if ((key === 'image' && jsonOutImage) jsonOutImage.textContent = '';).
+- L382: [client/main.js](client/main.js#L382) - Condicional if ((key === 'video' && jsonOutVideo) jsonOutVideo.textContent = '';).
+- L383: [client/main.js](client/main.js#L383) - Condicional if ((key === 'camera' && jsonOutCamera) jsonOutCamera.textContent = '';).
+- L384: [client/main.js](client/main.js#L384) - Código: }
+- L385: [client/main.js](client/main.js#L385) - Línea vacía.
+- L386: [client/main.js](client/main.js#L386) - Define la función clearAllLogs.
+- L387: [client/main.js](client/main.js#L387) - Código: ['image', 'video', 'camera'].forEach(k => clearLogsForKey(k));
+- L388: [client/main.js](client/main.js#L388) - Código: }
+- L389: [client/main.js](client/main.js#L389) - Línea vacía.
+- L390: [client/main.js](client/main.js#L390) - Código: tabButtons.forEach(b => b.addEventListener('click', (e) => {
+- L391: [client/main.js](client/main.js#L391) - Define constante (const t = e.currentTarget.getAttribute('data-tab');).
+- L392: [client/main.js](client/main.js#L392) - Código: activateTab(t);
+- L393: [client/main.js](client/main.js#L393) - Código: }));
+- L394: [client/main.js](client/main.js#L394) - Línea vacía.
+- L395: [client/main.js](client/main.js#L395) - Condicional if ((btnDetectImage) {).
+- L396: [client/main.js](client/main.js#L396) - Código: btnDetectImage.addEventListener('click', async () => {
+- L397: [client/main.js](client/main.js#L397) - Define constante (const file = fileInput && fileInput.files ? fileInput.files[0] : null;).
+- L398: [client/main.js](client/main.js#L398) - Define constante (const conf = confInputImage ? confInputImage.value : '0.4';).
+- L399: [client/main.js](client/main.js#L399) - Define constante (const classIndex = classSelectImage ? getClassIndex(classSelectImage.value) : -1;).
+- L400: [client/main.js](client/main.js#L400) - Condicional if ((!file) { setStatus('Selecciona primero una imagen.', 'image'); return; }).
+- L401: [client/main.js](client/main.js#L401) - Código: setStatus('Enviando imagen...', 'image');
+- L402: [client/main.js](client/main.js#L402) - Inicio de bloque try.
+- L403: [client/main.js](client/main.js#L403) - Define constante (const form = new FormData(); form.append('image', file);).
+- L404: [client/main.js](client/main.js#L404) - Define variable (let url = `${API_BASE}/detect/image?visualize=true&conf=${encodeURIComponent(conf)}`;).
+- L405: [client/main.js](client/main.js#L405) - Condicional if ((classIndex >= 0) url += `&class_id=${classIndex}`;).
+- L406: [client/main.js](client/main.js#L406) - Define constante (const res = await fetch(url, { method: 'POST', body: form });).
+- L407: [client/main.js](client/main.js#L407) - Condicional if ((!res.ok) { const txt = await res.text(); setStatus(`Error: ${res.status} - ${txt}`, 'image'); return; }).
+- L408: [client/main.js](client/main.js#L408) - Define constante (const contentType = res.headers.get('content-type') || '';).
+- L409: [client/main.js](client/main.js#L409) - Condicional if ((contentType.includes('image')) {).
+- L410: [client/main.js](client/main.js#L410) - Define constante (const blob = await res.blob();).
+- L411: [client/main.js](client/main.js#L411) - Condicional if ((resultImage) { resultImage.style.display = 'block'; resultImage.src = URL.createObjectURL(blob); }).
+- L412: [client/main.js](client/main.js#L412) - Condicional if ((resultVideo) resultVideo.style.display = 'none';).
+- L413: [client/main.js](client/main.js#L413) - Condicional if ((jsonOutImage) jsonOutImage.textContent = 'Imagen retornada con cajas (visualize=true)';).
+- L414: [client/main.js](client/main.js#L414) - Código: setStatus('Listo', 'image');
+- L415: [client/main.js](client/main.js#L415) - Inicio de bloque try.
+- L416: [client/main.js](client/main.js#L416) - Inicio de bloque try.
+- L417: [client/main.js](client/main.js#L417) - Define constante (const form2 = new FormData(); form2.append('image', file);).
+- L418: [client/main.js](client/main.js#L418) - Define variable (let url2 = `${API_BASE}/detect/image?visualize=false&conf=${encodeURIComponent(conf)}`;).
+- L419: [client/main.js](client/main.js#L419) - Condicional if ((classIndex >= 0) url2 += `&class_id=${classIndex}`;).
+- L420: [client/main.js](client/main.js#L420) - Define constante (const r2 = await fetch(url2, { method: 'POST', body: form2 });).
+- L421: [client/main.js](client/main.js#L421) - Condicional if ((r2.ok) {).
+- L422: [client/main.js](client/main.js#L422) - Define constante (const j2 = await r2.json();).
+- L423: [client/main.js](client/main.js#L423) - Condicional if ((j2 && j2.detections) renderDetectionsToElement('log_image', j2.detections);).
+- L424: [client/main.js](client/main.js#L424) - Condicional if ((j2) {).
+- L425: [client/main.js](client/main.js#L425) - Define constante (const cnt = j2.count || (j2.detections && j2.detections.length) || 0;).
+- L426: [client/main.js](client/main.js#L426) - Define constante (const t = j2.elapsed_seconds ? `${j2.elapsed_seconds.toFixed(2)}s` : '';).
+- L427: [client/main.js](client/main.js#L427) - Código: setStatus(`Detección de imagen OK (count=${cnt} time=${t})`, 'image');
+- L428: [client/main.js](client/main.js#L428) - Código: }
+- L429: [client/main.js](client/main.js#L429) - Código: }
+- L430: [client/main.js](client/main.js#L430) - Código: } catch (e) { }
+- L431: [client/main.js](client/main.js#L431) - Código: } else {
+- L432: [client/main.js](client/main.js#L432) - Define constante (const j = await res.json();).
+- L433: [client/main.js](client/main.js#L433) - Define constante (const timeStr = j.elapsed_seconds ? ` (${j.elapsed_seconds.toFixed(2)}s)` : '';).
+- L434: [client/main.js](client/main.js#L434) - Condicional if ((jsonOutImage) jsonOutImage.textContent = JSON.stringify(j, null, 2);).
+- L435: [client/main.js](client/main.js#L435) - Define constante (const cnt = j.count || (j.detections && j.detections.length) || 0;).
+- L436: [client/main.js](client/main.js#L436) - Código: setStatus(`Detección de imagen OK (count=${cnt} time=${timeStr.trim()})`, 'image');
+- L437: [client/main.js](client/main.js#L437) - Inicio de bloque try.
+- L438: [client/main.js](client/main.js#L438) - Inicio de bloque try.
+- L439: [client/main.js](client/main.js#L439) - Código: }
+- L440: [client/main.js](client/main.js#L440) - Código: } catch (err) { setStatus('Error: ' + (err.message || err), 'image'); }
+- L441: [client/main.js](client/main.js#L441) - Código: });
+- L442: [client/main.js](client/main.js#L442) - Código: }
+- L443: [client/main.js](client/main.js#L443) - Línea vacía.
+- L444: [client/main.js](client/main.js#L444) - Condicional if ((btnDetectVideo) {).
+- L445: [client/main.js](client/main.js#L445) - Código: btnDetectVideo.addEventListener('click', async () => {
+- L446: [client/main.js](client/main.js#L446) - Define constante (const vidFile = videoFileInput && videoFileInput.files ? videoFileInput.files[0] : null;).
+- L447: [client/main.js](client/main.js#L447) - Define constante (const frameStep = frameStepInput ? frameStepInput.value : '1';).
+- L448: [client/main.js](client/main.js#L448) - Define constante (const conf = confInputVideo ? confInputVideo.value : '0.4';).
+- L449: [client/main.js](client/main.js#L449) - Define constante (const maxFrames = maxFramesInput ? maxFramesInput.value : '0';).
+- L450: [client/main.js](client/main.js#L450) - Define constante (const showRectangles = visualizeVideoInput ? visualizeVideoInput.checked : false;).
+- L451: [client/main.js](client/main.js#L451) - Define constante (const classIndex = classSelectVideo ? getClassIndex(classSelectVideo.value) : -1;).
+- L452: [client/main.js](client/main.js#L452) - Condicional if ((!vidFile) { setStatus('Selecciona primero un archivo de video.', 'video'); return; }).
+- L453: [client/main.js](client/main.js#L453) - Línea vacía.
+- L454: [client/main.js](client/main.js#L454) - Condicional if ((timelineContainer) timelineContainer.classList.add('hidden');).
+- L455: [client/main.js](client/main.js#L455) - Línea vacía.
+- L456: [client/main.js](client/main.js#L456) - Código: setStatus('Enviando video...', 'video');
+- L457: [client/main.js](client/main.js#L457) - Inicio de bloque try.
+- L458: [client/main.js](client/main.js#L458) - Define constante (const form = new FormData();).
+- L459: [client/main.js](client/main.js#L459) - Código: form.append('video', vidFile);
+- L460: [client/main.js](client/main.js#L460) - Código: form.append('frame_step', frameStep);
+- L461: [client/main.js](client/main.js#L461) - Código: form.append('max_frames', maxFrames);
+- L462: [client/main.js](client/main.js#L462) - Código: form.append('conf', conf);
+- L463: [client/main.js](client/main.js#L463) - Condicional if ((classIndex >= 0) form.append('class_id', classIndex);).
+- L464: [client/main.js](client/main.js#L464) - Línea vacía.
+- L465: [client/main.js](client/main.js#L465) - Código: form.append('timeline', 'true');
+- L466: [client/main.js](client/main.js#L466) - Línea vacía.
+- L467: [client/main.js](client/main.js#L467) - Condicional if ((showRectangles) {).
+- L468: [client/main.js](client/main.js#L468) - Código: form.append('visualize', 'true');
+- L469: [client/main.js](client/main.js#L469) - Código: form.append('transcode', '1');
+- L470: [client/main.js](client/main.js#L470) - Código: }
+- L471: [client/main.js](client/main.js#L471) - Línea vacía.
+- L472: [client/main.js](client/main.js#L472) - Define constante (const res = await fetch(`${API_BASE}/detect/video`, { method: 'POST', body: form });).
+- L473: [client/main.js](client/main.js#L473) - Condicional if ((!res.ok) { const txt = await res.text(); setStatus(`Error: ${res.status} - ${txt}`, 'video'); return; }).
+- L474: [client/main.js](client/main.js#L474) - Línea vacía.
+- L475: [client/main.js](client/main.js#L475) - Define constante (const contentType = res.headers.get('content-type') || '';).
+- L476: [client/main.js](client/main.js#L476) - Define constante (const contentDisp = res.headers.get('content-disposition') || '';).
+- L477: [client/main.js](client/main.js#L477) - Define constante (const isLikelyVideo = contentType.includes('video') || contentType.includes('application/octet-stream') || /filename=.*\.(mp4|avi|mov|mkv)/i.test(contentDisp);).
+- L478: [client/main.js](client/main.js#L478) - Línea vacía.
+- L479: [client/main.js](client/main.js#L479) - Condicional if ((contentType.includes('application/json')) {).
+- L480: [client/main.js](client/main.js#L480) - Define constante (const j = await res.json();).
+- L481: [client/main.js](client/main.js#L481) - Código: console.log('JSON response received:', {
+- L482: [client/main.js](client/main.js#L482) - Código: has_timeline: !!j.timeline,
+- L483: [client/main.js](client/main.js#L483) - Código: has_video_data: !!j.video_data,
+- L484: [client/main.js](client/main.js#L484) - Código: video_data_size: j.video_data ? j.video_data.length : 0,
+- L485: [client/main.js](client/main.js#L485) - Código: video_mime: j.video_mime,
+- L486: [client/main.js](client/main.js#L486) - Código: total_detections: j.timeline?.total_detections,
+- L487: [client/main.js](client/main.js#L487) - Código: frames: j.frames_processed
+- L488: [client/main.js](client/main.js#L488) - Código: });
+- L489: [client/main.js](client/main.js#L489) - Línea vacía.
+- L490: [client/main.js](client/main.js#L490) - Condicional if ((j.timeline) {).
+- L491: [client/main.js](client/main.js#L491) - Define constante (const metadata = j.timeline;).
+- L492: [client/main.js](client/main.js#L492) - Código: console.log('Timeline metadata:', metadata);
+- L493: [client/main.js](client/main.js#L493) - Línea vacía.
+- L494: [client/main.js](client/main.js#L494) - Condicional if ((j.video_data) {).
+- L495: [client/main.js](client/main.js#L495) - Inicio de bloque try.
+- L496: [client/main.js](client/main.js#L496) - Código: console.log('Decoding base64 video...');
+- L497: [client/main.js](client/main.js#L497) - Define constante (const videoBlob = await (async () => {).
+- L498: [client/main.js](client/main.js#L498) - Define constante (const byteCharacters = atob(j.video_data);).
+- L499: [client/main.js](client/main.js#L499) - Define constante (const byteNumbers = new Array(byteCharacters.length);).
+- L500: [client/main.js](client/main.js#L500) - Bucle for ((let i = 0; i < byteCharacters.length; i++) {).
+- L501: [client/main.js](client/main.js#L501) - Código: byteNumbers[i] = byteCharacters.charCodeAt(i);
+- L502: [client/main.js](client/main.js#L502) - Código: }
+- L503: [client/main.js](client/main.js#L503) - Define constante (const byteArray = new Uint8Array(byteNumbers);).
+- L504: [client/main.js](client/main.js#L504) - Retorna new Blob([byteArray], { type: j.video_mime || 'video/mp4' });.
+- L505: [client/main.js](client/main.js#L505) - Código: })();
+- L506: [client/main.js](client/main.js#L506) - Línea vacía.
+- L507: [client/main.js](client/main.js#L507) - Código: console.log('Blob created:', { size: videoBlob.size, type: videoBlob.type });
+- L508: [client/main.js](client/main.js#L508) - Línea vacía.
+- L509: [client/main.js](client/main.js#L509) - Condicional if ((resultVideo) {).
+- L510: [client/main.js](client/main.js#L510) - Código: resultVideo.style.display = 'block';
+- L511: [client/main.js](client/main.js#L511) - Define constante (const url = URL.createObjectURL(videoBlob);).
+- L512: [client/main.js](client/main.js#L512) - Código: console.log('Object URL created:', url);
+- L513: [client/main.js](client/main.js#L513) - Código: resultVideo.src = url;
+- L514: [client/main.js](client/main.js#L514) - Código: resultVideo.load();
+- L515: [client/main.js](client/main.js#L515) - Código: console.log('Video element load() called');
+- L516: [client/main.js](client/main.js#L516) - Código: resultVideo.onloadedmetadata = () => {
+- L517: [client/main.js](client/main.js#L517) - Código: console.log('Video loadedmetadata event fired');
+- L518: [client/main.js](client/main.js#L518) - Inicio de bloque try.
+- L519: [client/main.js](client/main.js#L519) - Línea vacía.
+- L520: [client/main.js](client/main.js#L520) - Código: renderTimeline(metadata);
+- L521: [client/main.js](client/main.js#L521) - Código: setupTimelineClick(resultVideo, metadata);
+- L522: [client/main.js](client/main.js#L522) - Código: resultVideo.addEventListener('timeupdate', () => syncTimelineCursor(resultVideo));
+- L523: [client/main.js](client/main.js#L523) - Código: };
+- L524: [client/main.js](client/main.js#L524) - Condicional if ((resultImage) resultImage.style.display = 'none';).
+- L525: [client/main.js](client/main.js#L525) - Código: }
+- L526: [client/main.js](client/main.js#L526) - Línea vacía.
+- L527: [client/main.js](client/main.js#L527) - Condicional if ((jsonOutVideo) {).
+- L528: [client/main.js](client/main.js#L528) - Código: jsonOutVideo.textContent = `Video con ${metadata.total_detections} detecciones`;
+- L529: [client/main.js](client/main.js#L529) - Código: }
+- L530: [client/main.js](client/main.js#L530) - Línea vacía.
+- L531: [client/main.js](client/main.js#L531) - Condicional if ((metadata.detections) {).
+- L532: [client/main.js](client/main.js#L532) - Código: renderVideoSampleToElement('log_video', metadata.detections, metadata.fps);
+- L533: [client/main.js](client/main.js#L533) - Código: }
+- L534: [client/main.js](client/main.js#L534) - Línea vacía.
+- L535: [client/main.js](client/main.js#L535) - Define constante (const timeStr = j.elapsed_seconds ? ` (${j.elapsed_seconds.toFixed(2)}s)` : '';).
+- L536: [client/main.js](client/main.js#L536) - Define constante (const total = metadata.total_detections || j.total_detections || 0;).
+- L537: [client/main.js](client/main.js#L537) - Código: setStatus(`Detección de video OK (total=${total} time=${j.elapsed_seconds ? j.elapsed_seconds.toFixed(2) + 's' : ''})`, 'video');
+- L538: [client/main.js](client/main.js#L538) - Inicio de bloque try.
+- L539: [client/main.js](client/main.js#L539) - Código: } catch (e) {
+- L540: [client/main.js](client/main.js#L540) - Código: console.error('Error decodificando video base64:', e);
+- L541: [client/main.js](client/main.js#L541) - Código: console.error('Stack:', e.stack);
+- L542: [client/main.js](client/main.js#L542) - Código: setStatus('Error decodificando video: ' + e.message, 'video');
+- L543: [client/main.js](client/main.js#L543) - Código: }
+- L544: [client/main.js](client/main.js#L544) - Código: } else {
+- L545: [client/main.js](client/main.js#L545) - Código: console.warn('Respuesta timeline sin video_data:', j);
+- L546: [client/main.js](client/main.js#L546) - Código: console.warn('Campos disponibles:', Object.keys(j));
+- L547: [client/main.js](client/main.js#L547) - Condicional if ((jsonOutVideo) jsonOutVideo.textContent = JSON.stringify(j, null, 2);).
+- L548: [client/main.js](client/main.js#L548) - Código: setStatus('Metadata de detecciones recibida (video no disponible)', 'video');
+- L549: [client/main.js](client/main.js#L549) - Línea vacía.
+- L550: [client/main.js](client/main.js#L550) - Condicional if ((metadata.detections) {).
+- L551: [client/main.js](client/main.js#L551) - Código: renderVideoSampleToElement('log_video', metadata.detections, metadata.fps);
+- L552: [client/main.js](client/main.js#L552) - Código: }
+- L553: [client/main.js](client/main.js#L553) - Código: }
+- L554: [client/main.js](client/main.js#L554) - Código: } else {
+- L555: [client/main.js](client/main.js#L555) - Condicional if ((jsonOutVideo) jsonOutVideo.textContent = JSON.stringify(j, null, 2);).
+- L556: [client/main.js](client/main.js#L556) - Define constante (const sampleCount = (j.sample && j.sample.reduce((s, f) => s + (f.count || 0), 0)) || j.total_detections || 0;).
+- L557: [client/main.js](client/main.js#L557) - Código: setStatus(`Detección de video OK (total=${sampleCount} time=${j.elapsed_seconds ? j.elapsed_seconds.toFixed(2) + 's' : ''})`, 'video');
+- L558: [client/main.js](client/main.js#L558) - Inicio de bloque try.
+- L559: [client/main.js](client/main.js#L559) - Inicio de bloque try.
+- L560: [client/main.js](client/main.js#L560) - Código: }
+- L561: [client/main.js](client/main.js#L561) - Código: } else if (isLikelyVideo) {
+- L562: [client/main.js](client/main.js#L562) - Define constante (const blob = await res.blob();).
+- L563: [client/main.js](client/main.js#L563) - Línea vacía.
+- L564: [client/main.js](client/main.js#L564) - Condicional if ((resultVideo) {).
+- L565: [client/main.js](client/main.js#L565) - Código: resultVideo.style.display = 'block';
+- L566: [client/main.js](client/main.js#L566) - Define constante (const url = URL.createObjectURL(blob);).
+- L567: [client/main.js](client/main.js#L567) - Código: resultVideo.src = url;
+- L568: [client/main.js](client/main.js#L568) - Código: resultVideo.load();
+- L569: [client/main.js](client/main.js#L569) - Código: resultVideo.onloadedmetadata = () => {
+- L570: [client/main.js](client/main.js#L570) - Inicio de bloque try.
+- L571: [client/main.js](client/main.js#L571) - Código: };
+- L572: [client/main.js](client/main.js#L572) - Línea vacía.
+- L573: [client/main.js](client/main.js#L573) - Código: setTimeout(() => {
+- L574: [client/main.js](client/main.js#L574) - Define constante (const downloadContainer = document.getElementById('video_download');).
+- L575: [client/main.js](client/main.js#L575) - Condicional if ((resultVideo && (resultVideo.readyState < 2 || resultVideo.error)) {).
+- L576: [client/main.js](client/main.js#L576) - Inicio de bloque try.
+- L577: [client/main.js](client/main.js#L577) - Condicional if ((downloadContainer) {).
+- L578: [client/main.js](client/main.js#L578) - Código: downloadContainer.innerHTML = '';
+- L579: [client/main.js](client/main.js#L579) - Define constante (const a = document.createElement('a');).
+- L580: [client/main.js](client/main.js#L580) - Código: a.href = url;
+- L581: [client/main.js](client/main.js#L581) - Código: a.download = 'detections_video';
+- L582: [client/main.js](client/main.js#L582) - Código: a.textContent = 'Descargar video procesado (si el navegador no reproduce)';
+- L583: [client/main.js](client/main.js#L583) - Código: a.className = 'tabbtn';
+- L584: [client/main.js](client/main.js#L584) - Código: downloadContainer.appendChild(a);
+- L585: [client/main.js](client/main.js#L585) - Código: }
+- L586: [client/main.js](client/main.js#L586) - Código: setStatus('El navegador no puede reproducir este formato; puedes descargarlo.', 'video');
+- L587: [client/main.js](client/main.js#L587) - Código: } catch (e) { }
+- L588: [client/main.js](client/main.js#L588) - Código: } else {
+- L589: [client/main.js](client/main.js#L589) - Condicional if ((downloadContainer) downloadContainer.innerHTML = '';).
+- L590: [client/main.js](client/main.js#L590) - Código: }
+- L591: [client/main.js](client/main.js#L591) - Código: }, 1500);
+- L592: [client/main.js](client/main.js#L592) - Condicional if ((resultImage) resultImage.style.display = 'none';).
+- L593: [client/main.js](client/main.js#L593) - Código: }
+- L594: [client/main.js](client/main.js#L594) - Línea vacía.
+- L595: [client/main.js](client/main.js#L595) - Condicional if ((jsonOutVideo) jsonOutVideo.textContent = 'Video procesado descargado (rectangulos mostrados)';).
+- L596: [client/main.js](client/main.js#L596) - Código: setStatus('Listo', 'video');
+- L597: [client/main.js](client/main.js#L597) - Inicio de bloque try.
+- L598: [client/main.js](client/main.js#L598) - Línea vacía.
+- L599: [client/main.js](client/main.js#L599) - Inicio de bloque try.
+- L600: [client/main.js](client/main.js#L600) - Define constante (const form2 = new FormData();).
+- L601: [client/main.js](client/main.js#L601) - Código: form2.append('video', vidFile);
+- L602: [client/main.js](client/main.js#L602) - Código: form2.append('model', model);
+- L603: [client/main.js](client/main.js#L603) - Código: form2.append('frame_step', frameStep);
+- L604: [client/main.js](client/main.js#L604) - Código: form2.append('conf', conf);
+- L605: [client/main.js](client/main.js#L605) - Define constante (const fetchMaxFrames = (parseInt(maxFrames, 10) > 0) ? maxFrames : '50';).
+- L606: [client/main.js](client/main.js#L606) - Código: form2.append('max_frames', fetchMaxFrames);
+- L607: [client/main.js](client/main.js#L607) - Define constante (const r2 = await fetch(`${API_BASE}/detect/video?visualize=false`, { method: 'POST', body: form2 });).
+- L608: [client/main.js](client/main.js#L608) - Condicional if ((r2.ok) {).
+- L609: [client/main.js](client/main.js#L609) - Define constante (const j2 = await r2.json();).
+- L610: [client/main.js](client/main.js#L610) - Condicional if ((j2 && j2.sample) renderVideoSampleToElement('log_video', j2.sample, j2.fps);).
+- L611: [client/main.js](client/main.js#L611) - Código: }
+- L612: [client/main.js](client/main.js#L612) - Código: } catch (e) { }
+- L613: [client/main.js](client/main.js#L613) - Código: }
+- L614: [client/main.js](client/main.js#L614) - Código: } catch (err) { setStatus('Error: ' + (err.message || err), 'video'); }
+- L615: [client/main.js](client/main.js#L615) - Código: });
+- L616: [client/main.js](client/main.js#L616) - Código: }
+- L617: [client/main.js](client/main.js#L617) - Línea vacía.
+- L618: [client/main.js](client/main.js#L618) - Define la función startLiveView.
+- L619: [client/main.js](client/main.js#L619) - Define constante (const camUrl = cameraUrlInput && cameraUrlInput.value ? cameraUrlInput.value.trim() : '';).
+- L620: [client/main.js](client/main.js#L620) - Define constante (const frameStep = frameStepInput ? frameStepInput.value : '1';).
+- L621: [client/main.js](client/main.js#L621) - Define constante (const conf = confInputCameraNew ? parseFloat(confInputCameraNew.value) : 0.4;).
+- L622: [client/main.js](client/main.js#L622) - Define constante (const classIndex = classSelectCamera ? getClassIndex(classSelectCamera.value) : -1;).
+- L623: [client/main.js](client/main.js#L623) - Condicional if ((!camUrl) { setStatus('Proporciona la URL de la cámara para vista en vivo.', 'camera'); return; }).
+- L624: [client/main.js](client/main.js#L624) - Inicio de bloque try.
+- L625: [client/main.js](client/main.js#L625) - Define constante (const parsed = new URL(camUrl);).
+- L626: [client/main.js](client/main.js#L626) - Define constante (const scheme = parsed.protocol.replace(':', '').toLowerCase();).
+- L627: [client/main.js](client/main.js#L627) - Condicional if ((!['http', 'https', 'rtsp'].includes(scheme)) {).
+- L628: [client/main.js](client/main.js#L628) - Código: setStatus(`URL de cámara inválida (esquema ${parsed.protocol})`, 'camera');
+- L629: [client/main.js](client/main.js#L629) - Retorna ;.
+- L630: [client/main.js](client/main.js#L630) - Código: }
+- L631: [client/main.js](client/main.js#L631) - Condicional if ((!parsed.hostname) {).
+- L632: [client/main.js](client/main.js#L632) - Código: setStatus('URL de cámara inválida (host ausente)', 'camera');
+- L633: [client/main.js](client/main.js#L633) - Retorna ;.
+- L634: [client/main.js](client/main.js#L634) - Código: }
+- L635: [client/main.js](client/main.js#L635) - Código: } catch (err) {
+- L636: [client/main.js](client/main.js#L636) - Código: setStatus('URL de cámara inválida', 'camera');
+- L637: [client/main.js](client/main.js#L637) - Retorna ;.
+- L638: [client/main.js](client/main.js#L638) - Código: }
+- L639: [client/main.js](client/main.js#L639) - Define variable (let streamUrl = `${API_BASE}/stream/video?camera_url=${encodeURIComponent(camUrl)}&frame_step=${encodeURIComponent(frameStep)}&conf=${encodeURIComponent(conf)}`;).
+- L640: [client/main.js](client/main.js#L640) - Condicional if ((classIndex >= 0) streamUrl += `&class_id=${classIndex}`;).
+- L641: [client/main.js](client/main.js#L641) - Condicional if ((liveView) { liveView.src = streamUrl; liveView.style.display = 'block'; }).
+- L642: [client/main.js](client/main.js#L642) - Condicional if ((resultImage) resultImage.style.display = 'none';).
+- L643: [client/main.js](client/main.js#L643) - Condicional if ((resultVideo) resultVideo.style.display = 'none';).
+- L644: [client/main.js](client/main.js#L644) - Condicional if ((jsonOutCamera) jsonOutCamera.textContent = '';).
+- L645: [client/main.js](client/main.js#L645) - Condicional if ((btnStartLive) btnStartLive.disabled = true;).
+- L646: [client/main.js](client/main.js#L646) - Condicional if ((btnStopLive) btnStopLive.disabled = false;).
+- L647: [client/main.js](client/main.js#L647) - Código: setStatus('Vista en vivo iniciado (MJPEG)', 'camera');
+- L648: [client/main.js](client/main.js#L648) - Código: }
+- L649: [client/main.js](client/main.js#L649) - Línea vacía.
+- L650: [client/main.js](client/main.js#L650) - Define la función stopLiveView.
+- L651: [client/main.js](client/main.js#L651) - Condicional if ((liveView) { try { liveView.src = ''; } catch (e) { } liveView.style.display = 'none'; }).
+- L652: [client/main.js](client/main.js#L652) - Condicional if ((btnStartLive) btnStartLive.disabled = false;).
+- L653: [client/main.js](client/main.js#L653) - Condicional if ((btnStopLive) btnStopLive.disabled = true;).
+- L654: [client/main.js](client/main.js#L654) - Condicional if ((jsonOutCamera) jsonOutCamera.textContent = 'Vista en vivo detenido';).
+- L655: [client/main.js](client/main.js#L655) - Código: setStatus('Vista en vivo detenido', 'camera');
+- L656: [client/main.js](client/main.js#L656) - Código: }
+- L657: [client/main.js](client/main.js#L657) - Línea vacía.
+- L658: [client/main.js](client/main.js#L658) - Condicional if ((btnStartLive) btnStartLive.addEventListener('click', startLiveView);).
+- L659: [client/main.js](client/main.js#L659) - Condicional if ((btnStopLive) btnStopLive.addEventListener('click', stopLiveView);).
+- L660: [client/main.js](client/main.js#L660) - Línea vacía.
+- L661: [client/main.js](client/main.js#L661) - Línea vacía.
+- L662: [client/main.js](client/main.js#L662) - Define la función asíncrona fetchLogs.
+- L663: [client/main.js](client/main.js#L663) - Inicio de bloque try.
+- L664: [client/main.js](client/main.js#L664) - Define constante (const res = await fetch(`${API_BASE}/logs`);).
+- L665: [client/main.js](client/main.js#L665) - Condicional if ((!res.ok) return [];).
+- L666: [client/main.js](client/main.js#L666) - Define constante (const j = await res.json();).
+- L667: [client/main.js](client/main.js#L667) - Retorna j.lines || [];.
+- L668: [client/main.js](client/main.js#L668) - Código: } catch (e) {
+- L669: [client/main.js](client/main.js#L669) - Retorna [];.
+- L670: [client/main.js](client/main.js#L670) - Código: }
+- L671: [client/main.js](client/main.js#L671) - Código: }
+- L672: [client/main.js](client/main.js#L672) - Línea vacía.
+- L673: [client/main.js](client/main.js#L673) - Define la función analyzeLogs.
+- L674: [client/main.js](client/main.js#L674) - Define variable (let lastCamera = null;).
+- L675: [client/main.js](client/main.js#L675) - Define variable (let lastImage = null;).
+- L676: [client/main.js](client/main.js#L676) - Define variable (let lastVideo = null;).
+- L677: [client/main.js](client/main.js#L677) - Define variable (let globalError = null;).
+- L678: [client/main.js](client/main.js#L678) - Define constante (const cameraLines = [];).
+- L679: [client/main.js](client/main.js#L679) - Define variable (let lastCriticalCameraLine = null;).
+- L680: [client/main.js](client/main.js#L680) - Define constante (const imageLines = [];).
+- L681: [client/main.js](client/main.js#L681) - Define constante (const videoLines = [];).
+- L682: [client/main.js](client/main.js#L682) - Línea vacía.
+- L683: [client/main.js](client/main.js#L683) - Define constante (const httpReqRe = /"(GET|POST) ([^ ]+) HTTP\/[0-9.]+"\s+(\d{3})/i;).
+- L684: [client/main.js](client/main.js#L684) - Define constante (const responseRe = /^RESPONSE\s+path=([^\s]+)\s+status=(\d+)(.*)$/i;).
+- L685: [client/main.js](client/main.js#L685) - Línea vacía.
+- L686: [client/main.js](client/main.js#L686) - Bucle for ((let i = lines.length - 1; i >= 0; --i) {).
+- L687: [client/main.js](client/main.js#L687) - Define constante (const L = String(lines[i] || '');).
+- L688: [client/main.js](client/main.js#L688) - Define constante (const lower = L.toLowerCase();).
+- L689: [client/main.js](client/main.js#L689) - Línea vacía.
+- L690: [client/main.js](client/main.js#L690) - Define constante (const rm = L.match(responseRe);).
+- L691: [client/main.js](client/main.js#L691) - Condicional if ((rm) {).
+- L692: [client/main.js](client/main.js#L692) - Define constante (const path = rm[1];).
+- L693: [client/main.js](client/main.js#L693) - Define constante (const code = parseInt(rm[2], 10);).
+- L694: [client/main.js](client/main.js#L694) - Define constante (const rest = rm[3] || '';).
+- L695: [client/main.js](client/main.js#L695) - Condicional if ((path.includes('/detect/image')) {).
+- L696: [client/main.js](client/main.js#L696) - Condicional if ((code >= 200 && code < 300) lastImage = `Detección de imagen OK (${rest.trim()})`;).
+- L697: [client/main.js](client/main.js#L697) - Bloque else.
+- L698: [client/main.js](client/main.js#L698) - Código: imageLines.push(L);
+- L699: [client/main.js](client/main.js#L699) - Código: } else if (path.includes('/detect/video')) {
+- L700: [client/main.js](client/main.js#L700) - Condicional if ((code >= 200 && code < 300) lastVideo = `Detección de video OK (${rest.trim()})`;).
+- L701: [client/main.js](client/main.js#L701) - Bloque else.
+- L702: [client/main.js](client/main.js#L702) - Código: videoLines.push(L);
+- L703: [client/main.js](client/main.js#L703) - Código: } else {
+- L704: [client/main.js](client/main.js#L704) - Código: globalError = globalError || (`Server response: ${path} ${code}`);
+- L705: [client/main.js](client/main.js#L705) - Código: }
+- L706: [client/main.js](client/main.js#L706) - Código: continue;
+- L707: [client/main.js](client/main.js#L707) - Código: }
+- L708: [client/main.js](client/main.js#L708) - Línea vacía.
+- L709: [client/main.js](client/main.js#L709) - Define constante (const m = L.match(httpReqRe);).
+- L710: [client/main.js](client/main.js#L710) - Condicional if ((m) {).
+- L711: [client/main.js](client/main.js#L711) - Define constante (const method = m[1];).
+- L712: [client/main.js](client/main.js#L712) - Define constante (const path = m[2];).
+- L713: [client/main.js](client/main.js#L713) - Define constante (const code = parseInt(m[3], 10);).
+- L714: [client/main.js](client/main.js#L714) - Condicional if ((path.includes('/stream/video')) {).
+- L715: [client/main.js](client/main.js#L715) - Condicional if ((code === 200) {).
+- L716: [client/main.js](client/main.js#L716) - Código: lastCamera = `Stream OK (HTTP ${code})`;
+- L717: [client/main.js](client/main.js#L717) - Código: } else {
+- L718: [client/main.js](client/main.js#L718) - Define constante (const camMatch = path.match(/camera_url=([^&]+)/i);).
+- L719: [client/main.js](client/main.js#L719) - Condicional if ((camMatch) {).
+- L720: [client/main.js](client/main.js#L720) - Inicio de bloque try.
+- L721: [client/main.js](client/main.js#L721) - Define constante (const raw = decodeURIComponent(camMatch[1]);).
+- L722: [client/main.js](client/main.js#L722) - Define constante (const low = raw.toLowerCase();).
+- L723: [client/main.js](client/main.js#L723) - Condicional if ((!(low.startsWith('http://') || low.startsWith('https://') || low.startsWith('rtsp://'))) {).
+- L724: [client/main.js](client/main.js#L724) - Código: lastCamera = `URL de cámara inválida: ${raw}`;
+- L725: [client/main.js](client/main.js#L725) - Código: } else {
+- L726: [client/main.js](client/main.js#L726) - Código: lastCamera = `No se recibe video en camera_url (HTTP ${code})`;
+- L727: [client/main.js](client/main.js#L727) - Código: }
+- L728: [client/main.js](client/main.js#L728) - Código: } catch (e) {
+- L729: [client/main.js](client/main.js#L729) - Código: lastCamera = `No se recibe video en camera_url (HTTP ${code})`;
+- L730: [client/main.js](client/main.js#L730) - Código: }
+- L731: [client/main.js](client/main.js#L731) - Código: } else {
+- L732: [client/main.js](client/main.js#L732) - Código: lastCamera = `No se recibe video en camera_url (HTTP ${code})`;
+- L733: [client/main.js](client/main.js#L733) - Código: }
+- L734: [client/main.js](client/main.js#L734) - Código: }
+- L735: [client/main.js](client/main.js#L735) - Código: cameraLines.push(L);
+- L736: [client/main.js](client/main.js#L736) - Condicional if ((!lastCriticalCameraLine && code >= 500) lastCriticalCameraLine = L;).
+- L737: [client/main.js](client/main.js#L737) - Código: }
+- L738: [client/main.js](client/main.js#L738) - Condicional if ((path.includes('/detect/image')) {).
+- L739: [client/main.js](client/main.js#L739) - Condicional if ((code >= 200 && code < 300) lastImage = `Detección de imagen OK (HTTP ${code})`;).
+- L740: [client/main.js](client/main.js#L740) - Bloque else.
+- L741: [client/main.js](client/main.js#L741) - Código: imageLines.push(L);
+- L742: [client/main.js](client/main.js#L742) - Código: }
+- L743: [client/main.js](client/main.js#L743) - Condicional if ((path.includes('/detect/video')) {).
+- L744: [client/main.js](client/main.js#L744) - Condicional if ((code >= 200 && code < 300) lastVideo = `Detección de video OK (HTTP ${code})`;).
+- L745: [client/main.js](client/main.js#L745) - Bloque else.
+- L746: [client/main.js](client/main.js#L746) - Código: videoLines.push(L);
+- L747: [client/main.js](client/main.js#L747) - Código: }
+- L748: [client/main.js](client/main.js#L748) - Condicional if ((!globalError && code >= 500) globalError = `Server error (HTTP ${code})`;).
+- L749: [client/main.js](client/main.js#L749) - Código: }
+- L750: [client/main.js](client/main.js#L750) - Línea vacía.
+- L751: [client/main.js](client/main.js#L751) - Condicional if ((!lastCamera && (lower.includes('connection refused') || lower.includes('connection to') || lower.includes('overread') || lower.includes('mjpeg') || lower.includes('tcp @') || lower.includes('ffmpeg') || lower.includes('videoio') || lower.includes('no se pudo abrir'))) {).
+- L752: [client/main.js](client/main.js#L752) - Código: lastCamera = friendlyCameraMessageFromLine(L);
+- L753: [client/main.js](client/main.js#L753) - Código: cameraLines.push(L);
+- L754: [client/main.js](client/main.js#L754) - Condicional if ((!lastCriticalCameraLine) lastCriticalCameraLine = L;).
+- L755: [client/main.js](client/main.js#L755) - Código: }
+- L756: [client/main.js](client/main.js#L756) - Línea vacía.
+- L757: [client/main.js](client/main.js#L757) - Condicional if ((!lastImage && lower.includes('/detect/image')) { lastImage = L; imageLines.push(L); }).
+- L758: [client/main.js](client/main.js#L758) - Condicional if ((!lastVideo && lower.includes('/detect/video')) { lastVideo = L; videoLines.push(L); }).
+- L759: [client/main.js](client/main.js#L759) - Línea vacía.
+- L760: [client/main.js](client/main.js#L760) - Condicional if ((!globalError && (lower.includes('error') || lower.includes('failed') || lower.includes('refused') || lower.includes('500'))) {).
+- L761: [client/main.js](client/main.js#L761) - Código: globalError = L;
+- L762: [client/main.js](client/main.js#L762) - Código: }
+- L763: [client/main.js](client/main.js#L763) - Línea vacía.
+- L764: [client/main.js](client/main.js#L764) - Condicional if ((lastCamera && lastImage && lastVideo && globalError) break;).
+- L765: [client/main.js](client/main.js#L765) - Código: }
+- L766: [client/main.js](client/main.js#L766) - Línea vacía.
+- L767: [client/main.js](client/main.js#L767) - Retorna { lastCamera, lastImage, lastVideo, globalError, cameraLines, imageLines, videoLines, lastCriticalCameraLine };.
+- L768: [client/main.js](client/main.js#L768) - Código: }
+- L769: [client/main.js](client/main.js#L769) - Línea vacía.
+- L770: [client/main.js](client/main.js#L770) - Define la función asíncrona pollLogsOnce.
+- L771: [client/main.js](client/main.js#L771) - Define constante (const lines = await fetchLogs(300);).
+- L772: [client/main.js](client/main.js#L772) - Condicional if ((!lines || !lines.length) return;).
+- L773: [client/main.js](client/main.js#L773) - Define constante (const { lastCamera, lastImage, lastVideo, globalError, cameraLines, imageLines, videoLines, lastCriticalCameraLine } = analyzeLogs(lines);).
+- L774: [client/main.js](client/main.js#L774) - Condicional if ((lastCamera) setStatus(lastCamera, 'camera');).
+- L775: [client/main.js](client/main.js#L775) - Condicional if ((lastImage) setStatus(lastImage, 'image');).
+- L776: [client/main.js](client/main.js#L776) - Condicional if ((lastVideo) setStatus(lastVideo, 'video');).
+- L777: [client/main.js](client/main.js#L777) - Condicional if ((jsonOutCamera) {).
+- L778: [client/main.js](client/main.js#L778) - Condicional if ((showRawCameraLogs) {).
+- L779: [client/main.js](client/main.js#L779) - Código: jsonOutCamera.textContent = (cameraLines && cameraLines.length) ? cameraLines.slice(-50).join('\n') : '';
+- L780: [client/main.js](client/main.js#L780) - Código: jsonOutCamera.classList.remove('hidden');
+- L781: [client/main.js](client/main.js#L781) - Código: } else {
+- L782: [client/main.js](client/main.js#L782) - Código: jsonOutCamera.classList.add('hidden');
+- L783: [client/main.js](client/main.js#L783) - Código: }
+- L784: [client/main.js](client/main.js#L784) - Código: }
+- L785: [client/main.js](client/main.js#L785) - Condicional if ((jsonOutImage) jsonOutImage.textContent = (imageLines && imageLines.length) ? imageLines.slice(-50).join('\n') : jsonOutImage.textContent;).
+- L786: [client/main.js](client/main.js#L786) - Condicional if ((jsonOutVideo) jsonOutVideo.textContent = (videoLines && videoLines.length) ? videoLines.slice(-50).join('\n') : jsonOutVideo.textContent;).
+- L787: [client/main.js](client/main.js#L787) - Línea vacía.
+- L788: [client/main.js](client/main.js#L788) - Condicional if ((globalError) {).
+- L789: [client/main.js](client/main.js#L789) - Condicional if ((globalError && !lastCamera) setStatus(globalError, 'camera');).
+- L790: [client/main.js](client/main.js#L790) - Condicional if ((globalError && !lastVideo) setStatus(globalError, 'video');).
+- L791: [client/main.js](client/main.js#L791) - Condicional if ((globalError && !lastImage) setStatus(globalError, 'image');).
+- L792: [client/main.js](client/main.js#L792) - Código: }
+- L793: [client/main.js](client/main.js#L793) - Define constante (const camEx = document.getElementById('camera_excerpt');).
+- L794: [client/main.js](client/main.js#L794) - Condicional if ((camEx) {).
+- L795: [client/main.js](client/main.js#L795) - Condicional if ((lastCriticalCameraLine) {).
+- L796: [client/main.js](client/main.js#L796) - Define constante (const friendly = friendlyCameraMessageFromLine(lastCriticalCameraLine);).
+- L797: [client/main.js](client/main.js#L797) - Código: camEx.textContent = String(friendly || lastCriticalCameraLine);
+- L798: [client/main.js](client/main.js#L798) - Código: camEx.classList.add('log-excerpt');
+- L799: [client/main.js](client/main.js#L799) - Código: } else {
+- L800: [client/main.js](client/main.js#L800) - Código: camEx.textContent = '';
+- L801: [client/main.js](client/main.js#L801) - Código: camEx.classList.remove('log-excerpt');
+- L802: [client/main.js](client/main.js#L802) - Código: }
+- L803: [client/main.js](client/main.js#L803) - Código: }
+- L804: [client/main.js](client/main.js#L804) - Inicio de bloque try.
+- L805: [client/main.js](client/main.js#L805) - Define constante (const logCamEl = document.getElementById('log_camera');).
+- L806: [client/main.js](client/main.js#L806) - Condicional if ((logCamEl) {).
+- L807: [client/main.js](client/main.js#L807) - Condicional if ((cameraLines && cameraLines.length) {).
+- L808: [client/main.js](client/main.js#L808) - Código: logCamEl.textContent = cameraLines.slice(-30).join('\n');
+- L809: [client/main.js](client/main.js#L809) - Código: } else if (lastCamera) {
+- L810: [client/main.js](client/main.js#L810) - Código: logCamEl.textContent = String(lastCamera);
+- L811: [client/main.js](client/main.js#L811) - Código: } else {
+- L812: [client/main.js](client/main.js#L812) - Código: logCamEl.textContent = '(sin datos)';
+- L813: [client/main.js](client/main.js#L813) - Código: }
+- L814: [client/main.js](client/main.js#L814) - Código: }
+- L815: [client/main.js](client/main.js#L815) - Código: } catch (e) { }
+- L816: [client/main.js](client/main.js#L816) - Código: }
+- L817: [client/main.js](client/main.js#L817) - Línea vacía.
+- L818: [client/main.js](client/main.js#L818) - Define la función startLogPolling.
+- L819: [client/main.js](client/main.js#L819) - Condicional if ((_logPollId) return;).
+- L820: [client/main.js](client/main.js#L820) - Código: pollLogsOnce();
+- L821: [client/main.js](client/main.js#L821) - Código: _logPollId = setInterval(pollLogsOnce, intervalMs);
+- L822: [client/main.js](client/main.js#L822) - Código: }
+- L823: [client/main.js](client/main.js#L823) - Línea vacía.
+- L824: [client/main.js](client/main.js#L824) - Define la función stopLogPolling.
+- L825: [client/main.js](client/main.js#L825) - Condicional if ((_logPollId) { clearInterval(_logPollId); _logPollId = null; }).
+- L826: [client/main.js](client/main.js#L826) - Código: }
+- L827: [client/main.js](client/main.js#L827) - Línea vacía.
+- L828: [client/main.js](client/main.js#L828) - Código: window.addEventListener('load', () => {
+- L829: [client/main.js](client/main.js#L829) - Código: clearAllLogs();
+- L830: [client/main.js](client/main.js#L830) - Código: });
+- L831: [client/main.js](client/main.js#L831) - Línea vacía.
+- L832: [client/main.js](client/main.js#L832) - Comentario: Inicializar panel de ajustes API y vínculos para persistencia
+- L833: [client/main.js](client/main.js#L833) - Código: window.addEventListener('load', () => {
+- L834: [client/main.js](client/main.js#L834) - Inicio de bloque try.
+- L835: [client/main.js](client/main.js#L835) - Define constante (const btnOpen = document.getElementById('btnOpenApiSettings');).
+- L836: [client/main.js](client/main.js#L836) - Define constante (const panel = document.getElementById('apiSettingsPanel');).
+- L837: [client/main.js](client/main.js#L837) - Define constante (const input = document.getElementById('apiBaseInput');).
+- L838: [client/main.js](client/main.js#L838) - Define constante (const btnSave = document.getElementById('btnSaveApiBase');).
+- L839: [client/main.js](client/main.js#L839) - Define constante (const btnReset = document.getElementById('btnResetApiBase');).
+- L840: [client/main.js](client/main.js#L840) - Define constante (const note = document.getElementById('apiSettingsNote');).
+- L841: [client/main.js](client/main.js#L841) - Línea vacía.
+- L842: [client/main.js](client/main.js#L842) - Condicional if ((!btnOpen || !panel || !input || !btnSave || !btnReset) return;).
+- L843: [client/main.js](client/main.js#L843) - Línea vacía.
+- L844: [client/main.js](client/main.js#L844) - Define constante (const current = (typeof localStorage !== 'undefined' && localStorage.getItem('apiBase')) || API_BASE || '';).
+- L845: [client/main.js](client/main.js#L845) - Código: input.value = current;
+- L846: [client/main.js](client/main.js#L846) - Condicional if ((note) note.textContent = `Usando: ${API_BASE}`;).
+- L847: [client/main.js](client/main.js#L847) - Línea vacía.
+- L848: [client/main.js](client/main.js#L848) - Código: btnOpen.addEventListener('click', (e) => {
+- L849: [client/main.js](client/main.js#L849) - Código: panel.classList.toggle('hidden');
+- L850: [client/main.js](client/main.js#L850) - Código: input.value = (typeof localStorage !== 'undefined' && localStorage.getItem('apiBase')) || API_BASE || '';
+- L851: [client/main.js](client/main.js#L851) - Código: });
+- L852: [client/main.js](client/main.js#L852) - Línea vacía.
+- L853: [client/main.js](client/main.js#L853) - Código: btnSave.addEventListener('click', (e) => {
+- L854: [client/main.js](client/main.js#L854) - Define constante (const v = input.value ? String(input.value).trim().replace(/\/$/, '') : '';).
+- L855: [client/main.js](client/main.js#L855) - Inicio de bloque try.
+- L856: [client/main.js](client/main.js#L856) - Condicional if ((v) {).
+- L857: [client/main.js](client/main.js#L857) - Código: localStorage.setItem('apiBase', v);
+- L858: [client/main.js](client/main.js#L858) - Código: API_BASE = v;
+- L859: [client/main.js](client/main.js#L859) - Condicional if ((note) note.textContent = `Guardado. Usando: ${v}`;).
+- L860: [client/main.js](client/main.js#L860) - Código: } else {
+- L861: [client/main.js](client/main.js#L861) - Código: localStorage.removeItem('apiBase');
+- L862: [client/main.js](client/main.js#L862) - Código: API_BASE = (window.location && window.location.origin) ? window.location.origin : 'http://127.0.0.1:5501';
+- L863: [client/main.js](client/main.js#L863) - Condicional if ((note) note.textContent = `Restablecido. Usando: ${API_BASE}`;).
+- L864: [client/main.js](client/main.js#L864) - Código: }
+- L865: [client/main.js](client/main.js#L865) - Código: } catch (err) {
+- L866: [client/main.js](client/main.js#L866) - Código: console.warn('No se pudo guardar en localStorage:', err);
+- L867: [client/main.js](client/main.js#L867) - Condicional if ((note) note.textContent = 'Error al guardar la configuración en localStorage.';).
+- L868: [client/main.js](client/main.js#L868) - Código: }
+- L869: [client/main.js](client/main.js#L869) - Comentario: cerrar panel automáticamente
+- L870: [client/main.js](client/main.js#L870) - Inicio de bloque try.
+- L871: [client/main.js](client/main.js#L871) - Código: });
+- L872: [client/main.js](client/main.js#L872) - Línea vacía.
+- L873: [client/main.js](client/main.js#L873) - Código: btnReset.addEventListener('click', (e) => {
+- L874: [client/main.js](client/main.js#L874) - Inicio de bloque try.
+- L875: [client/main.js](client/main.js#L875) - Código: API_BASE = (window.location && window.location.origin) ? window.location.origin : 'http://127.0.0.1:5501';
+- L876: [client/main.js](client/main.js#L876) - Código: input.value = '';
+- L877: [client/main.js](client/main.js#L877) - Condicional if ((note) note.textContent = `Restablecido. Usando: ${API_BASE}`;).
+- L878: [client/main.js](client/main.js#L878) - Inicio de bloque try.
+- L879: [client/main.js](client/main.js#L879) - Código: });
+- L880: [client/main.js](client/main.js#L880) - Código: } catch (e) { console.warn('Inicialización ajustes API falló', e); }
+- L881: [client/main.js](client/main.js#L881) - Código: });
+- L882: [client/main.js](client/main.js#L882) - Línea vacía.
+- L883: [client/main.js](client/main.js#L883) - Condicional if ((btnToggleRawLogs) {).
+- L884: [client/main.js](client/main.js#L884) - Código: btnToggleRawLogs.addEventListener('click', (e) => {
+- L885: [client/main.js](client/main.js#L885) - Código: showRawCameraLogs = !showRawCameraLogs;
+- L886: [client/main.js](client/main.js#L886) - Condicional if ((showRawCameraLogs) {).
+- L887: [client/main.js](client/main.js#L887) - Código: btnToggleRawLogs.textContent = 'Ocultar logs crudos';
+- L888: [client/main.js](client/main.js#L888) - Condicional if ((jsonOutCamera) jsonOutCamera.classList.remove('hidden');).
+- L889: [client/main.js](client/main.js#L889) - Código: } else {
+- L890: [client/main.js](client/main.js#L890) - Código: btnToggleRawLogs.textContent = 'Mostrar logs crudos';
+- L891: [client/main.js](client/main.js#L891) - Condicional if ((jsonOutCamera) jsonOutCamera.classList.add('hidden');).
+- L892: [client/main.js](client/main.js#L892) - Código: }
+- L893: [client/main.js](client/main.js#L893) - Condicional if ((showRawCameraLogs) pollLogsOnce();).
+- L894: [client/main.js](client/main.js#L894) - Código: });
+- L895: [client/main.js](client/main.js#L895) - Código: }
+- L896: [client/main.js](client/main.js#L896) - Línea vacía.
+- L897: [client/main.js](client/main.js#L897) - Código: window.addEventListener('beforeunload', () => { stopLogPolling(); });
+
+- L1: [client/index.html](client/index.html#L1) - Declaración doctype.
+- L2: [client/index.html](client/index.html#L2) - Etiqueta html de apertura.
+- L3: [client/index.html](client/index.html#L3) - Línea vacía.
+- L4: [client/index.html](client/index.html#L4) - Sección head de apertura.
+- L5: [client/index.html](client/index.html#L5) - Etiqueta/elemento HTML (<meta charset="utf-8" />).
+- L6: [client/index.html](client/index.html#L6) - Etiqueta/elemento HTML (<meta name="viewport" content="width=device-width,initial-scale=1" />).
+- L7: [client/index.html](client/index.html#L7) - Etiqueta/elemento HTML (<title>Detección de Objetos</title>).
+- L8: [client/index.html](client/index.html#L8) - Etiqueta/elemento HTML (<link rel="stylesheet" href="style.css" />).
+- L9: [client/index.html](client/index.html#L9) - Etiqueta script de apertura.
+- L10: [client/index.html](client/index.html#L10) - Código: window.API_BASE = window.location.origin;
+- L11: [client/index.html](client/index.html#L11) - Etiqueta script de cierre.
+- L12: [client/index.html](client/index.html#L12) - Sección head de cierre.
+- L13: [client/index.html](client/index.html#L13) - Línea vacía.
+- L14: [client/index.html](client/index.html#L14) - Etiqueta body de apertura.
+- L15: [client/index.html](client/index.html#L15) - Etiqueta/elemento HTML (<div class="api-settings">).
+- L16: [client/index.html](client/index.html#L16) - Etiqueta/elemento HTML (<button id="btnOpenApiSettings" class="api-toggle" title="Configurar IP/URL de la API">Ajustes API</button>).
+- L17: [client/index.html](client/index.html#L17) - Etiqueta/elemento HTML (<div id="apiSettingsPanel" class="api-settings-panel hidden" role="dialog" aria-label="Ajustes de la API">).
+- L18: [client/index.html](client/index.html#L18) - Etiqueta/elemento HTML (<label for="apiBaseInput">Base URL API:</label>).
+- L19: [client/index.html](client/index.html#L19) - Etiqueta/elemento HTML (<input type="text" id="apiBaseInput" placeholder="http://127.0.0.1:5501" />).
+- L20: [client/index.html](client/index.html#L20) - Etiqueta/elemento HTML (<div class="api-settings-actions">).
+- L21: [client/index.html](client/index.html#L21) - Etiqueta/elemento HTML (<button id="btnSaveApiBase" class="api-action">Guardar</button>).
+- L22: [client/index.html](client/index.html#L22) - Etiqueta/elemento HTML (<button id="btnResetApiBase" class="api-action">Restablecer</button>).
+- L23: [client/index.html](client/index.html#L23) - Etiqueta/elemento HTML (</div>).
+- L24: [client/index.html](client/index.html#L24) - Etiqueta/elemento HTML (<div id="apiSettingsNote" class="api-settings-note margin-top-8"></div>).
+- L25: [client/index.html](client/index.html#L25) - Etiqueta/elemento HTML (</div>).
+- L26: [client/index.html](client/index.html#L26) - Etiqueta/elemento HTML (<div id="apiBackdrop" class="api-backdrop hidden" tabindex="-1" aria-hidden="true"></div>).
+- L27: [client/index.html](client/index.html#L27) - Etiqueta/elemento HTML (</div>).
+- L28: [client/index.html](client/index.html#L28) - Etiqueta/elemento HTML (<div class="tabs" role="tablist" aria-label="Selector de fuente">).
+- L29: [client/index.html](client/index.html#L29) - Etiqueta/elemento HTML (<button id="tabbtn-image" class="tabbtn active" data-tab="tab-image" role="tab" aria-controls="tab-image").
+- L30: [client/index.html](client/index.html#L30) - Código: aria-selected="true">Imagen</button>
+- L31: [client/index.html](client/index.html#L31) - Etiqueta/elemento HTML (<button id="tabbtn-video" class="tabbtn" data-tab="tab-video" role="tab" aria-controls="tab-video").
+- L32: [client/index.html](client/index.html#L32) - Código: aria-selected="false">Video</button>
+- L33: [client/index.html](client/index.html#L33) - Etiqueta/elemento HTML (<button id="tabbtn-camera" class="tabbtn" data-tab="tab-camera" role="tab" aria-controls="tab-camera").
+- L34: [client/index.html](client/index.html#L34) - Código: aria-selected="false">Cámara</button>
+- L35: [client/index.html](client/index.html#L35) - Etiqueta/elemento HTML (</div>).
+- L36: [client/index.html](client/index.html#L36) - Etiqueta/elemento HTML (<main>).
+- L37: [client/index.html](client/index.html#L37) - Etiqueta/elemento HTML (<div class="left">).
+- L38: [client/index.html](client/index.html#L38) - Etiqueta/elemento HTML (<section id="tab-image" class="tab-panel active" role="tabpanel" aria-labelledby="tabbtn-image">).
+- L39: [client/index.html](client/index.html#L39) - Etiqueta/elemento HTML (<div id="imageControls">).
+- L40: [client/index.html](client/index.html#L40) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L41: [client/index.html](client/index.html#L41) - Etiqueta/elemento HTML (<label for="fileInput">Selecciona una imagen:</label>).
+- L42: [client/index.html](client/index.html#L42) - Etiqueta/elemento HTML (<input type="file" id="fileInput" accept="image/*" title="Selecciona una imagen para detectar").
+- L43: [client/index.html](client/index.html#L43) - Código: placeholder="Selecciona una imagen" />
+- L44: [client/index.html](client/index.html#L44) - Etiqueta/elemento HTML (</div>).
+- L45: [client/index.html](client/index.html#L45) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L46: [client/index.html](client/index.html#L46) - Etiqueta/elemento HTML (<label for="classSelect_image" class="classLabel" id="classLabel_image">Clase:</label>).
+- L47: [client/index.html](client/index.html#L47) - Etiqueta/elemento HTML (<select id="classSelect_image" class="classSelect">).
+- L48: [client/index.html](client/index.html#L48) - Etiqueta/elemento HTML (<option value="all">Todas</option>).
+- L49: [client/index.html](client/index.html#L49) - Etiqueta/elemento HTML (<option value="persona">persona</option>).
+- L50: [client/index.html](client/index.html#L50) - Etiqueta/elemento HTML (<option value="bicicleta">bicicleta</option>).
+- L51: [client/index.html](client/index.html#L51) - Etiqueta/elemento HTML (<option value="automovil">automovil</option>).
+- L52: [client/index.html](client/index.html#L52) - Etiqueta/elemento HTML (<option value="motocicleta">motocicleta</option>).
+- L53: [client/index.html](client/index.html#L53) - Etiqueta/elemento HTML (<option value="avion">avion</option>).
+- L54: [client/index.html](client/index.html#L54) - Etiqueta/elemento HTML (<option value="autobus">autobus</option>).
+- L55: [client/index.html](client/index.html#L55) - Etiqueta/elemento HTML (<option value="tren">tren</option>).
+- L56: [client/index.html](client/index.html#L56) - Etiqueta/elemento HTML (<option value="camion">camion</option>).
+- L57: [client/index.html](client/index.html#L57) - Etiqueta/elemento HTML (<option value="barco">barco</option>).
+- L58: [client/index.html](client/index.html#L58) - Etiqueta/elemento HTML (<option value="semaforo">semaforo</option>).
+- L59: [client/index.html](client/index.html#L59) - Etiqueta/elemento HTML (<option value="boca de incendio">boca de incendio</option>).
+- L60: [client/index.html](client/index.html#L60) - Etiqueta/elemento HTML (<option value="street sign">street sign</option>).
+- L61: [client/index.html](client/index.html#L61) - Etiqueta/elemento HTML (<option value="señal de alto">señal de alto</option>).
+- L62: [client/index.html](client/index.html#L62) - Etiqueta/elemento HTML (<option value="parquimetro">parquimetro</option>).
+- L63: [client/index.html](client/index.html#L63) - Etiqueta/elemento HTML (<option value="banco">banco</option>).
+- L64: [client/index.html](client/index.html#L64) - Etiqueta/elemento HTML (<option value="pájaro">pájaro</option>).
+- L65: [client/index.html](client/index.html#L65) - Etiqueta/elemento HTML (<option value="gato">gato</option>).
+- L66: [client/index.html](client/index.html#L66) - Etiqueta/elemento HTML (<option value="perro">perro</option>).
+- L67: [client/index.html](client/index.html#L67) - Etiqueta/elemento HTML (<option value="caballo">caballo</option>).
+- L68: [client/index.html](client/index.html#L68) - Etiqueta/elemento HTML (<option value="oveja">oveja</option>).
+- L69: [client/index.html](client/index.html#L69) - Etiqueta/elemento HTML (<option value="vaca">vaca</option>).
+- L70: [client/index.html](client/index.html#L70) - Etiqueta/elemento HTML (<option value="elefante">elefante</option>).
+- L71: [client/index.html](client/index.html#L71) - Etiqueta/elemento HTML (<option value="oso">oso</option>).
+- L72: [client/index.html](client/index.html#L72) - Etiqueta/elemento HTML (<option value="zebra">zebra</option>).
+- L73: [client/index.html](client/index.html#L73) - Etiqueta/elemento HTML (<option value="girafa">girafa</option>).
+- L74: [client/index.html](client/index.html#L74) - Etiqueta/elemento HTML (<option value="sombrero">sombrero</option>).
+- L75: [client/index.html](client/index.html#L75) - Etiqueta/elemento HTML (<option value="mochila">mochila</option>).
+- L76: [client/index.html](client/index.html#L76) - Etiqueta/elemento HTML (<option value="paraguas">paraguas</option>).
+- L77: [client/index.html](client/index.html#L77) - Etiqueta/elemento HTML (<option value="zapato">zapato</option>).
+- L78: [client/index.html](client/index.html#L78) - Etiqueta/elemento HTML (<option value="lentes">lentes</option>).
+- L79: [client/index.html](client/index.html#L79) - Etiqueta/elemento HTML (<option value="bolso de mano">bolso de mano</option>).
+- L80: [client/index.html](client/index.html#L80) - Etiqueta/elemento HTML (<option value="tie">tie</option>).
+- L81: [client/index.html](client/index.html#L81) - Etiqueta/elemento HTML (<option value="maleta">maleta</option>).
+- L82: [client/index.html](client/index.html#L82) - Etiqueta/elemento HTML (<option value="disco volador">disco volador</option>).
+- L83: [client/index.html](client/index.html#L83) - Etiqueta/elemento HTML (<option value="esquís">esquís</option>).
+- L84: [client/index.html](client/index.html#L84) - Etiqueta/elemento HTML (<option value="patineta de nieve">patineta de nieve</option>).
+- L85: [client/index.html](client/index.html#L85) - Etiqueta/elemento HTML (<option value="pelota de deportes">pelota de deportes</option>).
+- L86: [client/index.html](client/index.html#L86) - Etiqueta/elemento HTML (<option value="cometa">cometa</option>).
+- L87: [client/index.html](client/index.html#L87) - Etiqueta/elemento HTML (<option value="bat de béisbol">bat de béisbol</option>).
+- L88: [client/index.html](client/index.html#L88) - Etiqueta/elemento HTML (<option value="guante de béisbol">guante de béisbol</option>).
+- L89: [client/index.html](client/index.html#L89) - Etiqueta/elemento HTML (<option value="patineta">patineta</option>).
+- L90: [client/index.html](client/index.html#L90) - Etiqueta/elemento HTML (<option value="tabla de surf">tabla de surf</option>).
+- L91: [client/index.html](client/index.html#L91) - Etiqueta/elemento HTML (<option value="raqueta de tennis">raqueta de tennis</option>).
+- L92: [client/index.html](client/index.html#L92) - Etiqueta/elemento HTML (<option value="botella">botella</option>).
+- L93: [client/index.html](client/index.html#L93) - Etiqueta/elemento HTML (<option value="lámina">lámina</option>).
+- L94: [client/index.html](client/index.html#L94) - Etiqueta/elemento HTML (<option value="copa de vino">copa de vino</option>).
+- L95: [client/index.html](client/index.html#L95) - Etiqueta/elemento HTML (<option value="taza">taza</option>).
+- L96: [client/index.html](client/index.html#L96) - Etiqueta/elemento HTML (<option value="tenedor">tenedor</option>).
+- L97: [client/index.html](client/index.html#L97) - Etiqueta/elemento HTML (<option value="cuchillo">cuchillo</option>).
+- L98: [client/index.html](client/index.html#L98) - Etiqueta/elemento HTML (<option value="cuchara">cuchara</option>).
+- L99: [client/index.html](client/index.html#L99) - Etiqueta/elemento HTML (<option value="bol">bol</option>).
+- L100: [client/index.html](client/index.html#L100) - Etiqueta/elemento HTML (<option value="platano">platano</option>).
+- L101: [client/index.html](client/index.html#L101) - Etiqueta/elemento HTML (<option value="manzana">manzana</option>).
+- L102: [client/index.html](client/index.html#L102) - Etiqueta/elemento HTML (<option value="sandwich">sandwich</option>).
+- L103: [client/index.html](client/index.html#L103) - Etiqueta/elemento HTML (<option value="naranja">naranja</option>).
+- L104: [client/index.html](client/index.html#L104) - Etiqueta/elemento HTML (<option value="brocoli">brocoli</option>).
+- L105: [client/index.html](client/index.html#L105) - Etiqueta/elemento HTML (<option value="zanahoria">zanahoria</option>).
+- L106: [client/index.html](client/index.html#L106) - Etiqueta/elemento HTML (<option value="hot dog">hot dog</option>).
+- L107: [client/index.html](client/index.html#L107) - Etiqueta/elemento HTML (<option value="pizza">pizza</option>).
+- L108: [client/index.html](client/index.html#L108) - Etiqueta/elemento HTML (<option value="dona">dona</option>).
+- L109: [client/index.html](client/index.html#L109) - Etiqueta/elemento HTML (<option value="pastel">pastel</option>).
+- L110: [client/index.html](client/index.html#L110) - Etiqueta/elemento HTML (<option value="silla">silla</option>).
+- L111: [client/index.html](client/index.html#L111) - Etiqueta/elemento HTML (<option value="sofá">sofá</option>).
+- L112: [client/index.html](client/index.html#L112) - Etiqueta/elemento HTML (<option value="planta en maceta">planta en maceta</option>).
+- L113: [client/index.html](client/index.html#L113) - Etiqueta/elemento HTML (<option value="cama">cama</option>).
+- L114: [client/index.html](client/index.html#L114) - Etiqueta/elemento HTML (<option value="espejo">espejo</option>).
+- L115: [client/index.html](client/index.html#L115) - Etiqueta/elemento HTML (<option value="comedor">comedor</option>).
+- L116: [client/index.html](client/index.html#L116) - Etiqueta/elemento HTML (<option value="ventana">ventana</option>).
+- L117: [client/index.html](client/index.html#L117) - Etiqueta/elemento HTML (<option value="escritorio">escritorio</option>).
+- L118: [client/index.html](client/index.html#L118) - Etiqueta/elemento HTML (<option value="baño">baño</option>).
+- L119: [client/index.html](client/index.html#L119) - Etiqueta/elemento HTML (<option value="puerta">puerta</option>).
+- L120: [client/index.html](client/index.html#L120) - Etiqueta/elemento HTML (<option value="televisión">televisión</option>).
+- L121: [client/index.html](client/index.html#L121) - Etiqueta/elemento HTML (<option value="laptop">laptop</option>).
+- L122: [client/index.html](client/index.html#L122) - Etiqueta/elemento HTML (<option value="mouse">mouse</option>).
+- L123: [client/index.html](client/index.html#L123) - Etiqueta/elemento HTML (<option value="remoto">remoto</option>).
+- L124: [client/index.html](client/index.html#L124) - Etiqueta/elemento HTML (<option value="teclado">teclado</option>).
+- L125: [client/index.html](client/index.html#L125) - Etiqueta/elemento HTML (<option value="celular">celular</option>).
+- L126: [client/index.html](client/index.html#L126) - Etiqueta/elemento HTML (<option value="microondas">microondas</option>).
+- L127: [client/index.html](client/index.html#L127) - Etiqueta/elemento HTML (<option value="horno">horno</option>).
+- L128: [client/index.html](client/index.html#L128) - Etiqueta/elemento HTML (<option value="tostador">tostador</option>).
+- L129: [client/index.html](client/index.html#L129) - Etiqueta/elemento HTML (<option value="sink">sink</option>).
+- L130: [client/index.html](client/index.html#L130) - Etiqueta/elemento HTML (<option value="refrigerador">refrigerador</option>).
+- L131: [client/index.html](client/index.html#L131) - Etiqueta/elemento HTML (<option value="licuadora">licuadora</option>).
+- L132: [client/index.html](client/index.html#L132) - Etiqueta/elemento HTML (<option value="libro">libro</option>).
+- L133: [client/index.html](client/index.html#L133) - Etiqueta/elemento HTML (<option value="reloj">reloj</option>).
+- L134: [client/index.html](client/index.html#L134) - Etiqueta/elemento HTML (<option value="florero">florero</option>).
+- L135: [client/index.html](client/index.html#L135) - Etiqueta/elemento HTML (<option value="tijeras">tijeras</option>).
+- L136: [client/index.html](client/index.html#L136) - Etiqueta/elemento HTML (<option value="oso de peluche">oso de peluche</option>).
+- L137: [client/index.html](client/index.html#L137) - Etiqueta/elemento HTML (<option value="secador de pelo">secador de pelo</option>).
+- L138: [client/index.html](client/index.html#L138) - Etiqueta/elemento HTML (<option value="cepillo de dientes">cepillo de dientes</option>).
+- L139: [client/index.html](client/index.html#L139) - Etiqueta/elemento HTML (<option value="cepillo de pelo">cepillo de pelo</option>).
+- L140: [client/index.html](client/index.html#L140) - Etiqueta/elemento HTML (</select>).
+- L141: [client/index.html](client/index.html#L141) - Etiqueta/elemento HTML (<label for="conf_image" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>).
+- L142: [client/index.html](client/index.html#L142) - Etiqueta/elemento HTML (<br>).
+- L143: [client/index.html](client/index.html#L143) - Etiqueta/elemento HTML (<input type="number" id="conf_image" value="0.4" min="0" max="1" step="0.05" />).
+- L144: [client/index.html](client/index.html#L144) - Etiqueta/elemento HTML (<button id="btnDetectImage">Detectar Imagen</button>).
+- L145: [client/index.html](client/index.html#L145) - Etiqueta/elemento HTML (</div>).
+- L146: [client/index.html](client/index.html#L146) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L147: [client/index.html](client/index.html#L147) - Etiqueta/elemento HTML (<h4>Detecciones:</h4>).
+- L148: [client/index.html](client/index.html#L148) - Etiqueta/elemento HTML (<div id="log_image" class="detection-log">(sin datos)</div>).
+- L149: [client/index.html](client/index.html#L149) - Etiqueta/elemento HTML (</div>).
+- L150: [client/index.html](client/index.html#L150) - Etiqueta/elemento HTML (<div id="status_image" class="status margin-top-8" aria-live="polite"></div>).
+- L151: [client/index.html](client/index.html#L151) - Etiqueta/elemento HTML (</section>).
+- L152: [client/index.html](client/index.html#L152) - Línea vacía.
+- L153: [client/index.html](client/index.html#L153) - Etiqueta/elemento HTML (<section id="tab-video" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-video">).
+- L154: [client/index.html](client/index.html#L154) - Etiqueta/elemento HTML (<div id="videoControls">).
+- L155: [client/index.html](client/index.html#L155) - Etiqueta/elemento HTML (<label for="videoFile">Subir video (mp4):</label>).
+- L156: [client/index.html](client/index.html#L156) - Etiqueta/elemento HTML (<input type="file" id="videoFile" accept="video/*" />).
+- L157: [client/index.html](client/index.html#L157) - Etiqueta/elemento HTML (</div>).
+- L158: [client/index.html](client/index.html#L158) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L159: [client/index.html](client/index.html#L159) - Etiqueta/elemento HTML (<label for="classSelect_video" class="classLabel" id="classLabel_video">Clase:</label>).
+- L160: [client/index.html](client/index.html#L160) - Etiqueta/elemento HTML (<select id="classSelect_video" class="classSelect">).
+- L161: [client/index.html](client/index.html#L161) - Etiqueta/elemento HTML (<option value="all">Todas</option>).
+- L162: [client/index.html](client/index.html#L162) - Etiqueta/elemento HTML (<option value="persona">persona</option>).
+- L163: [client/index.html](client/index.html#L163) - Etiqueta/elemento HTML (<option value="bicicleta">bicicleta</option>).
+- L164: [client/index.html](client/index.html#L164) - Etiqueta/elemento HTML (<option value="automovil">automovil</option>).
+- L165: [client/index.html](client/index.html#L165) - Etiqueta/elemento HTML (<option value="motocicleta">motocicleta</option>).
+- L166: [client/index.html](client/index.html#L166) - Etiqueta/elemento HTML (<option value="avion">avion</option>).
+- L167: [client/index.html](client/index.html#L167) - Etiqueta/elemento HTML (<option value="autobus">autobus</option>).
+- L168: [client/index.html](client/index.html#L168) - Etiqueta/elemento HTML (<option value="tren">tren</option>).
+- L169: [client/index.html](client/index.html#L169) - Etiqueta/elemento HTML (<option value="camion">camion</option>).
+- L170: [client/index.html](client/index.html#L170) - Etiqueta/elemento HTML (<option value="barco">barco</option>).
+- L171: [client/index.html](client/index.html#L171) - Etiqueta/elemento HTML (<option value="semaforo">semaforo</option>).
+- L172: [client/index.html](client/index.html#L172) - Etiqueta/elemento HTML (<option value="boca de incendio">boca de incendio</option>).
+- L173: [client/index.html](client/index.html#L173) - Etiqueta/elemento HTML (<option value="street sign">street sign</option>).
+- L174: [client/index.html](client/index.html#L174) - Etiqueta/elemento HTML (<option value="señal de alto">señal de alto</option>).
+- L175: [client/index.html](client/index.html#L175) - Etiqueta/elemento HTML (<option value="parquimetro">parquimetro</option>).
+- L176: [client/index.html](client/index.html#L176) - Etiqueta/elemento HTML (<option value="banco">banco</option>).
+- L177: [client/index.html](client/index.html#L177) - Etiqueta/elemento HTML (<option value="pájaro">pájaro</option>).
+- L178: [client/index.html](client/index.html#L178) - Etiqueta/elemento HTML (<option value="gato">gato</option>).
+- L179: [client/index.html](client/index.html#L179) - Etiqueta/elemento HTML (<option value="perro">perro</option>).
+- L180: [client/index.html](client/index.html#L180) - Etiqueta/elemento HTML (<option value="caballo">caballo</option>).
+- L181: [client/index.html](client/index.html#L181) - Etiqueta/elemento HTML (<option value="oveja">oveja</option>).
+- L182: [client/index.html](client/index.html#L182) - Etiqueta/elemento HTML (<option value="vaca">vaca</option>).
+- L183: [client/index.html](client/index.html#L183) - Etiqueta/elemento HTML (<option value="elefante">elefante</option>).
+- L184: [client/index.html](client/index.html#L184) - Etiqueta/elemento HTML (<option value="oso">oso</option>).
+- L185: [client/index.html](client/index.html#L185) - Etiqueta/elemento HTML (<option value="zebra">zebra</option>).
+- L186: [client/index.html](client/index.html#L186) - Etiqueta/elemento HTML (<option value="girafa">girafa</option>).
+- L187: [client/index.html](client/index.html#L187) - Etiqueta/elemento HTML (<option value="sombrero">sombrero</option>).
+- L188: [client/index.html](client/index.html#L188) - Etiqueta/elemento HTML (<option value="mochila">mochila</option>).
+- L189: [client/index.html](client/index.html#L189) - Etiqueta/elemento HTML (<option value="paraguas">paraguas</option>).
+- L190: [client/index.html](client/index.html#L190) - Etiqueta/elemento HTML (<option value="zapato">zapato</option>).
+- L191: [client/index.html](client/index.html#L191) - Etiqueta/elemento HTML (<option value="lentes">lentes</option>).
+- L192: [client/index.html](client/index.html#L192) - Etiqueta/elemento HTML (<option value="bolso de mano">bolso de mano</option>).
+- L193: [client/index.html](client/index.html#L193) - Etiqueta/elemento HTML (<option value="tie">tie</option>).
+- L194: [client/index.html](client/index.html#L194) - Etiqueta/elemento HTML (<option value="maleta">maleta</option>).
+- L195: [client/index.html](client/index.html#L195) - Etiqueta/elemento HTML (<option value="disco volador">disco volador</option>).
+- L196: [client/index.html](client/index.html#L196) - Etiqueta/elemento HTML (<option value="esquís">esquís</option>).
+- L197: [client/index.html](client/index.html#L197) - Etiqueta/elemento HTML (<option value="patineta de nieve">patineta de nieve</option>).
+- L198: [client/index.html](client/index.html#L198) - Etiqueta/elemento HTML (<option value="pelota de deportes">pelota de deportes</option>).
+- L199: [client/index.html](client/index.html#L199) - Etiqueta/elemento HTML (<option value="cometa">cometa</option>).
+- L200: [client/index.html](client/index.html#L200) - Etiqueta/elemento HTML (<option value="bat de béisbol">bat de béisbol</option>).
+- L201: [client/index.html](client/index.html#L201) - Etiqueta/elemento HTML (<option value="guante de béisbol">guante de béisbol</option>).
+- L202: [client/index.html](client/index.html#L202) - Etiqueta/elemento HTML (<option value="patineta">patineta</option>).
+- L203: [client/index.html](client/index.html#L203) - Etiqueta/elemento HTML (<option value="tabla de surf">tabla de surf</option>).
+- L204: [client/index.html](client/index.html#L204) - Etiqueta/elemento HTML (<option value="raqueta de tennis">raqueta de tennis</option>).
+- L205: [client/index.html](client/index.html#L205) - Etiqueta/elemento HTML (<option value="botella">botella</option>).
+- L206: [client/index.html](client/index.html#L206) - Etiqueta/elemento HTML (<option value="lámina">lámina</option>).
+- L207: [client/index.html](client/index.html#L207) - Etiqueta/elemento HTML (<option value="copa de vino">copa de vino</option>).
+- L208: [client/index.html](client/index.html#L208) - Etiqueta/elemento HTML (<option value="taza">taza</option>).
+- L209: [client/index.html](client/index.html#L209) - Etiqueta/elemento HTML (<option value="tenedor">tenedor</option>).
+- L210: [client/index.html](client/index.html#L210) - Etiqueta/elemento HTML (<option value="cuchillo">cuchillo</option>).
+- L211: [client/index.html](client/index.html#L211) - Etiqueta/elemento HTML (<option value="cuchara">cuchara</option>).
+- L212: [client/index.html](client/index.html#L212) - Etiqueta/elemento HTML (<option value="bol">bol</option>).
+- L213: [client/index.html](client/index.html#L213) - Etiqueta/elemento HTML (<option value="platano">platano</option>).
+- L214: [client/index.html](client/index.html#L214) - Etiqueta/elemento HTML (<option value="manzana">manzana</option>).
+- L215: [client/index.html](client/index.html#L215) - Etiqueta/elemento HTML (<option value="sandwich">sandwich</option>).
+- L216: [client/index.html](client/index.html#L216) - Etiqueta/elemento HTML (<option value="naranja">naranja</option>).
+- L217: [client/index.html](client/index.html#L217) - Etiqueta/elemento HTML (<option value="brocoli">brocoli</option>).
+- L218: [client/index.html](client/index.html#L218) - Etiqueta/elemento HTML (<option value="zanahoria">zanahoria</option>).
+- L219: [client/index.html](client/index.html#L219) - Etiqueta/elemento HTML (<option value="hot dog">hot dog</option>).
+- L220: [client/index.html](client/index.html#L220) - Etiqueta/elemento HTML (<option value="pizza">pizza</option>).
+- L221: [client/index.html](client/index.html#L221) - Etiqueta/elemento HTML (<option value="dona">dona</option>).
+- L222: [client/index.html](client/index.html#L222) - Etiqueta/elemento HTML (<option value="pastel">pastel</option>).
+- L223: [client/index.html](client/index.html#L223) - Etiqueta/elemento HTML (<option value="silla">silla</option>).
+- L224: [client/index.html](client/index.html#L224) - Etiqueta/elemento HTML (<option value="sofá">sofá</option>).
+- L225: [client/index.html](client/index.html#L225) - Etiqueta/elemento HTML (<option value="planta en maceta">planta en maceta</option>).
+- L226: [client/index.html](client/index.html#L226) - Etiqueta/elemento HTML (<option value="cama">cama</option>).
+- L227: [client/index.html](client/index.html#L227) - Etiqueta/elemento HTML (<option value="espejo">espejo</option>).
+- L228: [client/index.html](client/index.html#L228) - Etiqueta/elemento HTML (<option value="comedor">comedor</option>).
+- L229: [client/index.html](client/index.html#L229) - Etiqueta/elemento HTML (<option value="ventana">ventana</option>).
+- L230: [client/index.html](client/index.html#L230) - Etiqueta/elemento HTML (<option value="escritorio">escritorio</option>).
+- L231: [client/index.html](client/index.html#L231) - Etiqueta/elemento HTML (<option value="baño">baño</option>).
+- L232: [client/index.html](client/index.html#L232) - Etiqueta/elemento HTML (<option value="puerta">puerta</option>).
+- L233: [client/index.html](client/index.html#L233) - Etiqueta/elemento HTML (<option value="televisión">televisión</option>).
+- L234: [client/index.html](client/index.html#L234) - Etiqueta/elemento HTML (<option value="laptop">laptop</option>).
+- L235: [client/index.html](client/index.html#L235) - Etiqueta/elemento HTML (<option value="mouse">mouse</option>).
+- L236: [client/index.html](client/index.html#L236) - Etiqueta/elemento HTML (<option value="remoto">remoto</option>).
+- L237: [client/index.html](client/index.html#L237) - Etiqueta/elemento HTML (<option value="teclado">teclado</option>).
+- L238: [client/index.html](client/index.html#L238) - Etiqueta/elemento HTML (<option value="celular">celular</option>).
+- L239: [client/index.html](client/index.html#L239) - Etiqueta/elemento HTML (<option value="microondas">microondas</option>).
+- L240: [client/index.html](client/index.html#L240) - Etiqueta/elemento HTML (<option value="horno">horno</option>).
+- L241: [client/index.html](client/index.html#L241) - Etiqueta/elemento HTML (<option value="tostador">tostador</option>).
+- L242: [client/index.html](client/index.html#L242) - Etiqueta/elemento HTML (<option value="sink">sink</option>).
+- L243: [client/index.html](client/index.html#L243) - Etiqueta/elemento HTML (<option value="refrigerador">refrigerador</option>).
+- L244: [client/index.html](client/index.html#L244) - Etiqueta/elemento HTML (<option value="licuadora">licuadora</option>).
+- L245: [client/index.html](client/index.html#L245) - Etiqueta/elemento HTML (<option value="libro">libro</option>).
+- L246: [client/index.html](client/index.html#L246) - Etiqueta/elemento HTML (<option value="reloj">reloj</option>).
+- L247: [client/index.html](client/index.html#L247) - Etiqueta/elemento HTML (<option value="florero">florero</option>).
+- L248: [client/index.html](client/index.html#L248) - Etiqueta/elemento HTML (<option value="tijeras">tijeras</option>).
+- L249: [client/index.html](client/index.html#L249) - Etiqueta/elemento HTML (<option value="oso de peluche">oso de peluche</option>).
+- L250: [client/index.html](client/index.html#L250) - Etiqueta/elemento HTML (<option value="secador de pelo">secador de pelo</option>).
+- L251: [client/index.html](client/index.html#L251) - Etiqueta/elemento HTML (<option value="cepillo de dientes">cepillo de dientes</option>).
+- L252: [client/index.html](client/index.html#L252) - Etiqueta/elemento HTML (<option value="cepillo de pelo">cepillo de pelo</option>).
+- L253: [client/index.html](client/index.html#L253) - Etiqueta/elemento HTML (</select>).
+- L254: [client/index.html](client/index.html#L254) - Etiqueta/elemento HTML (<label for="conf_video" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>).
+- L255: [client/index.html](client/index.html#L255) - Etiqueta/elemento HTML (<input type="number" id="conf_video" value="0.4" min="0" max="1" step="0.05" />).
+- L256: [client/index.html](client/index.html#L256) - Etiqueta/elemento HTML (<label for="frameStep">Paso frames:</label>).
+- L257: [client/index.html](client/index.html#L257) - Etiqueta/elemento HTML (<input type="number" id="frameStep" value="1" min="1" />).
+- L258: [client/index.html](client/index.html#L258) - Etiqueta/elemento HTML (<label for="maxFrames">Maximo frames:</label>).
+- L259: [client/index.html](client/index.html#L259) - Etiqueta/elemento HTML (<input type="number" id="maxFrames" value="0" min="0" />).
+- L260: [client/index.html](client/index.html#L260) - Etiqueta/elemento HTML (<label title="Si está activado, se mostrarán los rectángulos de detección sobre el video.">).
+- L261: [client/index.html](client/index.html#L261) - Etiqueta/elemento HTML (<input type="checkbox" id="visualizeVideo" aria-label="Mostrar rectángulos de detección" />).
+- L262: [client/index.html](client/index.html#L262) - Código: Mostrar rectángulos
+- L263: [client/index.html](client/index.html#L263) - Etiqueta/elemento HTML (</label>).
+- L264: [client/index.html](client/index.html#L264) - Etiqueta/elemento HTML (<button id="btnDetectVideo">Detectar Video</button>).
+- L265: [client/index.html](client/index.html#L265) - Etiqueta/elemento HTML (</div>).
+- L266: [client/index.html](client/index.html#L266) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L267: [client/index.html](client/index.html#L267) - Etiqueta/elemento HTML (<h4>Detecciones (muestras de frames):</h4>).
+- L268: [client/index.html](client/index.html#L268) - Etiqueta/elemento HTML (<div id="log_video" class="detection-log">(sin datos)</div>).
+- L269: [client/index.html](client/index.html#L269) - Etiqueta/elemento HTML (</div>).
+- L270: [client/index.html](client/index.html#L270) - Etiqueta/elemento HTML (<div id="status_video" class="status margin-top-8" aria-live="polite"></div>).
+- L271: [client/index.html](client/index.html#L271) - Etiqueta/elemento HTML (</section>).
+- L272: [client/index.html](client/index.html#L272) - Etiqueta/elemento HTML (<section id="tab-camera" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-camera">).
+- L273: [client/index.html](client/index.html#L273) - Etiqueta/elemento HTML (<div>).
+- L274: [client/index.html](client/index.html#L274) - Etiqueta/elemento HTML (<label for="cameraUrl">Camera URL (IP camera):</label>).
+- L275: [client/index.html](client/index.html#L275) - Etiqueta/elemento HTML (<input type="url" id="cameraUrl" placeholder="http://ip:port/video" />).
+- L276: [client/index.html](client/index.html#L276) - Etiqueta/elemento HTML (</div>).
+- L277: [client/index.html](client/index.html#L277) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L278: [client/index.html](client/index.html#L278) - Etiqueta/elemento HTML (<label for="classSelect_camera" class="classLabel" id="classLabel_camera">Clase:</label>).
+- L279: [client/index.html](client/index.html#L279) - Etiqueta/elemento HTML (<select id="classSelect_camera" class="classSelect">).
+- L280: [client/index.html](client/index.html#L280) - Etiqueta/elemento HTML (<option value="all">Todas</option>).
+- L281: [client/index.html](client/index.html#L281) - Etiqueta/elemento HTML (<option value="persona">persona</option>).
+- L282: [client/index.html](client/index.html#L282) - Etiqueta/elemento HTML (<option value="bicicleta">bicicleta</option>).
+- L283: [client/index.html](client/index.html#L283) - Etiqueta/elemento HTML (<option value="automovil">automovil</option>).
+- L284: [client/index.html](client/index.html#L284) - Etiqueta/elemento HTML (<option value="motocicleta">motocicleta</option>).
+- L285: [client/index.html](client/index.html#L285) - Etiqueta/elemento HTML (<option value="avion">avion</option>).
+- L286: [client/index.html](client/index.html#L286) - Etiqueta/elemento HTML (<option value="autobus">autobus</option>).
+- L287: [client/index.html](client/index.html#L287) - Etiqueta/elemento HTML (<option value="tren">tren</option>).
+- L288: [client/index.html](client/index.html#L288) - Etiqueta/elemento HTML (<option value="camion">camion</option>).
+- L289: [client/index.html](client/index.html#L289) - Etiqueta/elemento HTML (<option value="barco">barco</option>).
+- L290: [client/index.html](client/index.html#L290) - Etiqueta/elemento HTML (<option value="semaforo">semaforo</option>).
+- L291: [client/index.html](client/index.html#L291) - Etiqueta/elemento HTML (<option value="boca de incendio">boca de incendio</option>).
+- L292: [client/index.html](client/index.html#L292) - Etiqueta/elemento HTML (<option value="street sign">street sign</option>).
+- L293: [client/index.html](client/index.html#L293) - Etiqueta/elemento HTML (<option value="señal de alto">señal de alto</option>).
+- L294: [client/index.html](client/index.html#L294) - Etiqueta/elemento HTML (<option value="parquimetro">parquimetro</option>).
+- L295: [client/index.html](client/index.html#L295) - Etiqueta/elemento HTML (<option value="banco">banco</option>).
+- L296: [client/index.html](client/index.html#L296) - Etiqueta/elemento HTML (<option value="pájaro">pájaro</option>).
+- L297: [client/index.html](client/index.html#L297) - Etiqueta/elemento HTML (<option value="gato">gato</option>).
+- L298: [client/index.html](client/index.html#L298) - Etiqueta/elemento HTML (<option value="perro">perro</option>).
+- L299: [client/index.html](client/index.html#L299) - Etiqueta/elemento HTML (<option value="caballo">caballo</option>).
+- L300: [client/index.html](client/index.html#L300) - Etiqueta/elemento HTML (<option value="oveja">oveja</option>).
+- L301: [client/index.html](client/index.html#L301) - Etiqueta/elemento HTML (<option value="vaca">vaca</option>).
+- L302: [client/index.html](client/index.html#L302) - Etiqueta/elemento HTML (<option value="elefante">elefante</option>).
+- L303: [client/index.html](client/index.html#L303) - Etiqueta/elemento HTML (<option value="oso">oso</option>).
+- L304: [client/index.html](client/index.html#L304) - Etiqueta/elemento HTML (<option value="zebra">zebra</option>).
+- L305: [client/index.html](client/index.html#L305) - Etiqueta/elemento HTML (<option value="girafa">girafa</option>).
+- L306: [client/index.html](client/index.html#L306) - Etiqueta/elemento HTML (<option value="sombrero">sombrero</option>).
+- L307: [client/index.html](client/index.html#L307) - Etiqueta/elemento HTML (<option value="mochila">mochila</option>).
+- L308: [client/index.html](client/index.html#L308) - Etiqueta/elemento HTML (<option value="paraguas">paraguas</option>).
+- L309: [client/index.html](client/index.html#L309) - Etiqueta/elemento HTML (<option value="zapato">zapato</option>).
+- L310: [client/index.html](client/index.html#L310) - Etiqueta/elemento HTML (<option value="lentes">lentes</option>).
+- L311: [client/index.html](client/index.html#L311) - Etiqueta/elemento HTML (<option value="bolso de mano">bolso de mano</option>).
+- L312: [client/index.html](client/index.html#L312) - Etiqueta/elemento HTML (<option value="tie">tie</option>).
+- L313: [client/index.html](client/index.html#L313) - Etiqueta/elemento HTML (<option value="maleta">maleta</option>).
+- L314: [client/index.html](client/index.html#L314) - Etiqueta/elemento HTML (<option value="disco volador">disco volador</option>).
+- L315: [client/index.html](client/index.html#L315) - Etiqueta/elemento HTML (<option value="esquís">esquís</option>).
+- L316: [client/index.html](client/index.html#L316) - Etiqueta/elemento HTML (<option value="patineta de nieve">patineta de nieve</option>).
+- L317: [client/index.html](client/index.html#L317) - Etiqueta/elemento HTML (<option value="pelota de deportes">pelota de deportes</option>).
+- L318: [client/index.html](client/index.html#L318) - Etiqueta/elemento HTML (<option value="cometa">cometa</option>).
+- L319: [client/index.html](client/index.html#L319) - Etiqueta/elemento HTML (<option value="bat de béisbol">bat de béisbol</option>).
+- L320: [client/index.html](client/index.html#L320) - Etiqueta/elemento HTML (<option value="guante de béisbol">guante de béisbol</option>).
+- L321: [client/index.html](client/index.html#L321) - Etiqueta/elemento HTML (<option value="patineta">patineta</option>).
+- L322: [client/index.html](client/index.html#L322) - Etiqueta/elemento HTML (<option value="tabla de surf">tabla de surf</option>).
+- L323: [client/index.html](client/index.html#L323) - Etiqueta/elemento HTML (<option value="raqueta de tennis">raqueta de tennis</option>).
+- L324: [client/index.html](client/index.html#L324) - Etiqueta/elemento HTML (<option value="botella">botella</option>).
+- L325: [client/index.html](client/index.html#L325) - Etiqueta/elemento HTML (<option value="lámina">lámina</option>).
+- L326: [client/index.html](client/index.html#L326) - Etiqueta/elemento HTML (<option value="copa de vino">copa de vino</option>).
+- L327: [client/index.html](client/index.html#L327) - Etiqueta/elemento HTML (<option value="taza">taza</option>).
+- L328: [client/index.html](client/index.html#L328) - Etiqueta/elemento HTML (<option value="tenedor">tenedor</option>).
+- L329: [client/index.html](client/index.html#L329) - Etiqueta/elemento HTML (<option value="cuchillo">cuchillo</option>).
+- L330: [client/index.html](client/index.html#L330) - Etiqueta/elemento HTML (<option value="cuchara">cuchara</option>).
+- L331: [client/index.html](client/index.html#L331) - Etiqueta/elemento HTML (<option value="bol">bol</option>).
+- L332: [client/index.html](client/index.html#L332) - Etiqueta/elemento HTML (<option value="platano">platano</option>).
+- L333: [client/index.html](client/index.html#L333) - Etiqueta/elemento HTML (<option value="manzana">manzana</option>).
+- L334: [client/index.html](client/index.html#L334) - Etiqueta/elemento HTML (<option value="sandwich">sandwich</option>).
+- L335: [client/index.html](client/index.html#L335) - Etiqueta/elemento HTML (<option value="naranja">naranja</option>).
+- L336: [client/index.html](client/index.html#L336) - Etiqueta/elemento HTML (<option value="brocoli">brocoli</option>).
+- L337: [client/index.html](client/index.html#L337) - Etiqueta/elemento HTML (<option value="zanahoria">zanahoria</option>).
+- L338: [client/index.html](client/index.html#L338) - Etiqueta/elemento HTML (<option value="hot dog">hot dog</option>).
+- L339: [client/index.html](client/index.html#L339) - Etiqueta/elemento HTML (<option value="pizza">pizza</option>).
+- L340: [client/index.html](client/index.html#L340) - Etiqueta/elemento HTML (<option value="dona">dona</option>).
+- L341: [client/index.html](client/index.html#L341) - Etiqueta/elemento HTML (<option value="pastel">pastel</option>).
+- L342: [client/index.html](client/index.html#L342) - Etiqueta/elemento HTML (<option value="silla">silla</option>).
+- L343: [client/index.html](client/index.html#L343) - Etiqueta/elemento HTML (<option value="sofá">sofá</option>).
+- L344: [client/index.html](client/index.html#L344) - Etiqueta/elemento HTML (<option value="planta en maceta">planta en maceta</option>).
+- L345: [client/index.html](client/index.html#L345) - Etiqueta/elemento HTML (<option value="cama">cama</option>).
+- L346: [client/index.html](client/index.html#L346) - Etiqueta/elemento HTML (<option value="espejo">espejo</option>).
+- L347: [client/index.html](client/index.html#L347) - Etiqueta/elemento HTML (<option value="comedor">comedor</option>).
+- L348: [client/index.html](client/index.html#L348) - Etiqueta/elemento HTML (<option value="ventana">ventana</option>).
+- L349: [client/index.html](client/index.html#L349) - Etiqueta/elemento HTML (<option value="escritorio">escritorio</option>).
+- L350: [client/index.html](client/index.html#L350) - Etiqueta/elemento HTML (<option value="baño">baño</option>).
+- L351: [client/index.html](client/index.html#L351) - Etiqueta/elemento HTML (<option value="puerta">puerta</option>).
+- L352: [client/index.html](client/index.html#L352) - Etiqueta/elemento HTML (<option value="televisión">televisión</option>).
+- L353: [client/index.html](client/index.html#L353) - Etiqueta/elemento HTML (<option value="laptop">laptop</option>).
+- L354: [client/index.html](client/index.html#L354) - Etiqueta/elemento HTML (<option value="mouse">mouse</option>).
+- L355: [client/index.html](client/index.html#L355) - Etiqueta/elemento HTML (<option value="remoto">remoto</option>).
+- L356: [client/index.html](client/index.html#L356) - Etiqueta/elemento HTML (<option value="teclado">teclado</option>).
+- L357: [client/index.html](client/index.html#L357) - Etiqueta/elemento HTML (<option value="celular">celular</option>).
+- L358: [client/index.html](client/index.html#L358) - Etiqueta/elemento HTML (<option value="microondas">microondas</option>).
+- L359: [client/index.html](client/index.html#L359) - Etiqueta/elemento HTML (<option value="horno">horno</option>).
+- L360: [client/index.html](client/index.html#L360) - Etiqueta/elemento HTML (<option value="tostador">tostador</option>).
+- L361: [client/index.html](client/index.html#L361) - Etiqueta/elemento HTML (<option value="sink">sink</option>).
+- L362: [client/index.html](client/index.html#L362) - Etiqueta/elemento HTML (<option value="refrigerador">refrigerador</option>).
+- L363: [client/index.html](client/index.html#L363) - Etiqueta/elemento HTML (<option value="licuadora">licuadora</option>).
+- L364: [client/index.html](client/index.html#L364) - Etiqueta/elemento HTML (<option value="libro">libro</option>).
+- L365: [client/index.html](client/index.html#L365) - Etiqueta/elemento HTML (<option value="reloj">reloj</option>).
+- L366: [client/index.html](client/index.html#L366) - Etiqueta/elemento HTML (<option value="florero">florero</option>).
+- L367: [client/index.html](client/index.html#L367) - Etiqueta/elemento HTML (<option value="tijeras">tijeras</option>).
+- L368: [client/index.html](client/index.html#L368) - Etiqueta/elemento HTML (<option value="oso de peluche">oso de peluche</option>).
+- L369: [client/index.html](client/index.html#L369) - Etiqueta/elemento HTML (<option value="secador de pelo">secador de pelo</option>).
+- L370: [client/index.html](client/index.html#L370) - Etiqueta/elemento HTML (<option value="cepillo de dientes">cepillo de dientes</option>).
+- L371: [client/index.html](client/index.html#L371) - Etiqueta/elemento HTML (<option value="cepillo de pelo">cepillo de pelo</option>).
+- L372: [client/index.html](client/index.html#L372) - Etiqueta/elemento HTML (</select>).
+- L373: [client/index.html](client/index.html#L373) - Etiqueta/elemento HTML (<label for="conf_camera" title="SSD MobileNet v2: 0.3-0.6 (recomendado: 0.4)">Umbral:</label>).
+- L374: [client/index.html](client/index.html#L374) - Etiqueta/elemento HTML (<input type="number" id="conf_camera" value="0.4" min="0" max="1" step="0.05" />).
+- L375: [client/index.html](client/index.html#L375) - Etiqueta/elemento HTML (</div>).
+- L376: [client/index.html](client/index.html#L376) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L377: [client/index.html](client/index.html#L377) - Etiqueta/elemento HTML (<button id="btnStartLive">Iniciar vista en vivo</button>).
+- L378: [client/index.html](client/index.html#L378) - Etiqueta/elemento HTML (<button id="btnStopLive" disabled>Detener vista en vivo</button>).
+- L379: [client/index.html](client/index.html#L379) - Etiqueta/elemento HTML (</div>).
+- L380: [client/index.html](client/index.html#L380) - Etiqueta/elemento HTML (<div id="status_camera" class="status margin-top-8" aria-live="polite"></div>).
+- L381: [client/index.html](client/index.html#L381) - Etiqueta/elemento HTML (<div id="camera_excerpt" class="margin-top-8" aria-live="polite"></div>).
+- L382: [client/index.html](client/index.html#L382) - Etiqueta/elemento HTML (<div class="margin-top-8">).
+- L383: [client/index.html](client/index.html#L383) - Etiqueta/elemento HTML (<h4>Detecciones recientes (cámara):</h4>).
+- L384: [client/index.html](client/index.html#L384) - Etiqueta/elemento HTML (<div id="log_camera" class="detection-log">(sin datos)</div>).
+- L385: [client/index.html](client/index.html#L385) - Etiqueta/elemento HTML (</div>).
+- L386: [client/index.html](client/index.html#L386) - Etiqueta/elemento HTML (</section>).
+- L387: [client/index.html](client/index.html#L387) - Etiqueta/elemento HTML (</div>).
+- L388: [client/index.html](client/index.html#L388) - Línea vacía.
+- L389: [client/index.html](client/index.html#L389) - Etiqueta/elemento HTML (<div class="right">).
+- L390: [client/index.html](client/index.html#L390) - Etiqueta/elemento HTML (<div id="result-panel-image" class="result-panel active">).
+- L391: [client/index.html](client/index.html#L391) - Etiqueta/elemento HTML (<h3>Resultado (Imagen):</h3>).
+- L392: [client/index.html](client/index.html#L392) - Etiqueta/elemento HTML (<img id="resultImage" alt="Resultado de detección" class="result-media" />).
+- L393: [client/index.html](client/index.html#L393) - Etiqueta/elemento HTML (<div class="margin-top-12 hidden">).
+- L394: [client/index.html](client/index.html#L394) - Etiqueta/elemento HTML (<h4>Respuesta:</h4>).
+- L395: [client/index.html](client/index.html#L395) - Etiqueta/elemento HTML (<pre id="jsonOut_image"></pre>).
+- L396: [client/index.html](client/index.html#L396) - Etiqueta/elemento HTML (</div>).
+- L397: [client/index.html](client/index.html#L397) - Etiqueta/elemento HTML (</div>).
+- L398: [client/index.html](client/index.html#L398) - Línea vacía.
+- L399: [client/index.html](client/index.html#L399) - Etiqueta/elemento HTML (<div id="result-panel-video" class="result-panel">).
+- L400: [client/index.html](client/index.html#L400) - Etiqueta/elemento HTML (<h3>Resultado (Video):</h3>).
+- L401: [client/index.html](client/index.html#L401) - Etiqueta/elemento HTML (<video id="resultVideo" controls class="result-media result-video"></video>).
+- L402: [client/index.html](client/index.html#L402) - Etiqueta/elemento HTML (<div id="timeline_container" class="timeline-container hidden">).
+- L403: [client/index.html](client/index.html#L403) - Etiqueta/elemento HTML (<h4>Línea de tiempo (detecciones):</h4>).
+- L404: [client/index.html](client/index.html#L404) - Etiqueta/elemento HTML (<div id="timeline_bar" class="timeline-bar">).
+- L405: [client/index.html](client/index.html#L405) - Etiqueta/elemento HTML (<div id="timeline_cursor" class="timeline-cursor"></div>).
+- L406: [client/index.html](client/index.html#L406) - Etiqueta/elemento HTML (</div>).
+- L407: [client/index.html](client/index.html#L407) - Etiqueta/elemento HTML (<div id="timeline_info" class="timeline-info"></div>).
+- L408: [client/index.html](client/index.html#L408) - Etiqueta/elemento HTML (</div>).
+- L409: [client/index.html](client/index.html#L409) - Etiqueta/elemento HTML (<div class="margin-top-12 hidden">).
+- L410: [client/index.html](client/index.html#L410) - Etiqueta/elemento HTML (<h4>Respuesta:</h4>).
+- L411: [client/index.html](client/index.html#L411) - Etiqueta/elemento HTML (<pre id="jsonOut_video"></pre>).
+- L412: [client/index.html](client/index.html#L412) - Etiqueta/elemento HTML (</div>).
+- L413: [client/index.html](client/index.html#L413) - Etiqueta/elemento HTML (<div id="video_download" class="margin-top-8"></div>).
+- L414: [client/index.html](client/index.html#L414) - Etiqueta/elemento HTML (</div>).
+- L415: [client/index.html](client/index.html#L415) - Línea vacía.
+- L416: [client/index.html](client/index.html#L416) - Etiqueta/elemento HTML (<div id="result-panel-camera" class="result-panel">).
+- L417: [client/index.html](client/index.html#L417) - Etiqueta/elemento HTML (<h3>Vista en vivo (procesado):</h3>).
+- L418: [client/index.html](client/index.html#L418) - Etiqueta/elemento HTML (<img id="liveView" alt="Live processed view" class="live-view" />).
+- L419: [client/index.html](client/index.html#L419) - Etiqueta/elemento HTML (<div class="margin-top-12 hidden">).
+- L420: [client/index.html](client/index.html#L420) - Etiqueta/elemento HTML (<h4>Respuesta:</h4>).
+- L421: [client/index.html](client/index.html#L421) - Etiqueta/elemento HTML (<pre id="jsonOut_camera" class="hidden"></pre>).
+- L422: [client/index.html](client/index.html#L422) - Etiqueta/elemento HTML (</div>).
+- L423: [client/index.html](client/index.html#L423) - Etiqueta/elemento HTML (</div>).
+- L424: [client/index.html](client/index.html#L424) - Etiqueta/elemento HTML (</div>).
+- L425: [client/index.html](client/index.html#L425) - Etiqueta/elemento HTML (</main>).
+- L426: [client/index.html](client/index.html#L426) - Línea vacía.
+- L427: [client/index.html](client/index.html#L427) - Etiqueta script de apertura.
+- L428: [client/index.html](client/index.html#L428) - Etiqueta script de apertura.
+- L429: [client/index.html](client/index.html#L429) - Código: (function () {
+- L430: [client/index.html](client/index.html#L430) - Define constante (const apiSettings = document.querySelector('.api-settings');).
+- L431: [client/index.html](client/index.html#L431) - Define constante (const btn = document.getElementById('btnOpenApiSettings');).
+- L432: [client/index.html](client/index.html#L432) - Define constante (const panel = document.getElementById('apiSettingsPanel');).
+- L433: [client/index.html](client/index.html#L433) - Define constante (const backdrop = document.getElementById('apiBackdrop');).
+- L434: [client/index.html](client/index.html#L434) - Define constante (const body = document.body;).
+- L435: [client/index.html](client/index.html#L435) - Línea vacía.
+- L436: [client/index.html](client/index.html#L436) - Define la función openPanel.
+- L437: [client/index.html](client/index.html#L437) - Código: apiSettings.classList.add('open');
+- L438: [client/index.html](client/index.html#L438) - Comentario: ensure visible even if .hidden remains
+- L439: [client/index.html](client/index.html#L439) - Código: panel.classList.remove('hidden');
+- L440: [client/index.html](client/index.html#L440) - Código: panel.style.display = 'block';
+- L441: [client/index.html](client/index.html#L441) - Código: panel.setAttribute('aria-hidden', 'false');
+- L442: [client/index.html](client/index.html#L442) - Código: panel.classList.add('visible');
+- L443: [client/index.html](client/index.html#L443) - Código: backdrop.classList.remove('hidden');
+- L444: [client/index.html](client/index.html#L444) - Código: backdrop.classList.add('visible');
+- L445: [client/index.html](client/index.html#L445) - Código: body.classList.add('menu-open');
+- L446: [client/index.html](client/index.html#L446) - Código: }
+- L447: [client/index.html](client/index.html#L447) - Línea vacía.
+- L448: [client/index.html](client/index.html#L448) - Define la función closePanel.
+- L449: [client/index.html](client/index.html#L449) - Código: apiSettings.classList.remove('open');
+- L450: [client/index.html](client/index.html#L450) - Código: panel.classList.add('hidden');
+- L451: [client/index.html](client/index.html#L451) - Código: panel.style.display = '';
+- L452: [client/index.html](client/index.html#L452) - Código: panel.setAttribute('aria-hidden', 'true');
+- L453: [client/index.html](client/index.html#L453) - Código: panel.classList.remove('visible');
+- L454: [client/index.html](client/index.html#L454) - Código: backdrop.classList.remove('visible');
+- L455: [client/index.html](client/index.html#L455) - Código: backdrop.classList.add('hidden');
+- L456: [client/index.html](client/index.html#L456) - Código: body.classList.remove('menu-open');
+- L457: [client/index.html](client/index.html#L457) - Código: }
+- L458: [client/index.html](client/index.html#L458) - Línea vacía.
+- L459: [client/index.html](client/index.html#L459) - Código: btn.addEventListener('click', function (e) {
+- L460: [client/index.html](client/index.html#L460) - Código: e.stopPropagation();
+- L461: [client/index.html](client/index.html#L461) - Condicional if ((apiSettings.classList.contains('open')) {).
+- L462: [client/index.html](client/index.html#L462) - Código: closePanel();
+- L463: [client/index.html](client/index.html#L463) - Código: } else {
+- L464: [client/index.html](client/index.html#L464) - Código: openPanel();
+- L465: [client/index.html](client/index.html#L465) - Código: }
+- L466: [client/index.html](client/index.html#L466) - Código: });
+- L467: [client/index.html](client/index.html#L467) - Línea vacía.
+- L468: [client/index.html](client/index.html#L468) - Comentario: click outside -> close
+- L469: [client/index.html](client/index.html#L469) - Código: backdrop.addEventListener('click', function () { closePanel(); });
+- L470: [client/index.html](client/index.html#L470) - Línea vacía.
+- L471: [client/index.html](client/index.html#L471) - Código: document.addEventListener('click', function (e) {
+- L472: [client/index.html](client/index.html#L472) - Condicional if ((!apiSettings.contains(e.target) && apiSettings.classList.contains('open')) {).
+- L473: [client/index.html](client/index.html#L473) - Código: closePanel();
+- L474: [client/index.html](client/index.html#L474) - Código: }
+- L475: [client/index.html](client/index.html#L475) - Código: });
+- L476: [client/index.html](client/index.html#L476) - Línea vacía.
+- L477: [client/index.html](client/index.html#L477) - Comentario: escape to close
+- L478: [client/index.html](client/index.html#L478) - Código: document.addEventListener('keydown', function (e) {
+- L479: [client/index.html](client/index.html#L479) - Condicional if ((e.key === 'Escape' && apiSettings.classList.contains('open')) closePanel();).
+- L480: [client/index.html](client/index.html#L480) - Código: });
+- L481: [client/index.html](client/index.html#L481) - Línea vacía.
+- L482: [client/index.html](client/index.html#L482) - Comentario: prevent focus leak when opened
+- L483: [client/index.html](client/index.html#L483) - Código: panel.addEventListener('click', function (e) { e.stopPropagation(); });
+- L484: [client/index.html](client/index.html#L484) - Código: })();
+- L485: [client/index.html](client/index.html#L485) - Etiqueta script de cierre.
+- L486: [client/index.html](client/index.html#L486) - Etiqueta body de cierre.
+- L487: [client/index.html](client/index.html#L487) - Línea vacía.
+- L488: [client/index.html](client/index.html#L488) - Etiqueta html de cierre.

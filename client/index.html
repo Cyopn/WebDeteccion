@@ -12,6 +12,19 @@
 </head>
 
 <body>
+    <div class="api-settings">
+        <button id="btnOpenApiSettings" class="api-toggle" title="Configurar IP/URL de la API">Ajustes API</button>
+        <div id="apiSettingsPanel" class="api-settings-panel hidden" role="dialog" aria-label="Ajustes de la API">
+            <label for="apiBaseInput">Base URL API:</label>
+            <input type="text" id="apiBaseInput" placeholder="http://127.0.0.1:5501" />
+            <div class="api-settings-actions">
+                <button id="btnSaveApiBase" class="api-action">Guardar</button>
+                <button id="btnResetApiBase" class="api-action">Restablecer</button>
+            </div>
+            <div id="apiSettingsNote" class="api-settings-note margin-top-8"></div>
+        </div>
+        <div id="apiBackdrop" class="api-backdrop hidden" tabindex="-1" aria-hidden="true"></div>
+    </div>
     <div class="tabs" role="tablist" aria-label="Selector de fuente">
         <button id="tabbtn-image" class="tabbtn active" data-tab="tab-image" role="tab" aria-controls="tab-image"
             aria-selected="true">Imagen</button>
@@ -412,6 +425,59 @@
     </main>
 
     <script src="main.js"></script>
+    <script>
+        (function () {
+            const apiSettings = document.querySelector('.api-settings');
+            const btn = document.getElementById('btnOpenApiSettings');
+            const panel = document.getElementById('apiSettingsPanel');
+            const backdrop = document.getElementById('apiBackdrop');
+            const body = document.body;
+
+            function openPanel() {
+                apiSettings.classList.add('open');
+                panel.classList.remove('hidden');
+                panel.style.display = 'block';
+                panel.setAttribute('aria-hidden', 'false');
+                panel.classList.add('visible');
+                backdrop.classList.remove('hidden');
+                backdrop.classList.add('visible');
+                body.classList.add('menu-open');
+            }
+
+            function closePanel() {
+                apiSettings.classList.remove('open');
+                panel.classList.add('hidden');
+                panel.style.display = '';
+                panel.setAttribute('aria-hidden', 'true');
+                panel.classList.remove('visible');
+                backdrop.classList.remove('visible');
+                backdrop.classList.add('hidden');
+                body.classList.remove('menu-open');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (apiSettings.classList.contains('open')) {
+                    closePanel();
+                } else {
+                    openPanel();
+                }
+            });
+            backdrop.addEventListener('click', function () { closePanel(); });
+
+            document.addEventListener('click', function (e) {
+                if (!apiSettings.contains(e.target) && apiSettings.classList.contains('open')) {
+                    closePanel();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && apiSettings.classList.contains('open')) closePanel();
+            });
+
+            panel.addEventListener('click', function (e) { e.stopPropagation(); });
+        })();
+    </script>
 </body>
 
 </html>
