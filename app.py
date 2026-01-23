@@ -1110,5 +1110,13 @@ def get_logs():
     return jsonify({'lines': lines})
 
 
+@app.route('/logs/clear', methods=['POST'])
+def clear_logs():
+    with _log_lock:
+        cleared = len(_log_buffer)
+        _log_buffer.clear()
+    return jsonify({'cleared': cleared})
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5501, debug=True)

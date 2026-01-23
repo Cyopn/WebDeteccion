@@ -853,8 +853,12 @@ function stopLogPolling() {
     if (_logPollId) { clearInterval(_logPollId); _logPollId = null; }
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     clearAllLogs();
+    try {
+        await fetch(`${API_BASE}/logs/clear`, { method: 'POST' });
+    } catch (e) { }
+    try { startLogPolling(2000); } catch (e) { }
 });
 
 window.addEventListener('load', () => {
