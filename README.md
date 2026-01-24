@@ -2,59 +2,47 @@
 
 Sistema de detección y seguimiento de objetos en tiempo real utilizando modelos preentrenados y OpenCV, con interfaz web mediante Flask.
 
+## Funciones Principales
 
-## Requisitos del Sistema
-
-### Software Base
-- Python 3.8 o superior
-- FFmpeg (para procesamiento de video)
-- pip (gestor de paquetes de Python)
+- **Detección en tiempo real**: Detecta objetos en videos e imágenes usando el modelo SSD MobileNet COCO.
+- **Seguimiento de objetos**: Asigna IDs únicos y mantiene el seguimiento persistente en la detección en videos.
+- **Interfaz web**: Acceso vía navegador para subir imágenes/videos y ver resultados.
+- **Aceleración GPU/CPU**: Configuración automática o manual para optimizar rendimiento.
+- **Procesamiento de video**: Soporte para archivos de video con FFmpeg.
 
 ## Instalación
 
-### 1. Instalar FFmpeg
+### Requisitos
+- Python 3.8+
+- FFmpeg (descargar de [ffmpeg.org](https://ffmpeg.org/download.html) y agregar al PATH)
 
-1. Descargar desde [ffmpeg.org](https://ffmpeg.org/download.html)
-2. Extraer y agregar al PATH del sistema
+### Pasos
+1. Crear entorno virtual: `python -m venv .venv`
+2. Activar: `.venv\Scripts\activate` (Windows) o `source .venv/bin/activate` (Linux/Mac)
+3. Instalar dependencias: `pip install -r requirements.txt`
+4. Ejecutar: `python run.py` (menú interactivo) o `python app.py`
 
-#### Verificar instalación:
-```bash
-ffmpeg -version
-```
+Para más detalles, ver la sección completa de instalación abajo.
 
-### 3. Crear Entorno Virtual
+## Client
 
-```bash
-python3 -m venv .venv
-.venv\Scripts\activate
-```
+`client/` contiene la interfaz web del usuario para interactuar con el sistema de detección. Incluye:
 
-### 4. Instalar Dependencias de Python
+- **index.html**: Página principal con formulario para subir imágenes/videos y mostrar resultados de detección.
+- **main.js**: Lógica JavaScript para manejar la comunicación con el servidor Flask, procesar archivos y mostrar detecciones en tiempo real.
+- **style.css**: Estilos CSS para la interfaz de usuario, asegurando una experiencia visual atractiva y responsiva.
 
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
+Esta interfaz permite a los usuarios subir archivos multimedia y recibir resultados de detección sin necesidad de comandos de terminal.
 
-#### Dependencias principales:
-- **Flask** (>=2.0.0): Framework web
-- **opencv-python-headless** (>=4.5.5.64): Procesamiento de visión por computadora
-- **numpy** (>=1.21): Operaciones numéricas
-- **ultralytics** (>=8.0.0): YOLOv11 para detección de objetos
-- **tensorflow** (>=2.13.0): Framework de deep learning
-- **tensorflow-hub** (>=0.14.0): Modelos pre-entrenados de TensorFlow
-- **flask-cors** (>=3.0.10): Manejo de CORS
-- **gunicorn** (>=20.1.0): Servidor WSGI para producción
+## Documentación
 
-### 5. Descargar Modelo YOLOv11 (si no está incluido)
+Los archivos de documentación proporcionan una descripción detallada línea por línea del código fuente:
 
-El archivo `yolo11n.pt` debería estar en el repositorio. Si no está presente:
+- **generate_doc_app.py**: Script Python que analiza `app.py` y genera `doc_app.md`, un archivo con descripciones de cada línea del código del servidor Flask.
+- **generate_doc_client.py**: Script Python que analiza los archivos en `client/` (como `main.js` e `index.html`) y genera `doc_client.md`, con explicaciones línea por línea del código del cliente web.
+- **doc_app.md**: Archivo generado con documentación del backend (app.py).
+- **doc_client.md**: Archivo generado con documentación del frontend (client/).
 
-```bash
-# El modelo se descargará automáticamente al ejecutar la aplicación por primera vez
-# O descargarlo manualmente desde Python:
-python -c "from ultralytics import YOLO; model = YOLO('yolo11n.pt')"
-```
 
 ## Uso
 
@@ -95,7 +83,7 @@ python app.py
 
 ### Archivos de configuración:
 - **device_config.py**: Gestiona la configuración de dispositivo
-- **device_config.json**: Archivo de configuración (creado automáticamente)
+- **device_config.json**: Archivo de configuración
 
 ### Cambiar dispositivo en tiempo de ejecución:
 
@@ -120,121 +108,3 @@ python device_config.py reset
 - Si configuras en **auto**, la aplicación detectará automáticamente:
   - Si tienes GPU NVIDIA disponible, usa GPU
   - Si no, usa CPU
-
-
-## Características del Sistema de Detección
-
-### CentroidTracker
-- **Seguimiento persistente**: Asigna IDs únicos a cada objeto
-- **Manejo de oclusiones**: Mantiene el seguimiento cuando objetos desaparecen temporalmente
-- **Colores distintivos**: Cada objeto tiene un color único para fácil identificación
-
-## Modelos de Detección Disponibles
-
-La aplicación soporta múltiples modelos de detección:
-
-| Modelo | Tipo | Framework | Velocidad | Precisión | Uso |
-|--------|------|-----------|-----------|-----------|-----|
-| **HOG** | Personas | OpenCV | ⚡⚡⚡ | ⭐⭐ | `?model=hog` |
-| **YOLOv11** | Multi-objeto | Ultralytics | ⚡⚡ | ⭐⭐⭐⭐ | `?model=yolo` |
-| **SSD MobileNet** | Multi-objeto | TensorFlow | ⚡⚡ | ⭐⭐⭐ | `?model=ssd` |
-| **TF MobileNet Hub** | Multi-objeto | TensorFlow Hub | ⚡⚡ | ⭐⭐⭐ | `?model=tf_mobilenet` |
-| **TF EfficientDet** | Multi-objeto | TensorFlow Hub | ⚡ | ⭐⭐⭐⭐ | `?model=tf_efficientdet` |
-
-### Integración de TensorFlow
-
-WebDeteccion ahora incluye modelos de **TensorFlow Hub** para detección avanzada:
-
-- **SSD MobileNet v2**: Detector rápido para objetos (COCO)
-- **EfficientDet D0**: Detector multi-objeto con excelente balance entre velocidad y precisión
-
-Consulta [TENSORFLOW_INTEGRATION.md](TENSORFLOW_INTEGRATION.md) para documentación completa.
-
-#### Ejemplo de uso:
-```bash
-# Detección con TensorFlow Hub SSD MobileNet
-curl -X POST -F "image=@imagen.jpg" \
-  "http://localhost:5000/detect/image?model=tf_mobilenet&conf=0.5"
-
-# Detección multi-objeto con EfficientDet
-curl -X POST -F "image=@imagen.jpg" \
-  "http://localhost:5000/detect/image?model=tf_efficientdet&conf=0.4"
-```
-
-#### Ver modelos disponibles:
-```bash
-curl "http://localhost:5000/models/available" | python -m json.tool
-```
-
-#### Script de prueba:
-```bash
-python test_tensorflow.py --image foto.jpg --model tf_mobilenet
-python test_tensorflow.py --image foto.jpg --compare  # Comparar todos los modelos
-```
-
-## Características del Sistema de Detección
-
-### CentroidTracker
-- **Seguimiento persistente**: Asigna IDs únicos a cada objeto
-- **Manejo de oclusiones**: Mantiene el seguimiento cuando objetos desaparecen temporalmente
-- **Colores distintivos**: Cada objeto tiene un color único para fácil identificación
-
-## Solución de Problemas
-
-### Error: "No module named 'cv2'"
-```bash
-pip install opencv-python-headless
-```
-
-### Error: "FFmpeg not found"
-Instalar FFmpeg según las instrucciones de tu sistema operativo (ver sección de instalación).
-
-### Error de memoria con videos grandes
-Reducir el tamaño del frame o la tasa de procesamiento en `app.py`:
-```python
-# Redimensionar frame
-frame = cv2.resize(frame, (640, 480))
-```
-
-## Rendimiento
-
-### Requisitos Recomendados
-- **CPU**: 4+ cores
-- **RAM**: 8GB+
-- **GPU**: NVIDIA (opcional, mejora significativamente el rendimiento)
-
-### Aceleración GPU con CUDA
-
-#### Verificar GPU disponible:
-```bash
-nvidia-smi
-```
-
-#### Verificar si CUDA está funcionando:
-```bash
-python -c "import torch; print('CUDA:', torch.cuda.is_available()); print('GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'No disponible')"
-```
-
-#### Archivos de configuración CUDA:
-- `cuda_config.py`: Configuración automática de GPU
-- Se ejecuta automáticamente al iniciar `app.py`
-
-#### Rendimiento esperado:
-- **CPU**: ~2-5 FPS (videos)
-- **GPU RTX 3050**: ~15-30 FPS (videos)
-- **Mejora**: 5-10x más rápido con GPU
-
-### Optimización de memoria GPU
-Para RTX 3050 (4GB VRAM):
-```bash
-# Monitorear GPU mientras corre:
-watch -n 1 nvidia-smi
-```
-
-Si hay errores de memoria:
-```bash
-# Reducir tamaño de frame en app.py
-frame = cv2.resize(frame, (640, 480))
-
-# O usar modelo más pequeño (YOLOv11 nano es el más ligero)
-```
